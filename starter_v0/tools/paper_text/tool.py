@@ -83,6 +83,8 @@ def get_arxiv_paper_text(arxiv_url: str = "", max_pages: int = 5, max_chars: int
             "page_count": page_count,
             "pages_read": min(max(1, int(max_pages or 5)), page_count),
             "chars_returned": len(excerpt),
+            "section_count": text.count("\n\n"),
+            "has_references": "references" in text.lower(),
             "items": [{
                 "title": f"arXiv paper {arxiv_id}",
                 "url": f"https://arxiv.org/abs/{arxiv_id}",
