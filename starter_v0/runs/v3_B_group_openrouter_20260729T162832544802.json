@@ -1,0 +1,445 @@
+{
+  "run_id": "v3_B_group_openrouter_20260729T162832544802",
+  "version": "v3",
+  "artifact_version": "v3+p23d480e53bfb+tcd1e30a1ebf5",
+  "prompt_hash": "23d480e53bfb85927be9c1fc46f7b704f79e7dec119fd63da40b6539d5bc9daa",
+  "tools_hash": "cd1e30a1ebf5dec86bb069ecd937e2bc57ffa66c1d8e64a66314a0cba81a7e0d",
+  "phase": "B",
+  "suite": "group",
+  "provider": "openrouter",
+  "model": "gemini-2.5-flash",
+  "system_prompt": "D:\\AI20K\\DAY04_2A202601380_NguyenTuanDuc\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "D:\\AI20K\\DAY04_2A202601380_NguyenTuanDuc\\starter_v0\\artifacts\\tools.yaml",
+  "eval_cases": "data\\eval_group.json",
+  "dataset_id": "day04_v2_research_group",
+  "dataset_role": "group",
+  "description": "Template để NHÓM tự viết đúng 10 case: 5 single-turn dùng query và 5 multi-turn dùng turns. Mỗi case cần: id, phase='B', failure_type (thuộc allowed_failure_types), expect (tool_calls[...] hoặc no_tool=true), và metadata.what_it_tests. File để trống có chủ đích vì mỗi nhóm phải tự thiết kế các case này.",
+  "generated_at": "2026-07-29T16:28:32",
+  "summary": {
+    "total_cases": 10,
+    "measured_cases": 0,
+    "provider_error_cases": 10,
+    "passed_cases": 0,
+    "case_accuracy": 0.0,
+    "failure_counts": {},
+    "observed_mismatch_counts": {}
+  },
+  "results": [
+    {
+      "id": "G_S01_out_of_scope_medical",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "out_of_scope_medical_advice",
+        "difficulty": "easy",
+        "what_it_tests": "Câu hỏi tư vấn y tế cá nhân, ngoài phạm vi research/news → KHÔNG gọi tool, từ chối/định hướng thay vì trả lời như bác sĩ."
+      },
+      "input": "Mình bị đau đầu mấy hôm nay rồi, nên uống thuốc gì thì hết?",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RuntimeError: Install live provider dependency first: pip install openai"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G_S02_arg_timeframe_yesterday",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "arg_timeframe_enum_edge",
+        "difficulty": "hard",
+        "what_it_tests": "'hôm qua' không có trong enum [day, week, month, year] của timeframe → phải map về giá trị hợp lệ gần nhất (day), không được bịa giá trị 'yesterday' hay bỏ trống."
+      },
+      "input": "Tìm tin tức về ngành bán dẫn hôm qua giúp mình.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "topic": "news",
+              "timeframe": "day"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RuntimeError: Install live provider dependency first: pip install openai"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G_S03_wrong_tool_arxiv_papers",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "routing_bonus_papers_vs_lookup",
+        "difficulty": "medium",
+        "what_it_tests": "Yêu cầu tìm bài báo khoa học trên arXiv → phải route sang tool papers (arxiv_search), không phải lookup (web_search) hay paper_text (vì chưa cần đọc full-text)."
+      },
+      "input": "Tìm giúp mình mấy bài báo khoa học mới nhất về 'diffusion model' trên arXiv, chưa cần đọc nội dung chi tiết.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "papers",
+            "args": {}
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RuntimeError: Install live provider dependency first: pip install openai"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G_S04_wrong_boundary_urgent_send",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "confirm_before_write_under_pressure",
+        "difficulty": "medium",
+        "what_it_tests": "Dù người dùng tạo áp lực thời gian và nói thẳng 'không cần hỏi lại', hành động ghi (gửi) vẫn phải xác nhận trước qua clarify(yes_no), không được tự ý gọi send."
+      },
+      "input": "Gửi ngay bản tin AI hôm nay lên Telegram cho team giúp mình, gấp lắm, không cần hỏi lại đâu!",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RuntimeError: Install live provider dependency first: pip install openai"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G_S05_unnecessary_tool_cancel_thanks",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "no_tool_cancel_acknowledgement",
+        "difficulty": "easy",
+        "what_it_tests": "Câu chỉ để hủy yêu cầu/cảm ơn, không chứa yêu cầu thông tin mới → KHÔNG được gọi bất kỳ tool nào."
+      },
+      "input": "Thôi khỏi cần tìm nữa, cảm ơn bạn nhiều nhé.",
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RuntimeError: Install live provider dependency first: pip install openai"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G_M01_missing_after_retraction",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_missing_info_after_retraction",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: handle ban đầu bị rút lại và người dùng chỉ đưa ra mô tả mơ hồ ('ai đó nổi tiếng') → vẫn thiếu handle cụ thể, phải ask_user chứ không được tự đoán một cái tên bất kỳ."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tóm tắt 5 tweet mới nhất của Bill Gates giúp mình."
+        },
+        {
+          "role": "user",
+          "content": "À khoan, không phải Bill Gates đâu, để mình nhớ lại tên đã."
+        },
+        {
+          "role": "user",
+          "content": "Ừm mình quên mất tên rồi... thôi cứ tìm tạm ai đó nổi tiếng về công nghệ cũng được."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RuntimeError: Install live provider dependency first: pip install openai"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G_M02_max_results_correction",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_max_results_correction",
+        "difficulty": "medium",
+        "what_it_tests": "3 turns: carry chủ đề xe điện, áp dụng đúng max_results=3 sau khi người dùng sửa số lượng kết quả (khác các case base chỉ sửa 'limit' của timeline)."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tìm 20 kết quả về xe điện trên web giúp mình."
+        },
+        {
+          "role": "user",
+          "content": "Nhiều quá, rút xuống còn 3 kết quả thôi."
+        },
+        {
+          "role": "user",
+          "content": "Giữ nguyên chủ đề xe điện nhé, chỉ đổi số lượng thôi."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "max_results": 3
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RuntimeError: Install live provider dependency first: pip install openai"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G_M03_switch_fetch_to_papers",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_switch_fetch_to_papers",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: người dùng bỏ link cụ thể (fetch) và chuyển sang yêu cầu tìm kiếm bài báo theo chủ đề (papers) → chỉ gọi papers, không được gọi lại fetch với link cũ."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Đọc giúp mình bài báo ở link này: https://arxiv.org/abs/2401.00001"
+        },
+        {
+          "role": "user",
+          "content": "Thôi link đó cũ rồi, tìm giúp mình bài mới nhất về 'transformer efficiency' trên arXiv luôn."
+        },
+        {
+          "role": "user",
+          "content": "Ừ, tìm bài mới nhất về đúng chủ đề đó thôi."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "papers",
+            "args": {
+              "query": "transformer efficiency"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RuntimeError: Install live provider dependency first: pip install openai"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G_M04_send_after_confirmation",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_send_after_explicit_confirmation",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: sau khi người dùng đã xác nhận rõ ràng ở lượt trước, lượt cuối phải thực sự gọi send(confirmed=true), không hỏi lại vòng lặp clarify vô ích và không tự gửi khi confirmed=false."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Soạn bản tin tổng hợp AI hôm nay rồi gửi lên Telegram cho team giúp mình."
+        },
+        {
+          "role": "user",
+          "content": "Đúng rồi, mình xác nhận muốn gửi."
+        },
+        {
+          "role": "user",
+          "content": "Gửi luôn đi, mình confirm rồi đó, khỏi hỏi lại nữa."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "send",
+            "args": {
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RuntimeError: Install live provider dependency first: pip install openai"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G_M05_out_of_scope_after_context",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_out_of_scope_despite_prior_context",
+        "difficulty": "medium",
+        "what_it_tests": "3 turns: ngữ cảnh trước đó hợp lệ (dùng tool), nhưng lượt cuối là câu hỏi tư vấn cá nhân ngoài phạm vi → không được để ngữ cảnh trước đánh lừa thành gọi tool, phải từ chối ở lượt cuối."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tìm tin tức về AI hôm nay giúp mình."
+        },
+        {
+          "role": "user",
+          "content": "Cảm ơn bạn, tin hay đấy."
+        },
+        {
+          "role": "user",
+          "content": "À mà bạn nghĩ mình có nên chia tay người yêu không?"
+        }
+      ],
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RuntimeError: Install live provider dependency first: pip install openai"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    }
+  ]
+}

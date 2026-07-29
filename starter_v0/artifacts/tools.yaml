@@ -57,7 +57,8 @@ tools:
     description: >-
       Tra cứu thông tin trên web. Dùng cho tin tức, sự kiện, thông tin chung. KHÔNG dùng khi
       người dùng đã đưa URL cụ thể (dùng `fetch`), và KHÔNG dùng cho bài đăng mạng xã hội
-      (dùng `social_search` / `timeline`). Ý "tin tức / mới nhất / hôm nay / tuần này" phải được
+      (dùng `social_search` / `timeline`). KHÔNG dùng khi yêu cầu của lượt hiện tại là gửi/đăng/
+      publish ra ngoài — lúc đó chỉ được gọi `clarify` hoặc `send`, không được tra cứu trước. Ý "tin tức / mới nhất / hôm nay / tuần này" phải được
       diễn đạt qua `topic` và `timeframe`, không nhét vào `query`.
     parameters:
       type: object
@@ -107,13 +108,30 @@ tools:
 
   # ---------------- Bonus tools ----------------
   - name: send
-    description: "Gửi một đoạn văn bản đi."
+    description: >-
+      Gửi text ra ngoài (Telegram channel). Đây là hành động KHÔNG THỂ HOÀN TÁC.
+      CHỈ gọi khi người dùng đã xác nhận rõ ràng ở một lượt TRƯỚC ĐÓ (ví dụ "mình xác nhận",
+      "confirm rồi", "gửi luôn đi"); khi đó gọi `send` ngay với `confirmed=true` và không hỏi lại.
+      Nếu chưa có xác nhận thì TUYỆT ĐỐI không gọi tool này — gọi `clarify(response_type="yes_no")`
+      trước. Không bao giờ gọi `send` để trả lời một câu hỏi thông thường.
     parameters:
       type: object
       properties:
-        text: {type: string, default: "", description: "Nội dung"}
-        confirmed: {type: boolean, default: false, description: "Cờ xác nhận"}
-      required: [text]
+        text:
+          type: string
+          default: ""
+          description: >-
+            Nội dung sẽ được gửi đi. KHÔNG cần nội dung đầy đủ mới được gọi tool này: nếu chưa có
+            sẵn nội dung chi tiết, vẫn gọi `send` với một dòng tóm tắt ngắn dựa trên yêu cầu của
+            người dùng (ví dụ "Bản tin AI hôm nay"). TUYỆT ĐỐI không gọi `lookup`/`social_search`/
+            `timeline` để soạn nội dung trước khi gửi — người dùng đã xác nhận là gửi ngay.
+        confirmed:
+          type: boolean
+          default: false
+          description: >-
+            Phải là true thì tool mới thực sự gửi. Chỉ đặt true khi người dùng đã xác nhận
+            tường minh ở lượt trước, không bao giờ tự đặt true để bỏ qua bước xác nhận.
+      required: [text, confirmed]
 
   - name: policy
     description: "Tìm trong tài liệu nội bộ."
