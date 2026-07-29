@@ -9,14 +9,30 @@
 tools:
   # ---------------- Core tools ----------------
   - name: clarify
-    description: "Gửi một câu hỏi cho người dùng."
+    description: >-
+      Hỏi lại người dùng khi thiếu thông tin bắt buộc, hoặc xin xác nhận trước một hành động
+      ghi/gửi ra ngoài. Dùng khi: thiếu account/handle, thiếu URL, thiếu từ khóa tìm kiếm, hoặc
+      trước mọi yêu cầu gửi/đăng/publish (`send`, Telegram). KHÔNG dùng khi thông tin đã có trong
+      hội thoại hoặc khi chỉ cần trả lời trực tiếp. LUÔN truyền `response_type` một cách tường minh,
+      không dựa vào default.
     parameters:
       type: object
       properties:
-        question: {type: string, default: "", description: "Câu hỏi"}
-        response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Kiểu trả lời"}
-        options: {type: array, default: [], items: {type: string}, description: "Các lựa chọn"}
-      required: [question]
+        question: {type: string, default: "", description: "Câu hỏi ngắn, hỏi đúng một thông tin còn thiếu"}
+        response_type:
+          type: string
+          enum: [text, yes_no, choice]
+          default: "text"
+          description: >-
+            BẮT BUỘC truyền tường minh, quyết định theo thứ tự ưu tiên sau:
+            (1) "yes_no" — nếu yêu cầu có hành động gửi/đăng/publish ra ngoài (`send`, Telegram):
+            luôn hỏi xác nhận chính hành động đó, ví dụ "Bạn xác nhận đăng bản tin này lên Telegram?".
+            Quy tắc này THẮNG mọi lý do khác; kể cả khi nội dung còn thiếu hoặc mơ hồ thì vẫn
+            dùng "yes_no", TUYỆT ĐỐI không dùng "text" để hỏi "đăng nội dung gì?".
+            (2) "choice" — khi người dùng chỉ cần chọn trong danh sách cố định truyền ở `options`.
+            (3) "text" — chỉ cho yêu cầu CHỈ ĐỌC còn thiếu giá trị (handle, URL, từ khóa).
+        options: {type: array, default: [], items: {type: string}, description: "Các lựa chọn, chỉ dùng cùng response_type=choice"}
+      required: [question, response_type]
 
   - name: timeline
     description: "Lấy các bài đăng gần đây."
@@ -38,13 +54,25 @@ tools:
       required: [query]
 
   - name: lookup
-    description: "Tra cứu thông tin trên internet."
+    description: >-
+      Tra cứu thông tin trên web. Dùng cho tin tức, sự kiện, thông tin chung. KHÔNG dùng khi
+      người dùng đã đưa URL cụ thể (dùng `fetch`), và KHÔNG dùng cho bài đăng mạng xã hội
+      (dùng `social_search` / `timeline`). Ý "tin tức / mới nhất / hôm nay / tuần này" phải được
+      diễn đạt qua `topic` và `timeframe`, không nhét vào `query`.
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Truy vấn"}
-        topic: {type: string, enum: [general, news], default: "general", description: "Phân loại"}
-        timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "Khoảng thời gian"}
+        query:
+          type: string
+          default: ""
+          description: >-
+            CHỈ là chủ đề trần, ngắn nhất có thể — thường 1-3 từ, giữ nguyên tên riêng
+            ("AI", "robotics", "OpenAI"). TUYỆT ĐỐI không thêm các từ bổ nghĩa như
+            "news", "latest", "today", "tin tức", "mới nhất", "hôm nay", "tuần này":
+            những ý đó đã nằm ở `topic` và `timeframe`, lặp lại sẽ làm hỏng kết quả search.
+            Ví dụ: "Tin AI hôm nay" -> query="AI", topic="news", timeframe="day".
+        topic: {type: string, enum: [general, news], default: "general", description: "Dùng \"news\" cho mọi yêu cầu về tin tức/thời sự; \"general\" cho tra cứu thông tin thường"}
+        timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "Suy ra từ câu hỏi: hôm nay/mới nhất -> day, tuần này -> week, tháng này -> month, năm nay -> year"}
         max_results: {type: integer, default: 5, description: "Số kết quả"}
       required: [query]
 
