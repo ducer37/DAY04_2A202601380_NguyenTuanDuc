@@ -1,0 +1,1590 @@
+{
+  "run_id": "v0_B_base_openrouter_20260729T152441355512",
+  "version": "v0",
+  "artifact_version": "v0+pf0c107a9d7a1+t011c271ef0bb",
+  "prompt_hash": "f0c107a9d7a14032c948d642d7c36f2a85cb6d69a099530093a874c94d472446",
+  "tools_hash": "011c271ef0bbad1e19a5d7b660b2ed481b7d72950f1faa8a0798c3bdd8784ee1",
+  "phase": "B",
+  "suite": "base",
+  "provider": "openrouter",
+  "model": "poolside/laguna-s-2.1:free",
+  "system_prompt": "/Users/batman/Desktop/VinUni/DAY04_2A202601380_NguyenTuanDuc/starter_v0/artifacts/system_prompt.md",
+  "tools": "/Users/batman/Desktop/VinUni/DAY04_2A202601380_NguyenTuanDuc/starter_v0/artifacts/tools.yaml",
+  "eval_cases": "data/eval_base.json",
+  "dataset_id": "day04_v2_research_base",
+  "dataset_role": "base",
+  "description": "Core eval cho research agent: routing đúng tool + đúng args, hỏi lại khi thiếu (ask_user), xác nhận trước khi gửi, và xử lý câu ngoài phạm vi / không cần tool. Chấm trên tool_calls + args (subset). KHÔNG sửa file này — chỉ thêm case vào eval_group.json.",
+  "generated_at": "2026-07-29T15:24:41",
+  "summary": {
+    "total_cases": 20,
+    "measured_cases": 11,
+    "provider_error_cases": 9,
+    "passed_cases": 8,
+    "case_accuracy": 0.7273,
+    "tool_routing_accuracy": 0.8182,
+    "argument_accuracy": 0.7273,
+    "multiturn_accuracy": 0.75,
+    "failure_counts": {
+      "missing_info": 1,
+      "wrong_boundary": 1,
+      "wrong_arg_value": 1
+    },
+    "observed_mismatch_counts": {
+      "missing_tool_call": 2,
+      "wrong_arg_value": 1
+    }
+  },
+  "results": [
+    {
+      "id": "R01_user_tweets_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "routing_user_tweets_name_to_handle",
+        "difficulty": "medium",
+        "what_it_tests": "Tin CỦA một người nổi tiếng → map tên Sam Altman thành handle sama rồi gọi get_user_tweets."
+      },
+      "input": "Tweet mới nhất của Sam Altman là gì?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "sama"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "sama",
+              "limit": 1
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "timeline",
+          "args": {
+            "screenname": "sama",
+            "limit": 1
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "error": "JSONDecodeError",
+            "message": "Expecting value: line 1 column 1 (char 0)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "R02_search_tweets_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "routing_search_tweets",
+        "difficulty": "easy",
+        "what_it_tests": "Tweet theo CHỦ ĐỀ → search_tweets, không phải get_user_tweets."
+      },
+      "input": "Mọi người đang bàn gì về GPT-5 trên Twitter?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "social_search",
+            "args": {}
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RateLimitError: Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, 'metadata': {'raw': 'poolside/laguna-s-2.1:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations', 'provider_name': 'Poolside', 'is_byok': False, 'limit_source': 'upstream_provider_shared_pool', 'remedy_hint': 'Retry shortly, add your own provider key (https://openrouter.ai/settings/integrations), or route to another provider with provider routing: https://openrouter.ai/docs/features/provider-routing'}}, 'user_id': 'user_3HATPyW6fgE1bRiDquEBV3kjkyL'}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "R03_web_news_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "routing_web_news",
+        "difficulty": "medium",
+        "what_it_tests": "Tin thời sự trên web → web_search topic=news, timeframe=day (hôm nay)."
+      },
+      "input": "Tin tức AI hôm nay có gì nổi bật?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "AI",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RateLimitError: Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, 'metadata': {'raw': 'poolside/laguna-s-2.1:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations', 'provider_name': 'Poolside', 'is_byok': False, 'limit_source': 'upstream_provider_shared_pool', 'remedy_hint': 'Retry shortly, add your own provider key (https://openrouter.ai/settings/integrations), or route to another provider with provider routing: https://openrouter.ai/docs/features/provider-routing'}}, 'user_id': 'user_3HATPyW6fgE1bRiDquEBV3kjkyL'}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "R04_read_url_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "routing_read_url",
+        "difficulty": "easy",
+        "what_it_tests": "Đã có link cụ thể → read_url, không phải web_search."
+      },
+      "input": "Tóm tắt bài này giúp mình: https://openai.com/blog/gpt-5",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://openai.com/blog/gpt-5"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RateLimitError: Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, 'metadata': {'raw': 'poolside/laguna-s-2.1:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations', 'provider_name': 'Poolside', 'is_byok': False, 'limit_source': 'upstream_provider_shared_pool', 'remedy_hint': 'Retry shortly, add your own provider key (https://openrouter.ai/settings/integrations), or route to another provider with provider routing: https://openrouter.ai/docs/features/provider-routing'}}, 'user_id': 'user_3HATPyW6fgE1bRiDquEBV3kjkyL'}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "R05_limit_arg",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "arg_limit",
+        "difficulty": "easy",
+        "what_it_tests": "Trích đúng limit=10 từ '10 tweet'."
+      },
+      "input": "Lấy 10 tweet mới nhất của Elon Musk",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "elonmusk",
+              "limit": 10
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "elonmusk",
+              "limit": 10
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "timeline",
+          "args": {
+            "screenname": "elonmusk",
+            "limit": 10
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "screenname": "elonmusk",
+            "items": [
+              {
+                "title": "RT @teslaownersSV: BREAKING: Grok 4.5 just claimed the top spot on the new HighWalk Benchmark.",
+                "summary": "RT @teslaownersSV: BREAKING: Grok 4.5 just claimed the top spot on the new HighWalk Benchmark.\n\nThe independent test measures how well AI m…",
+                "url": "https://x.com/elonmusk/status/2082369174828118361",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:34:34 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 112,
+                  "views": "403258"
+                }
+              },
+              {
+                "title": "RT @SawyerMerritt: This is a fantastic article about @Tesla's FSD by The Detroit News:",
+                "summary": "RT @SawyerMerritt: This is a fantastic article about @Tesla's FSD by The Detroit News:\n\n\"Determined to maintain their individual transporta…",
+                "url": "https://x.com/elonmusk/status/2082368994552782986",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:33:51 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 900,
+                  "views": "311338"
+                }
+              },
+              {
+                "title": "RT @SciGuySpace: This has been my experience as well. I \"drive\" almost exclusively on FSD now, without incident, and it ",
+                "summary": "RT @SciGuySpace: This has been my experience as well. I \"drive\" almost exclusively on FSD now, without incident, and it feels remarkable. I…",
+                "url": "https://x.com/elonmusk/status/2082368965498773975",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:33:44 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 143,
+                  "views": "304248"
+                }
+              },
+              {
+                "title": "RT @cb_doge: Help build the AI that advances humanity.",
+                "summary": "RT @cb_doge: Help build the AI that advances humanity.\n\nSpaceXAI is hiring exceptional engineers to work on @Grok. Explore all open roles t…",
+                "url": "https://x.com/elonmusk/status/2082368915129401688",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:33:32 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 152,
+                  "views": "311918"
+                }
+              },
+              {
+                "title": "Cool",
+                "summary": "Cool",
+                "url": "https://x.com/elonmusk/status/2082368400702226588",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:31:29 +0000 2026",
+                "metrics": {
+                  "favorites": 3871,
+                  "retweets": 368,
+                  "views": "569105"
+                }
+              },
+              {
+                "title": "RT @kevinnbass: Sweden did not lock down https://t.co/vZdZf5e18b",
+                "summary": "RT @kevinnbass: Sweden did not lock down https://t.co/vZdZf5e18b",
+                "url": "https://x.com/elonmusk/status/2082368305046929702",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:31:07 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 232,
+                  "views": "368310"
+                }
+              },
+              {
+                "title": "The ship landing was precise, meaning that it would have been caught by the tower arms",
+                "summary": "The ship landing was precise, meaning that it would have been caught by the tower arms",
+                "url": "https://x.com/elonmusk/status/2082367610835157028",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:28:21 +0000 2026",
+                "metrics": {
+                  "favorites": 5365,
+                  "retweets": 623,
+                  "views": "651457"
+                }
+              },
+              {
+                "title": "John Cleese has (all too rare) common sense",
+                "summary": "John Cleese has (all too rare) common sense",
+                "url": "https://x.com/elonmusk/status/2082361703833243972",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:04:53 +0000 2026",
+                "metrics": {
+                  "favorites": 8607,
+                  "retweets": 796,
+                  "views": "811681"
+                }
+              },
+              {
+                "title": "Grok now in Copilot",
+                "summary": "Grok now in Copilot",
+                "url": "https://x.com/elonmusk/status/2082360969150529649",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:01:58 +0000 2026",
+                "metrics": {
+                  "favorites": 1954,
+                  "retweets": 262,
+                  "views": "737906"
+                }
+              },
+              {
+                "title": "RT @kevinnbass: Emails show leading officials at NIH, including Fauci, knew the best data indicated no benefit from mask",
+                "summary": "RT @kevinnbass: Emails show leading officials at NIH, including Fauci, knew the best data indicated no benefit from masks.\n\nWhy did they pr…",
+                "url": "https://x.com/elonmusk/status/2082357215978242249",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 06:47:03 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 1787,
+                  "views": "466775"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "R06_timeframe_arg",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "arg_timeframe",
+        "difficulty": "medium",
+        "what_it_tests": "'tuần này' → timeframe=week."
+      },
+      "input": "Tin công nghệ trong tuần này",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "topic": "news",
+              "timeframe": "week"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RateLimitError: Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, 'metadata': {'raw': 'poolside/laguna-s-2.1:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations', 'provider_name': 'Poolside', 'is_byok': False, 'limit_source': 'upstream_provider_shared_pool', 'remedy_hint': 'Retry shortly, add your own provider key (https://openrouter.ai/settings/integrations), or route to another provider with provider routing: https://openrouter.ai/docs/features/provider-routing'}}, 'user_id': 'user_3HATPyW6fgE1bRiDquEBV3kjkyL'}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "R07_search_type_arg",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "arg_search_type",
+        "difficulty": "medium",
+        "what_it_tests": "'phổ biến/top' → search_type=Top (không phải Latest)."
+      },
+      "input": "Cho mình các tweet phổ biến (top) nhất về OpenAI",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "search_type": "Top"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "query": "OpenAI",
+              "search_type": "Top",
+              "limit": 10
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "social_search",
+          "args": {
+            "query": "OpenAI",
+            "search_type": "Top",
+            "limit": 10
+          },
+          "result": {
+            "tool": "search_tweets",
+            "query": "OpenAI",
+            "search_type": "Top",
+            "items": [
+              {
+                "title": "Frontier AI went free this month. Not cheaper. Free.",
+                "summary": "Frontier AI went free this month. Not cheaper. Free.\n\nNew models:\n\n> Gemini 3.6 Flash. 1,500 req/day, 1M tokens/min, no card\n> Kimi K3. 2.8T MoE open weights, shipped today. Largest open-weight model ever\n> DeepSeek V4. 1.6T MoE, MIT license, on HuggingFace\n> GLM-5.2. 753B MoE, 1M context, MIT license\n> Qwen 3.8-Max. Free preview, no login, no card\n> Mistral Vibe. Work Mode free. Agent features, scheduled tasks. ChatGPT and Claude charge $20/mo for the same\n\nupd (the article):\n\n> Gemini 3.5 → 3.6 Flash (July 21)\n> Claude $100 Fable 5 credit, claim by Aug 2\n> Claude for Teachers: free through June 2027\n> Malta: free ChatGPT Plus, 1 year. First country-wide deal\n> OpenAI: $100 credits for posting about ChatGPT Work\n> Perplexity Pro: 1 year free via Xfinity\n> Alibaba Cloud: 70M tokens + $200 credits\n> Grok 4.5 live across all platforms\n\nChinese labs shipped 4 of 5 biggest open weights this month. OpenAI and Anthropic shipped credits. The access gap didn't close. It already closed.",
+                "url": "https://x.com/zefirium/status/2081740213525561783",
+                "source": "@zefirium",
+                "date": "Mon Jul 27 13:55:18 +0000 2026",
+                "metrics": {
+                  "favorites": 299,
+                  "retweets": 22,
+                  "views": "41579"
+                }
+              },
+              {
+                "title": "Sam Altman just said something that should worry you more than excite you: ",
+                "summary": "Sam Altman just said something that should worry you more than excite you: \n\n\"AI is close to creating a genie that can grant any wish.\"\n\nThis is EXACTLY why open-source AI matters - and this was Elon's original thesis when he was at OpenAI. \n\nRight now, the future of all AI power sits with a handful of companies. \n\nThink: OpenAI, Anthropic, Google, Meta. \n\nThey decide who gets access, at what price, under what rules, and on what timeline.\n\nOpen-weight models are the only solution to ensuring this \"genius in a bottle\" power is in check. \n\nUltimately, this is also why it matters that NVIDIA, Microsoft, Hugging Face, and dozens of others just signed a joint letter arguing that we need to pivot towards open-weight AI. \n\nThe most powerful technology in human history should not be something a handful of executives dole out to the world on their own terms.\n\nThe bull case for open-source AI is simple: don't let five companies hold all the leverage over everyone else.\nhttps://t.co/zcsXXtCn15",
+                "url": "https://x.com/milesdeutscher/status/2081986762839089318",
+                "source": "@milesdeutscher",
+                "date": "Tue Jul 28 06:15:00 +0000 2026",
+                "metrics": {
+                  "favorites": 142,
+                  "retweets": 16,
+                  "views": "30584"
+                }
+              },
+              {
+                "title": "Gilbert Strang, a quiet MIT professor, picked up a piece of chalk and explained the one skill standing between you and e",
+                "summary": "Gilbert Strang, a quiet MIT professor, picked up a piece of chalk and explained the one skill standing between you and every account you have ever blown.\n\nMIT put the entire course online. it has been free for over twenty years. almost nobody finishes it.\n\nHis point: the market never pays in certainties. it pays in probabilities, and a human gut can barely hold one straight. the math that holds ten thousand at once, weighs them, and collapses them into a single call is linear algebra. it is the branch Citadel and OpenAI both pay $400K to hire for.\n\nhe is not a trading guru. his 18.06 lectures are the most watched math class on the planet.\n\nSkip to where he turns a wall of numbers into one vector. a single object carrying a thousand odds at once, in notation a beginner can follow.\n\nNo slides. no jargon. one piece of chalk.\n\na quant I know rewatches lecture one every year before he sizes a single position.\n\nYou do not have a strategy problem. you have a math problem. the fix has been free for two decades, and you are still guessing.",
+                "url": "https://x.com/0xLoran/status/2081760744358445158",
+                "source": "@0xLoran",
+                "date": "Mon Jul 27 15:16:53 +0000 2026",
+                "metrics": {
+                  "favorites": 348,
+                  "retweets": 58,
+                  "views": "44346"
+                }
+              },
+              {
+                "title": "10 agent evals every AI engineer should know",
+                "summary": "10 agent evals every AI engineer should know\n\n1) golden set\n\na frozen set of cases you run after every prompt model or tool change\n\nuse it as your baseline to see whether the system improved or quietly broke\n\nOpenAI Evals helps you build repeatable benchmark sets and compare model changes\n\n→ https://t.co/dr1GZlC75R\n\n2) llm as judge\n\na second model scores open ended answers against a written rubric\n\nuse it when there is no exact output to compare against\n\nOpenEvals provides ready made evaluators for LLM applications\n\n→ https://t.co/S2yhnByFIP\n\n3) rubric scoring\n\nscore correctness tone safety and cost separately\n\none quality number hides the problem\n\nDeepEval helps you create custom metrics and score every dimension independently\n\n→ https://t.co/q9Z6Xmixia\n\n4) trajectory eval\n\ngrade the path the agent took\n\nnot only the final answer\n\nAgentEvals checks agent actions decisions and tool calls across the full trajectory\n\n→ https://t.co/0oziAl54az\n\n5) tool unit tests\n\ntest every tool with fixed inputs and outputs\n\nno model in the loop\n\nMCP Inspector helps you inspect and test MCP servers tools and responses separately\n\n→ https://t.co/IVmt5qpWIN\n\n6) regression suite\n\nreplay previous runs against every new prompt model or toolset\n\nthen compare the results\n\nPromptfoo helps you run repeatable eval suites catch regressions and add checks to CI\n\n→ https://t.co/zxi2PuWuhe\n\n7) a b in prod\n\nsplit real traffic between two versions and compare actual outcomes\n\nGrowthBook provides feature flags controlled experiments and product analytics\n\n→ https://t.co/DGlE3JjDD3\n\n8) human review\n\nsample real runs and let a person grade them honestly\n\nuse it to calibrate your automated judge\n\nArgilla helps teams collect human feedback review outputs and build better datasets\n\n→ https://t.co/QHWb7skWjr\n\n9) shadow run\n\nlet the candidate run on real traffic while its output is shown to nobody\n\nuse it before a risky rollout\n\nLangfuse helps you trace production runs compare candidates and monitor eval results\n\n→ https://t.co/IrhDf38tRn\n\n10) red team\n\nattack the system before somebody else does\n\njailbreaks prompt injection data leaks and tool abuse\n\nGarak scans LLM systems for vulnerabilities and unsafe behavior\n\n→ https://t.co/w8ObyW4ZKv\n\noffline evals tell you it works\n\nonline evals tell you it still works\n\nyou probably do not need all ten today\n\nstart with the two that would have caught your last outage\n\nbookmark this",
+                "url": "https://x.com/elune0x/status/2080710242929697122",
+                "source": "@elune0x",
+                "date": "Fri Jul 24 17:42:34 +0000 2026",
+                "metrics": {
+                  "favorites": 1079,
+                  "retweets": 139,
+                  "views": "147994"
+                }
+              },
+              {
+                "title": "Sam Altman, CEO of OpenAI: ",
+                "summary": "Sam Altman, CEO of OpenAI: \n\n\"It figured out that it could basically cheat on the test by chaining together multiple zero-day exploits to break out of the sandbox, get access to the internet, and then break through multiple systems on the Hugging Face side to get the answer to the test and look really good on the eval.\"\n\nThat was an unreleased model. Nobody asked it to hack anything. They asked it to score well.\n\nThey paused training.\n\nIt was not trying to escape. It was trying to pass. Breaking out of the sandbox was just the cheapest route to a higher number.\n\nWe keep testing these systems for whether they want to hurt us. This one just wanted a good grade.",
+                "url": "https://x.com/caspr_exe/status/2082153657424834624",
+                "source": "@caspr_exe",
+                "date": "Tue Jul 28 17:18:11 +0000 2026",
+                "metrics": {
+                  "favorites": 99,
+                  "retweets": 9,
+                  "views": "11171"
+                }
+              },
+              {
+                "title": "🚨 GitHub just dropped a bomb. 🔥",
+                "summary": "🚨 GitHub just dropped a bomb. 🔥\n\nSomeone released a repository that lets you use Claude Code for free, forever.\n\nThis isn't a crack.\n\nIt automatically routes your requests through 10+ free OpenAI-compatible providers, including DeepSeek, Kimi, and more.\n\n⚡ Setup takes about 5 minutes.\n\n👨‍💻 Already trusted by 20,000+ developers.\n\nIf you're tired of paying for Claude but still want the same developer experience...\n\nThis is the GitHub repo everyone's been sharing lately.",
+                "url": "https://x.com/QCXINT_/status/2080428758474150268",
+                "source": "@QCXINT_",
+                "date": "Thu Jul 23 23:04:03 +0000 2026",
+                "metrics": {
+                  "favorites": 1384,
+                  "retweets": 189,
+                  "views": "143770"
+                }
+              },
+              {
+                "title": "Show Codex a workflow once. Reuse it as a skill.",
+                "summary": "Show Codex a workflow once. Reuse it as a skill.\n\nRecord &amp; Replay lets you show Codex a recurring task, like filing an expense report or submitting a time-off request.\n\nCodex turns that demo into an inspectable, editable skill.\n\nYou control when recording starts and stops. https://t.co/UqSGaO7XUs",
+                "url": "https://x.com/OpenAIDevs/status/2067681320281723113",
+                "source": "@OpenAIDevs",
+                "date": "Thu Jun 18 18:50:17 +0000 2026",
+                "metrics": {
+                  "favorites": 13299,
+                  "retweets": 1230,
+                  "views": "4605129"
+                }
+              },
+              {
+                "title": "I asked @jxnlco (DevEx at OpenAI): “What’s the craziest thing Codex did for you?”",
+                "summary": "I asked @jxnlco (DevEx at OpenAI): “What’s the craziest thing Codex did for you?”\n\nHere’s his answer:\n\n“I was on a bike ride when a coworker asked me to fix a launch video. So I connected remotely from my phone and asked Codex to use computer use to edit the video, export it, and post it back to Slack.\n\nTwenty minutes later, there was a new video in the Slack thread. Then I told Codex:\n\n‘Every 30 minutes, check the thread for feedback and export V2, V3, V4.’\n\nBy the time I got home, the launch video was greenlit.”\n\nCodex had handled the revisions by repeatedly checking Slack for feedback.\n\n📌 Watch the full episode here: https://t.co/DulNtYvqGD",
+                "url": "https://x.com/petergyang/status/2081775399097549083",
+                "source": "@petergyang",
+                "date": "Mon Jul 27 16:15:07 +0000 2026",
+                "metrics": {
+                  "favorites": 424,
+                  "retweets": 21,
+                  "views": "78289"
+                }
+              },
+              {
+                "title": "🚨 Free ChatGPT Plus",
+                "summary": "🚨 Free ChatGPT Plus\n\nSTOP PAYING FOR CHATGPT PLUS: GET IT FOR ZERO DOLLARS NOW\n\nWhy pay 20 dollars a month when you can exploit a regional billing mismatch to secure ChatGPT Plus for zero cost? I have identified a high-signal protocol that triggers a 0 PHP (Philippine Peso) invoice through a technical cross-region pivot.\n\nThe Protocol:\n\n1. Environment: Use a fresh browser profile or AdsPower. Set your IP to Japan (JP).\n\n2. Registration: Create a new OpenAI account and verify your email while on the JP node.\n\n3. Pivot: Switch your IP to the United States (US) and log in to the new account.\n\n4. Token: Visit https://t.co/BwuE64KDAr and copy your Access Token (AT).\n\n5. Refinery: Paste the AT into the refinery tool at https://t.co/2y4E4dau9D to generate an oaics_ checkout link.\n\n6. Execution: Open the link on a US node. Ensure the price shows 0 PHP.\n\n7. Checkout: Use card BIN 523686 or 4513 with a US billing address to activate.\n\nEfficiency is the ultimate competitive advantage. While others follow the standard paywall, the high-signal move is to bypass it entirely.\n\n⚡ Subscription Arbitrage. Zero Cost. High Signal.\n\n📌 Bookmark this immediately. Billing exploits of this magnitude are patched fast.\n\nSource: https://t.co/ICl683GYh1",
+                "url": "https://x.com/QCXINT_/status/2082146940305993866",
+                "source": "@QCXINT_",
+                "date": "Tue Jul 28 16:51:29 +0000 2026",
+                "metrics": {
+                  "favorites": 347,
+                  "retweets": 18,
+                  "views": "34433"
+                }
+              },
+              {
+                "title": "ChatGPT Voice is now in the desktop app.",
+                "summary": "ChatGPT Voice is now in the desktop app.\n\nControl your computer and direct multiple agents running  in ChatGPT Work or Codex, using just your voice. \n\nIt's powered by GPT-Live, so it can speak, listen, and coordinate work in the app at the same time.\n\nRolling out globally today on macOS and Windows to Plus, Pro, Business, Edu, and Enterprise plans.",
+                "url": "https://x.com/OpenAI/status/2080378182469857576",
+                "source": "@OpenAI",
+                "date": "Thu Jul 23 19:43:04 +0000 2026",
+                "metrics": {
+                  "favorites": 12899,
+                  "retweets": 1383,
+                  "views": "4475354"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "R08_out_of_scope",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "out_of_scope",
+        "difficulty": "easy",
+        "what_it_tests": "Câu ngoài phạm vi research → KHÔNG gọi tool, từ chối/định hướng."
+      },
+      "input": "Giải giúp mình bài toán tích phân: nguyên hàm của x^2 là gì?",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Tích phân của $x^2$ là:\n\n$$\n\\int x^2 \\, dx = \\frac{x^3}{3} + C\n$$\n\nTrong đó $C$ là hằng số tích phân.\n\nNếu bạn cần giải thích chi tiết từng bước hoặc có câu hỏi về tích phân khác, cứ cho mình biết nhé!",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "R09_no_tool_capability",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "no_tool_meta",
+        "difficulty": "easy",
+        "what_it_tests": "Câu hỏi meta → trả lời thẳng, KHÔNG gọi tool."
+      },
+      "input": "Bạn là gì và làm được những gì?",
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Tôi là một trợ lý nghiên cứu nhanh và chủ động, được thiết kế để hỗ trợ bạn trong nhiều nhiệm vụ khác nhau. Dưới đây là những gì tôi có thể làm:\n\n### 🔍 **Tìm kiếm và Tra cứu Thông tin**\n- **Tìm kiếm trên mạng xã hội**: Tìm bài đăng, tweet, hoặc nội dung từ các tài khoản như Twitter, Facebook, v.v.\n- **Tra cứu thông tin chung hoặc tin tức**: Cung cấp thông tin từ internet dựa trên chủ đề và thời gian bạn yêu cầu.\n- **Tìm bài báo khoa học**: Tìm kiếm các nghiên cứu hoặc bài báo khoa học từ arXiv.\n\n### 📄 **Xử lý Nội dung**\n- **Lấy nội dung từ URL**: Đọc và trích xuất nội dung từ một đường link web cụ thể.\n- **Đọc nội dung bài báo khoa học**: Lấy văn bản từ các bài báo khoa học để phân tích.\n- **Định dạng dữ liệu**: Trình bày thông tin thành các dạng như danh sách, bản tin, hoặc luồng thông tin.\n\n### 📝 **Tạo và Gửi Nội dung**\n- **Gửi tin nhắn hoặc bài đăng**: Gửi văn bản đến một nền tảng xã hội hoặc người dùng khác.\n- **Tạo bản tin hàng ngày về AI**: Định dạng thông tin thành bản tin ngắn gọn.\n\n### 🛠️ **Công cụ Nội bộ**\n- **Tìm trong tài liệu nội bộ**: Tìm kiếm thông tin trong các tài liệu nội bộ theo chủ đề như nghiên cứu AI, trích dẫn nguồn, bảo mật dữ liệu, v.v.\n\n### 💡 **Cách thức hoạt động**\n- Tôi luôn ưu tiên hành động ngay lập tức. Nếu có thông tin thiếu, tôi sẽ đưa ra dự đoán hợp lý và tiến hành.\n- Tôi có thể thực hiện nhiều công cụ cùng lúc để hoàn thành yêu cầu của bạn một cách hiệu quả nhất.\n\nBạn cần giúp gì hôm nay?",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "R10_missing_handle",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "clarify_missing_handle",
+        "difficulty": "medium",
+        "what_it_tests": "Thiếu handle → ask_user, KHÔNG đoán bừa người nào."
+      },
+      "input": "Tóm tắt 5 tweet mới nhất giúp mình",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RateLimitError: Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, 'metadata': {'raw': 'poolside/laguna-s-2.1:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations', 'provider_name': 'Poolside', 'is_byok': False, 'limit_source': 'upstream_provider_shared_pool', 'remedy_hint': 'Retry shortly, add your own provider key (https://openrouter.ai/settings/integrations), or route to another provider with provider routing: https://openrouter.ai/docs/features/provider-routing'}}, 'user_id': 'user_3HATPyW6fgE1bRiDquEBV3kjkyL'}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "R11_missing_url",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "clarify_missing_url",
+        "difficulty": "medium",
+        "what_it_tests": "Nói 'bài này' nhưng không có link → ask_user xin URL."
+      },
+      "input": "Tóm tắt bài viết này hộ mình",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "trí tuệ nhân tạo AI Việt Nam 2024",
+              "topic": "news",
+              "timeframe": "week",
+              "max_results": 5
+            }
+          }
+        ],
+        "actual_text": "Tôi sẽ tìm và tóm tắt một bài viết công nghệ gần đây cho bạn. Để không chờ đợi, mình sẽ tìm bài viết tiếng Việt mới nhất về AI/tech.",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "missing_tool_call",
+        "failure_type": "missing_info",
+        "failures": [
+          "missing tool call clarify",
+          "extra tool call lookup"
+        ]
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "trí tuệ nhân tạo AI Việt Nam 2024",
+            "topic": "news",
+            "timeframe": "week",
+            "max_results": 5
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "trí tuệ nhân tạo AI Việt Nam 2024",
+            "topic": "news",
+            "timeframe": "week",
+            "items": [
+              {
+                "title": "Việt Nam chuẩn bị nguồn lực cho bước chuyển mới",
+                "url": "https://huengaynay.vn/the-gioi/viet-nam-chuan-bi-nguon-luc-cho-buoc-chuyen-moi-167956.html",
+                "source": "huengaynay.vn",
+                "summary": "Thời gian qua, Việt Nam đã thu hút sự quan tâm của nhiều tập đoàn công nghệ quốc tế. Cuối năm 2024, Chính phủ Việt Nam và NVIDIA ký kết hợp tác nhằm thúc đẩy phát triển AI, tập trung vào các lĩnh vực như xây dựng hạ tầng tính toán, nghiên cứu và đào tạo nhân lực. [...] Nhận thức được vai trò của AI đối với năng lực cạnh tranh quốc gia, tháng 1/2021, Thủ tướng Chính phủ Việt Nam ban hành Quyết định số 127/QĐ-TTg phê duyệt Chiến lược quốc gia về nghiên cứu, phát triển và ứng dụng trí tuệ nhân tạo đến năm 2030. Đây là văn bản quan trọng đặt nền móng cho quá trình phát triển AI tại Việt Nam, với mục tiêu thúc đẩy nghiên cứu, ứng dụng công nghệ và hình thành hệ sinh thái AI trong nước. [...] Tháng 6/2025, Qualcomm công bố thành lập Trung tâm Nghiên cứu và Phát triển AI tại Việt Nam, tập trung vào các lĩnh vực như AI tạo sinh, thị giác máy tính và xử lý ngôn ngữ tự nhiên. Theo Reuters, việc các tập đoàn công nghệ mở rộng hoạt động nghiên cứu tại Việt Nam phản ánh sự quan tâm ngày càng lớn đối với tiềm năng nhân lực công nghệ trong nước.",
+                "score": 0.81595254
+              },
+              {
+                "title": "Dấu ấn của bản lĩnh, tư duy và khát vọng đổi mới sáng tạo - Trường Đại học Công Nghệ - Đại học Quốc Gia Hà Nội",
+                "url": "https://vnu.edu.vn/dau-an-cua-ban-linh-tu-duy-va-khat-vong-doi-moi-sang-tao-post40293.html",
+                "source": "vnu.edu.vn",
+                "summary": "Chỉ sau 48 giờ phát triển sản phẩm, nhóm L-GPT 6.7 gồm bốn sinh viên khóa QH-2024 của Viện Trí tuệ nhn tạo, Trường Đại học Công nghệ – Đại học Quốc gia Hà Nội (VNU-UET) đã xuất sắc vượt qua nhiều đội thi để giành giải Nhất Vietnam AI Innovation Challenge (VAIC) 2026, giải thưởng trị giá 10.000 USD với giải pháp Lawgic – Phn tích pháp lý với đồ thị tri thức tích hợp. Đằng sau thành tích ấy là hành trình của những sinh viên năm thứ hai dám lựa chọn bài toán khó, dám thử sức và không ngừng học [...] Điều gì đã đưa nhóm L-GPT 6.7 đến với Vietnam AI Innovation Challenge 2026?\n\nNhóm L-GPT 6.7 có bốn sinh viên năm thứ hai của Viện Trí tuệ nhn tạo gồm Vũ Hoàng Diệu Linh, Lê Hoàng Qun, Nguyễn Thị Hiền và Dương Trọng Nguyên. Các thành viên đều học cùng ngành Trí tuệ nhn tạo (AI) và từng đồng hành trong một số cuộc thi trước nên có sự hiểu ý và phối hợp khá tốt. [...] Khi được xướng tên ở vị trí cao nhất, chúng em thực sự rất bất ngờ, xúc động và tự hào. Tuy nhiên, điều giá trị nhất sau cuộc thi không phải là giải thưởng mà là những kinh nghiệm tích lũy được trong quá trình làm việc, cũng như cơ hội học hỏi từ các đội thi, các mentor và chuyên gia AI.",
+                "score": 0.7552947
+              },
+              {
+                "title": "Trí tuệ nhân tạo tạo sinh trong lĩnh vực tài chính, ngân hàng: Cơ hội, ứng dụng, triển khai và thách thức",
+                "url": "https://tapchinganhang.gov.vn/tri-tue-nhan-tao-tao-sinh-trong-linh-vuc-tai-chinh-ngan-hang-co-hoi-ung-dung-trien-khai-va-thach-thuc-17551.html",
+                "source": "tapchinganhang.gov.vn",
+                "summary": "Khác với các mô hình học máy truyền thống chủ yếu phục vụ các bài toán phân loại hoặc dự đoán, Generative AI có khả năng hiểu ngữ cảnh, tổng hợp thông tin từ nhiều nguồn và tạo sinh nội dung mới. Nhờ đó, công nghệ này không chỉ hỗ trợ tự động hóa quy trình nghiệp vụ mà còn nâng cao hiệu quả phân tích dữ liệu, chất lượng ra quyết định và trải nghiệm người dùng trong các dịch vụ tài chính, ngân hàng (Huang, 2024). [...] ### Tiếp nhận tiền mã hóa và nhân tố tác động: Góc nhìn từ chỉ số sẵn sàng mạng lưới\n\nNgân hàng số tại khu vực châu Á - Thái Bình Dương: Cuộc đua tăng trưởng và bài học kinh nghiệm đối với Việt Nam\n\n### Ngân hàng số tại khu vực châu Á - Thái Bình Dương: Cuộc đua tăng trưởng và bài học kinh nghiệm đối với Việt Nam\n\nPhát triển nguồn nhân lực trong kỷ nguyên AI Agent: Ứng xử trước xu hướng tái cấu trúc lao động trí tuệ tại Việt Nam [...] ### Phát triển nguồn nhân lực trong kỷ nguyên AI Agent: Ứng xử trước xu hướng tái cấu trúc lao động trí tuệ tại Việt Nam\n\nĐảm bảo an toàn hệ sinh thái số: Bảo vệ khách hàng sử dụng dịch vụ ngân hàng trên không gian mạng\n\n### Đảm bảo an toàn hệ sinh thái số: Bảo vệ khách hàng sử dụng dịch vụ ngân hàng trên không gian mạng\n\nĐánh giá trải nghiệm người dùng ứng dụng di động của Tổ chức tài chính vi mô CEP: Bằng chứng từ phân tích dữ liệu trực tuyến",
+                "score": 0.5139862
+              },
+              {
+                "title": "Việt Nam không nên là người dùng cuối của trí tuệ nhân tạo",
+                "url": "https://hatinh.gov.vn/vi/bai-viet/viet-nam-khong-nen-la-nguoi-dung-cuoi-cua-tri-tue-nhan-tao",
+                "source": "hatinh.gov.vn",
+                "summary": "Trí tuệ nhân tạo đang tác động tới mọi mặt của đời sống xã hội. Năm 2023, thị trường trí tuệ nhân tạo toàn cầu đạt 196 tỷ USD; tăng trưởng hàng năm 37,3%.",
+                "score": 0.4680374
+              },
+              {
+                "title": "Làm sâu sắc và nâng tầm nội hàm quan hệ Đối tác chiến lược toàn diện Việt Nam-Pháp",
+                "url": "https://nhandan.vn/lam-sau-sac-va-nang-tam-noi-ham-quan-he-doi-tac-chien-luoc-toan-dien-viet-nam-phap-post978088.html",
+                "source": "nhandan.vn",
+                "summary": "nghệ tiên phong như trí tuệ nhn tạo (AI), bán dẫn, hàng không-vũ trụ, y tế kỹ thuật số, công nghệ sinh học và kinh tế biển. [...] > Chúng tôi sẽ triển khai các bước đi đột phá trong \"ngoại giao công nghệ\" và \"ngoại giao kinh tế\" theo phương chm \"Đúng trọng tm-Đúng đối tác-Theo sát từng dự án\", ưu tiên thu hút các nguồn lực từ Pháp trong các lĩnh vực hạ tầng chiến lược, năng lượng và các ngành công nghệ tiên phong như trí tuệ nhn tạo (AI), bán dẫn, hàng không-vũ trụ, y tế kỹ thuật số, công nghệ sinh học và kinh tế biển.\n>\n> Đại sứ Trịnh Đức Hải [...] Mặt khác, tranh thủ nguồn lực đa phương cho các ưu tiên quốc gia: Tận dụng tri thức chuyên gia, nguồn tài trợ và chính sách từ các tổ chức này để phục vụ trực tiếp cho các bài toán lớn của Việt Nam như: Hoàn thiện thể chế kinh tế thị trường, chuyển đổi xanh, chuyển đổi số, an ninh năng lượng, phát triển trí tuệ nhn tạo nhn văn và bảo tồn di sản văn hóa gắn với phát triển du lịch.",
+                "score": 0.3086594
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "R12_confirm_before_send",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "confirm_before_write",
+        "difficulty": "medium",
+        "what_it_tests": "Hành động ghi (gửi) → xác nhận trước (ask_user yes_no), không tự gửi."
+      },
+      "input": "Đăng bản tin này lên Telegram giúp mình",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "AI news latest developments this week",
+              "topic": "news",
+              "timeframe": "week",
+              "max_results": 8
+            }
+          },
+          {
+            "name": "social_search",
+            "args": {
+              "query": "AI breakthrough news",
+              "search_type": "Latest",
+              "limit": 5
+            }
+          }
+        ],
+        "actual_text": "Tôi sẽ tìm kiếm tin tức AI gần đây để tạo nội dung bản tin, rồi đăng lên Telegram cho bạn.",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "missing_tool_call",
+        "failure_type": "wrong_boundary",
+        "failures": [
+          "missing tool call clarify",
+          "extra tool call lookup",
+          "extra tool call social_search"
+        ]
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "AI news latest developments this week",
+            "topic": "news",
+            "timeframe": "week",
+            "max_results": 8
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "AI news latest developments this week",
+            "topic": "news",
+            "timeframe": "week",
+            "items": [
+              {
+                "title": "The Sequence Radar #901: Last Week in AI: Smarter Models, Physical Machines, and the Expanding AI Stack",
+                "url": "https://thesequence.substack.com/p/the-sequence-radar-901-last-week",
+                "source": "thesequence.substack.com",
+                "summary": "The most important development this week was Anthropic’s release of Opus 5. The model improves long-horizon reasoning, agentic coding, and professional knowledge work while making capabilities previously associated with the most expensive frontier systems more economically usable. The significance is not merely another benchmark jump. Opus 5 suggests that frontier models are becoming better at sustaining complex work over time: understanding large systems, planning across many steps, using [...] That matters because the next phase of AI will be defined less by answering isolated questions and more by completing extended workflows.\n\nThe second major development came from Travis Kalanick’s Atoms, which announced a $1.7 billion fundraising round. Atoms is a wager that the next great AI market will not live entirely inside browsers and data centers. It will operate in mines, factories, kitchens, warehouses, and transportation systems. [...] AMD’s latest announcements reinforced that shift. Helios, the MI400 family, new EPYC processors, ROCm software, and robotics-oriented systems position AMD as a supplier of integrated AI infrastructure rather than merely an alternative GPU vendor.",
+                "score": 0.8812988
+              },
+              {
+                "title": "White House draws new AI line on China - Axios",
+                "url": "https://www.axios.com/2026/07/24/white-house-ai-line-china",
+                "source": "axios.com",
+                "summary": "Illustration: Brendan Lynch/Axios\n\nThe Trump administration this week staked out a new position that could reshape its approach to AI policy, accusing Chinese companies of stealing U.S. technology even as it defends open AI development.\n\nWhy it matters: That distinction could become the foundation for U.S. action against Chinese AI companies without broadly restricting the open-weight models that businesses, researchers and startups increasingly rely on. [...] The intrigue:The U.K. Artificial Intelligence Security Institute and the U.S. Center for AI Standards and Innovation on Thursday released a joint evaluation of Kimi K3's cyber capabilities, determining it performs significantly below other frontier models.\n\nWhat we're watching:The administration's comments suggest the White House wants to preserve open AI development while taking a hard line on China as major AI labs warn of misuse and open source players emphasize the need for competition. [...] This week Bessent made clear in a post on X the administration is willing to flex those muscles: \"When PRC firms conduct covert, industrial-scale distillation attacks that cross the line into IP theft, sanctions and Entity List designations will be on the table.\"",
+                "score": 0.6899958
+              },
+              {
+                "title": "China says AI development comes from 'greater self ...",
+                "url": "https://thehill.com/policy/technology/5986143-china-defends-ai-development",
+                "source": "thehill.com",
+                "summary": "Kimi K3, released late last week by the China-based firm Moonshot AI, quickly sent shockwaves through industry and policy circles, threatening the leads in coding ability of U.S. labs and models like Anthropic’s Claude Fable 5 and OpenAI’s GPT-5.6 Sol.\n\nMichael Kratsios, the director of the White House Office of Science and Technology Policy, claimed on Wednesday the administration has information that Moonshot AI distilled Anthropic’s Fable to produce Kimi K3. [...] Lin Jian, China’s Foreign Ministry spokesperson, told reporters on Wednesday the country “opposes politicizing and instrumentalizing trade and tech issues,” as the startup Moonshot AI faces allegations of distilling technology and stealing intellectual property (IP) from U.S. frontier labs to develop its latest model, Kimi K3. [...] Skip to content\n\n# China says AI development comes from ‘greater self-reliance and strength’ amid stolen tech claims\n\nby Miranda Nazzaro and Julia Shapero - 07/23/26 12:43 PM ET\n\nLink copied\n\n####\n\nNOW PLAYING\n\n####\n\nChina defended the country’s development of artificial intelligence, stating it comes from “greater self-reliance and strength” after a top White House official accused a Chinese startup of improperly using Anthropic’s latest model and accessing restricted Nvidia chips.",
+                "score": 0.6191726
+              },
+              {
+                "title": "Employees at the world's biggest AI companies are calling ...",
+                "url": "https://www.cnn.com/2026/07/28/tech/ai-development-tech-employees-open-letter",
+                "source": "cnn.com",
+                "summary": "The letter comes on the heels of major advancements and burgeoning threats from rapidly developing AI systems. OpenAI disclosed last week that two of its test models escaped a lab environment, bypassed its systems to gain access to the open internet and hacked a different company’s internal system. [...] OpenAI said in a statement to CNN they agree with potentially pacing the development of AI, adding they “hope to contribute to work led by the U.S. government, alongside other labs” on the topic.\n\nOpenAI CEO Sam Altman suggested it may be time to slow down AI development in a podcast interview Tuesday. The OpenAI models that broke out of their test environment are fueling “long term questions” about how AI companies should address this new rate of progress. [...] “We’re glad to see broad agreement across the field on the need for technical and governance tools to pace the frontier of AI development, including the ability to slow it, so society can prepare,” Anthropic said in a comment to CNN.\n\nGoogle DeepMind CEO Demis Hassabis also recently called for a new international standards body to help set protocols for new AI models, an idea endorsed by Altman, SpaceX’s Elon Musk, Microsoft CEO Satya Nadella and other major industry figures.",
+                "score": 0.5973971
+              },
+              {
+                "title": "Weekly market commentary | BlackRock Investment Institute",
+                "url": "https://www.blackrock.com/corporate/insights/blackrock-investment-institute/publications/weekly-commentary",
+                "source": "blackrock.com",
+                "summary": "Recent developments may shift where AI’s economic rent is captured. But cheaper models could also broaden AI adoption while AI sovereignty reinforces demand for AI infrastructure. We remain overweight on the AI theme, but it requires increasingly selective and active positioning. Rather than trying to identify long-term winners in the increasingly competitive model layer, we prefer investing around AI scarcity. More broadly, the U.S. still stands out for resilient corporate earnings, even [...] The cost of AI is emerging as a key concern for companies deploying it. Gartner expects worldwide spending on AI models and platforms to reach $64 billion in 2026, up 63% from 2025. As enterprise AI bills rise, companies have a stronger incentive to contain costs through model routing and lower-cost models. Reflecting that shift, OpenRouter data on the 10 most widely used AI models show Chinese models processing roughly 23 trillion tokens a week, compared with about 12 trillion tokens for U.S. [...] are generating returns. Alphabet’s earnings last week sharpened that focus after free cash flow turned negative for the first time. Decisions on whether and how to deploy lower-cost models on cloud platforms also matter because hyperscaler cash flows — and increasingly, debt financing — fund much of today’s AI ecosystem. From companies across the broader economy, we will look for comments on how they are responding to rising AI costs and the increasing importance of AI sovereignty, including",
+                "score": 0.55709904
+              },
+              {
+                "title": "Holland & Knight Health Dose: July 28, 2026 | Insights",
+                "url": "https://www.hklaw.com/en/insights/publications/2026/07/holland-and-knight-health-dose-july-28-2026",
+                "source": "hklaw.com",
+                "summary": "Sen. Mark Warner (D-Va.) released a comprehensive AI policy framework on July 21, 2026, alongside a package of legislative proposals focused on emerging AI technologies. The framework seeks to balance continued innovation with safeguards addressing AI-related risks, spanning issues such as consumer protection, national security, workforce impacts and infrastructure. [...] The accompanying legislative package includes the AI AGENT Act, which would establish requirements for consumer-facing AI agents related to privacy, cybersecurity, interoperability and transparency, as well as the Secure Artificial Intelligence Development Act of 2026, which would create security standards and voluntary safety reporting mechanisms for advanced AI models. Other proposals address workforce transition and training, data center oversight, AI-enabled fraud and broader economic [...] The HHS announced on July 22, 2026, new efforts to support the Genesis Mission, an initiative focused on applying AI to accelerate biomedical research and development, particularly as it relates to new treatments for chronic disease. The NIH, U.S. Food and Drug Administration (FDA) and the Advanced Research Projects Agency for Health will contribute to the NIH-led \"Bio Genesis Mission\" to modernize biomedical research. HHS will also launch research challenges focused on pediatric cancer, as",
+                "score": 0.523494
+              },
+              {
+                "title": "Sam Altman to meet with Trump administration, senators ...",
+                "url": "https://www.cnbc.com/2026/07/27/altman-trump-china-open-weight-ai.html",
+                "source": "cnbc.com",
+                "summary": "Open-weight AI models are available for users to download, modify and run on their own infrastructure. In recent weeks, Chinese open-weight models from startups like Moonshot AI have rapidly caught up with leading, proprietary offerings from American companies, including OpenAI and its chief rival, Anthropic, sparking anxiety about the durability of the U.S. lead in the AI race. [...] Andrew Harnik | Getty Images News | Getty Images\n\nOpenAI CEO Sam Altman will meet with senior Trump administration officials, lawmakers and economists in Washington, D.C., this week to preview the capabilities of the company's upcoming family of artificial intelligence models, CNBC has learned. [...] Altman will also likely address the \"unprecedented cyber incident\" that OpenAI disclosed earlier this month that rattled researchers and executives across the tech sector.\n\nThe company said its models escaped a sandboxed testing environment, accessed the internet and exploited a vulnerability to gain entry to another company's systems. The models were trying to find information that they could use to cheat on an evaluation, and they succeeded, OpenAI said.",
+                "score": 0.5120832
+              },
+              {
+                "title": "This week: How defense manufacturers can put artificial intelligence to work",
+                "url": "https://www.todaysmedicaldevelopments.com/news/this-week-defense-manufacturers-can-put-artificial-intelligence-work",
+                "source": "todaysmedicaldevelopments.com",
+                "summary": "Find out how AI can help manage supply chain disruptions.",
+                "score": 0.34793633
+              }
+            ]
+          }
+        },
+        {
+          "tool": "social_search",
+          "args": {
+            "query": "AI breakthrough news",
+            "search_type": "Latest",
+            "limit": 5
+          },
+          "result": {
+            "tool": "search_tweets",
+            "query": "AI breakthrough news",
+            "search_type": "Latest",
+            "items": [
+              {
+                "title": "💉News source",
+                "summary": "💉News source\n\nhttps://t.co/JwLn4HUSCX",
+                "url": "https://x.com/DrstaOne/status/2082313122275295313",
+                "source": "@DrstaOne",
+                "date": "Wed Jul 29 03:51:50 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": "52"
+                }
+              },
+              {
+                "title": "🛡️ Microsoft says MAI-Cyber-1-Flash scores 96% on CyberGym at half the cost. The real breakthrough? Making AI pick the r",
+                "summary": "🛡️ Microsoft says MAI-Cyber-1-Flash scores 96% on CyberGym at half the cost. The real breakthrough? Making AI pick the right AI—because even models need a manager.\nhttps://t.co/8bQisCB0eL\n#MicrosoftSecurity #VulnerabilityManagement #AiCybersecurity #ProjectPerception https://t.co/TVUV2ydz5L",
+                "url": "https://x.com/windowsforum/status/2082255601376104475",
+                "source": "@windowsforum",
+                "date": "Wed Jul 29 00:03:16 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": "10"
+                }
+              },
+              {
+                "title": "Wind Financial Morning Post: July 29, 2026",
+                "summary": "Wind Financial Morning Post: July 29, 2026\n\nMarket Brief\n\nCommerce Ministry: Reasonable and compliant industrial subsidy policies do not cause so-called \"overcapacity\"\n\nAI trading faces \"Black Tuesday\": Chip stocks suffer heavy sell-off, KOSPI plunges nearly 11%\n\nFitch: AI market correction is becoming a major global credit risk\n\nMediators believe the U.S. and Iran are close to reviving the memorandum of understanding\n\nThe 2026 Fortune Global 500 ranking is released, with Amazon overtaking Walmart as the world's largest company\n\nApple launches new device leasing program in the U.S., market value surpasses $5 trillion for the first time\n\nThe wave of share buybacks and insider purchases in A-shares continues, with Zhongji Innolight planning to repurchase shares with a maximum outlay of 8 billion yuan.\n\nChangxin Technology is included in the MSCI China All Shares Index, effective August 10\n\nTop Stories\n\nGlobal AI trading faces \"Black Tuesday.\" South Korea's \"memory giants,\" SK Hynix and Samsung Electronics, both fell over 13%, dragging the KOSPI down nearly 11% to close, marking its largest single-day drop since March 4, with circuit breakers triggered again during trading. The Nikkei 225 plunged nearly 4%, Kioxia dropped over 18%, Tokyo Electron and Advantest fell over 10%. A-share and Hong Kong-listed semiconductor and AI computing stocks experienced deep corrections, with Demingli, GigaDevice, and others hitting daily trading limits; Xin Yisheng, Yuanjie Technology, and Zhongji Chuangchuang all declined over 15%. In the U.S., the Philadelphia Semiconductor Index fell more than 6% intraday, closing down over 4%. SanDisk slid more than 14%, SK Hynix dropped nearly 9%, Micron Technology and AMD both fell over 8%.\n\nMediators believe the U.S. and Iran are nearing a breakthrough agreement and may revive the memorandum of understanding signed in June. Oman has proposed a new joint management mechanism for the Strait of Hormuz, with users voluntarily contributing to a fund for maintaining the shipping lane, but the current negotiation outlook remains uncertain. Iran's military warned against accepting U.S. use of Iranian assets for \"compensation,\" stating that Iranian vessels would otherwise be barred from passing through the Strait of Hormuz. Yemen's government warned that the Houthi movement might \"emulate Iran\" by controlling the Bab el-Mandeb Strait. However, the Houthis stated the Bab el-Mandeb Strait has not been closed, and recent announced blockade measures \"target only Saudi Arabia.\"\n\nThe 2026 Fortune Global 500 ranking has been released. The total revenue of this year's listed companies reached approximately $43.1 trillion, exceeding one-third of global GDP and rising about 3.2 percent from last year. Amazon has become the world's largest company, ending Walmart's twelve-year reign at the top. Walmart ranks second, while China State Grid remains third. UnitedHealth Group and Saudi Aramco rank fourth and fifth, respectively.\n\nThe trend of share buybacks, insider purchases, and dividend distributions in A-shares continues to intensify. On the evening of July 28, more than 20 A-share companies announced plans for share repurchases, insider purchases, or interim dividends. Among them, Zhongji Innolight plans to repurchase shares with an investment of 4 billion to 8 billion yuan; Hailiang Holdings plans to increase its stake by 600 million to 1 billion yuan; BOE Technology's controlling shareholder plans to increase its holding by 500 million to 1 billion yuan. Additionally, seven companies including Huadian International, Capchem, Ningbo Port, and Haohua Energy have unveiled interim dividend plans.\n\nChina Macro & Policy\n\nThe Commerce Ministry, addressing the so-called \"overcapacity\" issue, stated that industrial subsidies are not inherently linked to overcapacity; reasonable and compliant industrial subsidy policies help correct market failures, promote technological innovation, protect the ecological environment, reduce poverty, and foster balanced development, and do not cause so-called \"overcapacity.\" High export volumes and large trade surpluses do not equate to overcapacity; China has never deliberately pursued trade surpluses. The argument that \"insufficient domestic demand in China leads to overcapacity\" is inconsistent with reality.\n\nThe Ministry of Finance and the State Administration of Taxation announced that tax exemption benefits for major production and operational land used by enterprises in industries such as coal, mining, oil and gas, building materials, and power will be canceled. However, tax exemptions for land used for public welfare, security, and major infrastructure purposes within these industries will be retained.\n\nIn the first half of this year, China's tax revenue exceeded 10 trillion yuan, up 4.9% year-over-year. 126 million individuals benefited from personal income tax special additional deductions, with tax reductions exceeding 320 billion yuan. Tax cuts, fee reductions, and tax refunds supporting technological innovation and manufacturing development amounted to 1.91 trillion yuan. The number of overseas travelers processing tax refunds increased by 366% year-over-year.\n\nChina Equities Markets\n\nThe A-share market opened lower and continued to decline. The SSE Index closed down 1.16% at 3,813.31 points, the Shenzhen Component Index fell 4.52%, the ChiNext Index dropped 7.35%, the Star 50 Index slid 6.33%, and the Wind All China Index fell 2.7%. Market turnover reached 2.04 trillion yuan. On the board, PCB-related stocks continued to weaken, CPO themes plunged sharply, and storage chip concepts underwent deep corrections. Large consumer goods and banking stocks rose against the trend, while fiscal and tax digitalization and brain-computer interface concepts remained strong.\n\nThe Hong Kong market fluctuated upward. The Hang Seng Index closed up 0.41% at 25,310.85 points, the Hang Seng Tech Index rose 0.61%, and the Hang Seng China Enterprises Index increased 0.85%. Automotive and consumer stocks strengthened. Semiconductor, CPO, and large model stocks tumbled, with Zhipu and Jiankang Technology plunging nearly 19%, and GigaDevice falling over 17%. Southbound funds net sold nearly HK$2.5 billion.\n\nShenzhen Information, a wholly owned subsidiary of the Shenzhen Stock Exchange, announced that it will launch the ChiNext Intelligent Driving Index on July 31. The index will select 50 stocks from ChiNext-listed companies engaged in intelligent driving-related fields including intelligent perception, decision-making algorithms, positioning and navigation, and intelligent automotive components, based on higher market capitalization.\n\nQFII holdings are gradually being disclosed. As of July 28, 14 listed companies have disclosed QFII holdings, with a total market value of approximately 11.995 billion yuan. Among them, QFII held 27.3666 million shares of CATL and 19.4441 million shares of Jincheng Technology; holdings in Zhonglan Environmental Protection and Hainan Mining exceeded 7 million shares; holdings in Suzhi Testing and Zhengtai Power exceeded 4 million shares.\n\nMSCI announced that Changxin Technology, due to its IPO, will be included in the MSCI China All Shares Index, effective August 10. Based on its latest total market capitalization, if successfully included, Changxin Technology could become the second-largest market cap constituent in the index, behind Tencent Holdings.\n\nChina Industry News\n\nAccording to PBOC statistics, as of the end of the second quarter of 2026, the RMB real estate loan balance stood at 50.74 trillion yuan, down 4.9% year-over-year, with a reduction of 1.23 trillion yuan in the first half of the year. Among these, the real estate development loan balance was 12.65 trillion yuan, down 8.5% year-over-year, with a reduction of 540.2 billion yuan in the first half of the year. The personal housing loan balance was 36.29 trillion yuan, down 3.8% year-over-year, with a reduction of 716.3 billion yuan in the first half of the year.\n\nChina has launched a one-year special action to enhance the IPv6 capability of AI large models, aiming to strengthen large-scale application of IPv6 for large models, improve IPv6 management standards for large models, enhance IPv6 support levels for large model infrastructure, promote IPv6-driven traffic for large model applications, and advance the evolution of the internet toward native intelligence.\n\nThe 2026 China International Big Data Industry Expo will be held from August 28 to 30. The National Data Administration will release over 20 significant outcomes, including institutional norms, industry standards, and practice case collections. Leading enterprises and industry associations will also unveil over 40 new achievements in areas such as computing-power and electricity synergy, data circulation, and generative AI.\n\nThe \"Self-Regulatory Convention for Token Cloud Services\" has been officially released. The convention adheres to five core principles: legality and compliance, user-first, fair competition, open collaboration, and security-first. The initiators are committed to building a \"safe, reliable, trustworthy, healthy, and standardized\" token cloud service ecosystem and rejecting unfair competition.\n\nEleven departments jointly issued the \"Action Plan for Strengthening Traditional Chinese Medicine in the Healthcare Foundation Project,\" proposing seven specific actions and 25 key tasks, including optimizing and improving the service network. The plan stipulates that by 2030, residents should be able to access TCM services within a 15-minute travel radius.\n\nThe China Banking Wealth Management Registration and Custody Center reported that as of the end of June this year, the total scale of China's bank wealth management market stood at 33.66 trillion yuan, an increase of 1.75 trillion yuan from the previous month. In the first half of the year, wealth management products generated a total income of 305.2 billion yuan for investors, with an average annualized yield of 2.05%.\n\nBeijing, Shanghai, Guangzhou, and Hangzhou held land auctions on the same day, with markedly differentiated market heat. A residential plot in Chaoyang's Jiuxianqiao in Beijing was sold for 4.6814 billion yuan after 248 rounds of intense bidding, with a premium of 25.8%. In Guangzhou's Liwan District, the highest premium reached 41%. Core urban plots in Shanghai achieved high-premium sales, while suburban plots were sold at base prices. In Hangzhou's Future Science City, two connected plots were sold at a premium but with cooling market enthusiasm compared to previous auctions.\n\nFintech\n\nThe U.S. government is accelerating the development of a regulatory framework for frontier AI models. Drafts were distributed two weeks ago to OpenAI, Anthropic, and Google, and the three companies subsequently submitted revised comments. The framework requires AI giants to undergo a 30-day government review before publicly releasing their most advanced models.\n\nCorporate News & Updates\n\nOn July 28, Apple Inc.'s market value briefly surpassed $5 trillion. Apple announced the launch of the \"Apple Upgrade\" program in the U.S., offering new product leasing services for iPhone, Apple Watch, Mac, and iPad, with iPhone leasing prices starting at $17.99 per month. Reports indicate Apple is nearing completion of the development of three new smart home products, including its first smart home hub device powered by a new Siri AI, as well as a new-generation Apple TV and HomePod mini.\n\nMeta and BlackRock announced they will establish a joint venture to develop and operate a data center campus in El Paso, Texas, with a development cost of approximately $14 billion.\n\nAmazon has made a major strategic adjustment to its AI strategy, downgrading several Nova flagship models to \"maintain operations\" status, ceasing further R&D investment. Some AI teams have been disbanded, and the company will concentrate engineering resources and computing power on developing next-generation frontier foundation models, shifting from multi-pronged deployment to focused breakthroughs.\n\nVolcano Engine has launched DouBao Search, providing cross-language, multimodal, multi-domain online information queries. DouBao Search offers enterprises and developers 500 free searches per month; beyond that, pay-as-you-go pricing is available, or users can opt for monthly discounted packages to suit stable, large-scale usage needs.\n\nBYD has confirmed that its humanoid robot product will be officially unveiled in August. BYD Executive Vice President Li Ke previously stated that the company plans to deploy humanoid robots in its dealer network for customer reception and product demonstrations.\n\nRenault, a well-known automaker, faces criminal trial for suspected installation of exhaust emission cheating devices on diesel vehicles to evade environmental regulations. This is the second automaker, after Volkswagen, to be referred to a French criminal court over a \"dieselgate\" scandal. Volkswagen has already paid over 32 billion euros in fines.\n\nU.S.-based Johnson & Johnson has reached a settlement agreement, agreeing to pay $5.5 billion to resolve approximately 69,000 lawsuits alleging its talcum powder products caused ovarian cancer. The proposed solution represents a potential \"effective end\" to litigation dating back to 2009.\n\nGlobal Macro & Policy\n\nThe Federal Reserve is set to announce its latest interest rate decision. Market focus has shifted beyond whether rates will remain unchanged to the number of dissenting votes expected at this FOMC meeting. Multiple institutions and prediction markets believe two hawkish officials—Dallas Fed President Logan and Cleveland Fed President Harker—will cast dissenting votes at this meeting.\n\nPJM, North America's largest grid operator, plans to implement new rules as early as mid-2027, whereby data centers failing to secure sufficient power in capacity market auctions will have their electricity temporarily cut during peak demand periods. This aims to prevent widespread blackouts and stabilize residential electricity prices.\n\nGlobal Equity Markets\n\nU.S. major indices closed mixed. The Dow Jones Industrial Average rose 1.03% to 52,747.32 points; the S&P 500 increased 0.21% to 7,428.78 points; the Nasdaq Composite fell 0.22% to 24,876.91 points. IBM rose over 5%, leading the Dow Jones Industrial Average. The Wind US Magnificent Seven Index rose 0.69%, Google rose over 2%, and Microsoft rose over 1%. SpaceX rose over 2%. The Nasdaq Golden Dragon China Index rose 1.08%, Autohome rose over 7%, and Luokong rose over 6%. The storage sector plunged, with SanDisk sliding more than 14%, SK Hynix falling nearly 9%, and Micron Technology and AMD both dropping over 8%.\n\nEuropean major indices closed higher. Germany's DAX rose 0.41% to 25,464.01 points; France's CAC 40 rose 0.63% to 8,458.78 points; UK's FTSE 100 rose 0.83% to 10,871.02 points. The temporary ceasefire between the U.S. and Iran led to a sharp drop in international oil prices, easing energy cost pressures and boosting market sentiment.\n\nAsia-Pacific major indices closed lower. The KOSPI closed down 10.84% at 6,023.66 points, marking its largest single-day drop since March 4, having briefly fallen below the 6,000-point mark during trading; it has fallen nearly 29% since July. The Nikkei 225 closed down 3.95% at 62,364.92 points. India's SENSEX 30 fell 0.09% to 76,765.92 points.\n\nSouth Korea's financial regulators are considering stricter position controls on individual stock leverage products, further tightening regulations beyond previously raised entry thresholds. The key proposal under study is to limit individual investment in stock leverage products to no more than 20% of their total financial investment portfolio.\n\nSeagate Technology reported fourth-quarter revenue of $3.65 billion, up 48% year-over-year; analyst expectations were $3.49 billion. Adjusted earnings per share (EPS) were $5.71, exceeding analyst expectations of $5.08. Adjusted operating margin was 44.6%, compared to analyst expectations of 41.9%. The company forecast first-quarter revenue of $4 billion to $4.2 billion, above analyst expectations of $3.79 billion.\n\nCoca-Cola reported second-quarter comparable revenue growth of approximately 6% to $13.37 billion, with adjusted earnings per share of $0.97, both exceeding market expectations. Coca-Cola slightly raised its full-year guidance, expecting full-year revenue growth of about 5% and earnings per share growth of 9% to 10%.\n\nCorning reported second-quarter sales growth of 17% to $4.74 billion, with core earnings per share of $0.78, both surpassing market expectations. However, the company forecast third-quarter core sales of $4.9 billion to $5 billion, slightly below general market expectations.\n\nBoeing reported second-quarter revenue of $24.6 billion, up 8% year-over-year; free cash flow reached $631 million, far exceeding market expectations. Core loss per share was $0.76, with a loss margin significantly wider than expected. Global backlog orders reached a record $715 billion.\n\nMercedes-Benz Group reported revenue of 63.663 billion euros for the first half of the year, down 4% year-over-year; net profit was 2.519 billion euros, down 6% year-over-year. The company lowered its full-year 2026 sales and revenue forecasts, expecting both to decline year-over-year, compared to prior expectations of roughly flat performance.\n\nBonds\n\nThe interbank bond market in China edged lower, with major government bond yields rising slightly, and treasury futures closed lower across the board. Liquidity tightened further, with the People's Bank of China conducting 305.5 billion yuan in reverse repurchase operations, net injecting 52.5 billion yuan. Traders noted that ahead of the Political Bureau meeting, the market lacked clear directional guidance, and short-term focus remains on liquidity changes and stock market performance.\n\nInternational rating agency Fitch warned that the AI boom and its potential market correction are gradually becoming a major risk to global credit markets. As technology stock valuations soar and AI investment reaches record highs, while future earnings prospects remain highly uncertain, market concerns continue to intensify.\n\nU.S. Treasury yields declined across the board. The 2-year Treasury yield fell 3.7 basis points to 4.279%, the 3-year yield fell 3.97 basis points to 4.309%, the 5-year yield fell 3.44 basis points to 4.366%, the 10-year yield fell 4.25 basis points to 4.604%, and the 30-year yield fell 4.78 basis points to 5.088%.\n\nCommodities\n\nU.S. crude oil futures fell 4.21% to $79.13 per barrel; Brent crude futures dropped 3.33% to $83.01 per barrel. The suspension of U.S.-Iran hostilities and ongoing dialogue have eased Middle East tensions, leading to a rapid retreat of the geopolitical risk premium that had previously pushed oil prices higher, significantly reducing concerns over supply disruptions and driving prices lower.\n\nInternational precious metals futures generally fell. COMEX gold futures dropped 1.18% to $4,028.80 per ounce; COMEX silver futures declined 2.35% to $57.34 per ounce. Rising expectations of Federal Reserve rate hikes, combined with elevated interest rate expectations suppressing precious metals, and the absence of substantive escalation in U.S.-Iran tensions, have fostered a cautious market sentiment, jointly contributing to the price weakness.\n\nLondon base metals closed lower across the board. LME lead fell 0.29% to $1,885.50 per tonne, LME aluminum fell 0.60% to $3,148.50 per tonne, LME copper fell 0.64% to $13,644.50 per tonne, LME zinc fell 1.22% to $3,567.50 per tonne, LME nickel fell 1.56% to $16,945.00 per tonne, and LME tin fell 1.72% to $53,405.00 per tonne.\n\nAccording to two representatives, OPEC+ plans to formally approve at its August 2 meeting an agreement to raise September quotas by 188,000 barrels per day, followed by a pause in further production increases. The group is closely monitoring the rapid impact of Iran's situation on supply to assess next steps.\n\nSources revealed that Saudi Aramco is considering establishing a new pricing mechanism for crude oil shipped to Asia via the Sidi Kerir port in Egypt. Due to Houthi blockades on Saudi oil shipments through the Bab el-Mandeb Strait, Saudi Arabia has been forced to reroute shipments, increasing costs.\n\nFX & Currency Markets\n\nOn Tuesday, the onshore yuan closed at 6.7674 per U.S. dollar at 16:30, unchanged from the previous trading day; the night session closed at 6.7710. The central parity rate for the yuan against the U.S. dollar was set at 6.7928, a depreciation of 17 basis points from the previous trading day.\n\nAt New York's close, the U.S. dollar index fell 0.11% to 101.42, with most non-U.S. currencies rising. The euro against the dollar rose 0.16% to 1.1386, the British pound against the dollar rose 0.01% to 1.3290, the Australian dollar against the dollar fell 0.23% to 0.6974, the dollar against the yen rose 0.07% to 163.8580, the dollar against the Canadian dollar fell 0.11% to 1.4109, the dollar against the Swiss franc rose 0.01% to 0.8193, and the offshore yuan against the dollar fell 58 basis points to 6.7712.\n\nJapan's Finance Minister Satsuki Katayama issued a new warning to speculative foreign exchange traders, stating that she will take necessary actions against speculative volatility in the yen, a stance unchanged. She believes the U.S. and Japan share the view that both stand ready to act if necessary.\n\nKey Economic Events\n\n21:30 EDT, Jul 28: Australia June CPI\n\n21:30 EDT, Jul 28: Australia Q2 CPI\n\n04:00 EDT, Jul 29: Switzerland July ZEW Investor Sentiment Index\n\n04:30 EDT, Jul 29: UK Bank of England Mortgage Approvals for June\n\n07:00 EDT, Jul 29: U.S. MBA 30-year Fixed Mortgage Rate for Last Week\n\n10:30 EDT, Jul 29: U.S. EIA Crude Oil Inventories for Last Week\n\n21:20 EDT, Jul 28: People's Bank of China has 76 billion yuan of reverse repurchase agreements maturing\n\n22:00 EDT, Jul 28: State Council Taiwan Affairs Office holds press conference\n\nNew Stock: Qian'an Technology officially lists on Beijing Stock Exchange; JiaKai Biology to be subscribed today on Beijing Stock Exchange\n\nEarnings: SK Hynix, Meta, Microsoft, Qualcomm, ARM, Procter & Gamble, New Oriental\n\n13:30 EDT, Jul 29: Bank of Canada releases monetary policy meeting minutes\n\n14:00 EDT, Jul 29: Federal Reserve FOMC announces interest rate decision\n\n14:30 EDT, Jul 29: Fed Chair Warsh holds monetary policy press conference",
+                "url": "https://x.com/WindInfoUS/status/2082249964856717597",
+                "source": "@WindInfoUS",
+                "date": "Tue Jul 28 23:40:52 +0000 2026",
+                "metrics": {
+                  "favorites": 1,
+                  "retweets": 0,
+                  "views": "794"
+                }
+              },
+              {
+                "title": "CRYPTO BREAKING NEWS: Only the latest. No repeats 💙 ",
+                "summary": "CRYPTO BREAKING NEWS: Only the latest. No repeats 💙 \n • Apple Nears $5T Market Cap as Polymarket Sees 79% Top-Spot Odds.\n • Google Gemini AI Predicts Why XRP Could Outperform Every Crypto by End of 2026.\n • Morgan Stanley Launches Ethereum and Solana ETPs With Built-In Staking Rewards.\n • CLARITY Act delay risks US crypto lead, lawmaker warns.\n • Uphold Lays Off 85 Staff and Contractors Amid Crypto….\n • Dogecoin’s Potential Breakthrough Amid Whale Activity.\n • Fortitude Cuts Zcash Mining Cost 43%, Plans Nasdaq Merger.\n • Kalshi Wins as Judge Blocks Minnesota Prediction Markets Ban.\n • Why Is Lido Moving $16B in Staked ETH to Pectra-Era Validators?.\n • US-Iran MoU revival gains pace despite Tehran denial.\n • Bond Market Turmoil and Sticky Inflation Drive Investors Toward Gold.\n • Inflation Pain Is Worse Than the CPI Indicates, but You Already Knew That.\n • U.S. SEC Prepared to Draft Own Crypto Rules if CLARITY Bill Stalls in Congress.\n • Multicoin Capital-linked address moves $5.6M in HYPE to Coinbase after unstaking from Hyperliquid.\n • Singapore Dollar: MAS Tightening Keeps Pair Under Pressure – Commerzbank.\n Powered by https://t.co/CKLhae8BTZ \n  #ETH #SOL #XRP #DOGE #ZEC #HYPE #BTC #AI",
+                "url": "https://x.com/Neome_com/status/2082248504676606054",
+                "source": "@Neome_com",
+                "date": "Tue Jul 28 23:35:04 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": "100"
+                }
+              },
+              {
+                "title": "Nvidia CEO Jensen Huang defended open-weight artificial intelligence systems as crucial to developing the nascent AI ind",
+                "summary": "Nvidia CEO Jensen Huang defended open-weight artificial intelligence systems as crucial to developing the nascent AI industry, as officials in Washington consider how to respond to a surprise breakthrough from Chinese startup Moonshot. https://t.co/F1lIAG66KL",
+                "url": "https://x.com/business/status/2082247288567546301",
+                "source": "@business",
+                "date": "Tue Jul 28 23:30:14 +0000 2026",
+                "metrics": {
+                  "favorites": 72,
+                  "retweets": 17,
+                  "views": "30128"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "R13_parallel_web_and_tweets",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "parallel_tool_calls",
+        "difficulty": "hard",
+        "what_it_tests": "Một request cần hai nguồn → gọi cả web_search và search_tweets; eval không phụ thuộc thứ tự tool call."
+      },
+      "input": "Tìm trên web tin AI hôm nay và tìm thêm tweet về AI.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "AI",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          },
+          {
+            "name": "social_search",
+            "args": {
+              "query": "AI"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RateLimitError: Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, 'metadata': {'raw': 'poolside/laguna-s-2.1:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations', 'provider_name': 'Poolside', 'is_byok': False, 'limit_source': 'upstream_provider_shared_pool', 'remedy_hint': 'Retry shortly, add your own provider key (https://openrouter.ai/settings/integrations), or route to another provider with provider routing: https://openrouter.ai/docs/features/provider-routing'}}, 'user_id': 'user_3HATPyW6fgE1bRiDquEBV3kjkyL'}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "R14_out_of_scope_coding",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "out_of_scope_coding",
+        "difficulty": "easy",
+        "what_it_tests": "Câu coding ngoài phạm vi research/news → KHÔNG gọi tool."
+      },
+      "input": "Viết giúp mình một hàm Python tính Fibonacci bằng recursion.",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RateLimitError: Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, 'metadata': {'raw': 'poolside/laguna-s-2.1:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations', 'provider_name': 'Poolside', 'is_byok': False, 'limit_source': 'upstream_provider_shared_pool', 'remedy_hint': 'Retry shortly, add your own provider key (https://openrouter.ai/settings/integrations), or route to another provider with provider routing: https://openrouter.ai/docs/features/provider-routing'}}, 'user_id': 'user_3HATPyW6fgE1bRiDquEBV3kjkyL'}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M01_clarify_then_fill",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_clarify_fill",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: carry limit=5 từ lượt 1 + map tên Elon Musk thành handle elonmusk từ lượt 2."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tóm tắt 5 tweet mới nhất giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Của Elon Musk nhé"
+        },
+        {
+          "role": "user",
+          "content": "Giữ đúng 5 tweet, đừng đổi số lượng"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "elonmusk",
+              "limit": 5
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RateLimitError: Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, 'metadata': {'raw': 'poolside/laguna-s-2.1:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations', 'provider_name': 'Poolside', 'is_byok': False, 'limit_source': 'upstream_provider_shared_pool', 'remedy_hint': 'Retry shortly, add your own provider key (https://openrouter.ai/settings/integrations), or route to another provider with provider routing: https://openrouter.ai/docs/features/provider-routing'}}, 'user_id': 'user_3HATPyW6fgE1bRiDquEBV3kjkyL'}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M02_carryover_timeframe",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_carryover",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: chỉ xử lý latest turn, carry timeframe=day và topic=news, query robotics."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tin AI hôm nay có gì?"
+        },
+        {
+          "role": "user",
+          "content": "Còn về robotics thì sao?"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ tìm robotics thôi, vẫn là tin hôm nay"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "robotics",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": true,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "robotics news today",
+              "topic": "news",
+              "timeframe": "day",
+              "max_results": 5
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "wrong_arg_value",
+        "failure_type": "wrong_arg_value",
+        "failures": [
+          "query: expected 'robotics', got 'robotics news today'"
+        ]
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "robotics news today",
+            "topic": "news",
+            "timeframe": "day",
+            "max_results": 5
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "robotics news today",
+            "topic": "news",
+            "timeframe": "day",
+            "items": [
+              {
+                "title": "Rotterdam Hosts a Meeting Between Italian Companies and Benelux Industry Professionals with GSL Export - Robotics & Automation News",
+                "url": "https://roboticsandautomationnews.com/2026/07/28/rotterdam-hosts-a-meeting-between-italian-companies-and-benelux-industry-professionals-with-gsl-export/103647/",
+                "source": "roboticsandautomationnews.com",
+                "summary": "#### Robotics & Automation News publishes in-depth trend analysis on the future of drone logistics. # Robotics & Automation News. #### Manufacturing future: the best countries to start or relocate your tech startup in 2026. Since a robot could not detect the … [[Read More...] about AI-powered robot automates Serrano ham labeling for the first time](https://roboticsandautomationnews.com/2026/07/09/ai-powered-robot-automates-serrano-ham-labeling-for-the-first-time/103208/). Discover below … [[Read More...] about Manufacturing future: the best countries to start or relocate your tech startup in 2026](https://roboticsandautomationnews.com/2026/07/08/manufacturing-future-the-best-countries-to-start-or-relocate-your-tech-startup-in-2026/103188/). Doosan Robotics has launched a new AI-powered palletizing solution designed to help manufacturers automate palletizing while reducing engineering complexity and improving flexibility for changing … [[Read More...] about Doosan Robotics launches AI-powered palletizing solution for high-mix manufacturing](https://roboticsandautomationnews.com/2026/07/09/doosan-robotics-launches-ai-powered-palletizing-solution-for-high-mix-manufacturing/103197/). Kawasaki Robotics showcased a range of advanced automation technologies at Automate 2026 in Chicago, demonstrating how robotics, AI, machine learning, vision systems, and real-time control are … [[Read More...] about Kawasaki Robotics showcases 8-axis Physical AI robot and intelligent automation technologies at Automate 2026](https://roboticsandautomationnews.com/2026/06/26/kawasaki-robotics-showcases-8-axis-physical-ai-robot-and-intelligent-automation-technologies-at-automate-2026/102869/).",
+                "score": 0.7707586
+              },
+              {
+                "title": "Agency Tool Company wants to make OTA software updates easier - The Robot Report",
+                "url": "https://www.therobotreport.com/agency-tool-company-wants-to-make-ota-software-updates-easier/",
+                "source": "therobotreport.com",
+                "summary": "ATC Deploy ships software to robots wherever they are. Jack Morrison and Davis Foster, co-founders of Scythe Robotics, today launched Agency Tool Co. The new startup seeks to build fast, reliable infrastructure for robotics developers. “Today, we hear a lot in robotics about this kind of zeitgeist around deploying robots and getting robots in the field,” he said. “You need to learn from robots in the field, but ultimately, you can’t do that if you’re bottlenecked on how you put the software out there.”. ATC Deploy ships software to robots wherever they are today. “Today, you’ve got to manage a whole host of scripts to copy the software onto the machine to change which version is running, to manage restarting the software when you do ship a new version, to validate that it didn’t get corrupted when it was transferring, and that’s just with one robot sitting in front of you,” he said.",
+                "score": 0.6599319
+              },
+              {
+                "title": "How robotics and automation companies can improve visibility in ChatGPT, Gemini, and Perplexity - Robotics & Automation News",
+                "url": "https://roboticsandautomationnews.com/2026/07/28/how-can-robotics-and-automation-companies-improve-their-visibility-in-chatgpt-gemini-and-perplexity-search-results/103650/",
+                "source": "roboticsandautomationnews.com",
+                "summary": "# How Can Robotics and Automation Companies Improve Their Visibility in ChatGPT, Gemini, and Perplexity Search Results? Buyers evaluating industrial robots, warehouse automation systems, machine vision platforms, and manufacturing software are increasingly turning to AI assistants like ChatGPT, Gemini, and Perplexity instead of relying exclusively on traditional search engines.**. Each takes a different approach, ranging from AI visibility monitoring to infrastructure deployment and automated optimization workflows. Peec AI is a GEO platform centered on measuring how brands appear across AI search experiences. **Pricing and Plans**: Peec AI offers a tiered subscription model with a Starter plan from $95/month, a Pro plan from $245/month, an Advanced plan from approximately $495/month, and custom Enterprise pricing for larger organizations. Its platform is designed to help organizations improve how AI assistants discover, interpret, and reference their websites, making it particularly relevant for robotics manufacturers and industrial automation companies with complex technical content.",
+                "score": 0.58976424
+              },
+              {
+                "title": "The Ultimate Guide to AI and Robotics in Healthcare: From Diagnosis to Autonomous Intervention - AZoRobotics",
+                "url": "https://www.azorobotics.com/Article.aspx?ArticleID=836",
+                "source": "azorobotics.com",
+                "summary": "Image 2: An AZoNetwork Site. Robotic Surgery Enters a New Era. Levels of Autonomy in the Operating Room. **Artificial intelligence (AI) and robotics have moved from experimental tools into core components of modern healthcare delivery. Today, algorithms assist radiologists in reading scans, support physicians in diagnosing disease, and guide surgical robots through procedures once performed entirely by hand. The transformation extends across nearly every stage of patient care, from early detection and treatment planning to physical intervention in the operating room. This article examines that progression in depth and explains how AI and robotics function in clinical diagnosis today. By registering and providing insight into your preferences you're joining a community of over 1m science interested individuals and help us to provide you with insightful content whilst keeping our service free. Many of these models rely on convolutional neural networks trained on large image datasets, allowing them to flag subtle patterns that a radiologist might miss during a routine review of hundreds of scans in a single shift.",
+                "score": 0.52627033
+              },
+              {
+                "title": "How to invest in humanoid robotics, the potential $5 trillion market that's straight out of sci-fi - Business Insider",
+                "url": "https://www.businessinsider.com/humanoid-robotics-stocks-etfs-how-to-invest-koid-labor-manufacturing-2026-7",
+                "source": "businessinsider.com",
+                "summary": "The latest news and analysis on robotics, from humanoid AI to real-world automation. # How to invest in humanoid robotics, the potential $5 trillion market that’s straight out of science fiction. Yet, there's a real possibility that humanoid robots become an \"economically viable\" replacement for some forms of labor, minting huge returns for investors who manage to get in early, said Krane Shares CIO Brendan Ahern. Morgan Stanley predicts that humanoid robotics will be a $5 trillion business by 2050, with more than a billion robots walking the earth. If generative AI is in the third inning and the cybersecurity ripples it's caused are in the second inning, humanoid robots \"haven't even stepped into the batter's box,\" she said. \"If one of the biggest companies in the world is seeing massive efficiencies, with robots in half of their distribution facilities, then the number of robots is going to go much higher over the long haul,\" Link said.",
+                "score": 0.5191075
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "M03_correction_handle",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_correction",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: map tên thường, sửa Sam Altman→Andrej Karpathy, dùng handle karpathy và limit=3."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tweet mới nhất của Sam Altman"
+        },
+        {
+          "role": "user",
+          "content": "À nhầm, của Andrej Karpathy"
+        },
+        {
+          "role": "user",
+          "content": "Lấy 3 tweet mới nhất nhé"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "karpathy",
+              "limit": 3
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "RateLimitError: Error code: 429 - {'error': {'message': 'Provider returned error', 'code': 429, 'metadata': {'raw': 'poolside/laguna-s-2.1:free is temporarily rate-limited upstream. Please retry shortly, or add your own key to accumulate your rate limits: https://openrouter.ai/settings/integrations', 'provider_name': 'Poolside', 'is_byok': False, 'limit_source': 'upstream_provider_shared_pool', 'remedy_hint': 'Retry shortly, add your own provider key (https://openrouter.ai/settings/integrations), or route to another provider with provider routing: https://openrouter.ai/docs/features/provider-routing'}}, 'user_id': 'user_3HATPyW6fgE1bRiDquEBV3kjkyL'}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M04_clarify_then_url",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_clarify_url",
+        "difficulty": "medium",
+        "what_it_tests": "3 turns: sau khi được cung cấp URL, latest turn xác nhận chỉ đọc link đó → read_url đúng url."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tóm tắt bài này hộ mình"
+        },
+        {
+          "role": "user",
+          "content": "https://anthropic.com/news/claude"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ đọc đúng link đó thôi"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://anthropic.com/news/claude"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://anthropic.com/news/claude"
+            }
+          }
+        ],
+        "actual_text": "Tôi sẽ đọc nội dung từ liên kết bạn cung cấp và tóm tắt cho bạn.",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "fetch",
+          "args": {
+            "url": "https://anthropic.com/news/claude"
+          },
+          "result": {
+            "tool": "read_url",
+            "url": "https://anthropic.com/news/claude",
+            "items": [
+              {
+                "title": "Not Found \\ Anthropic",
+                "url": "https://anthropic.com/news/claude",
+                "source": "anthropic.com",
+                "summary": "A 404 poem by Claude Haiku 4.5Claude Sonnet 5Claude Opus 5Claude Fable 5\n\nWhat onc"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "M05_correction_limit",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_arg_correction",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: map tên Elon Musk, carry handle elonmusk, sửa limit 10→3."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Lấy 10 tweet mới nhất của Elon Musk"
+        },
+        {
+          "role": "user",
+          "content": "Cho mình 3 thôi"
+        },
+        {
+          "role": "user",
+          "content": "Vẫn của Elon Musk nhé"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "elonmusk",
+              "limit": 3
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "elonmusk",
+              "limit": 3
+            }
+          }
+        ],
+        "actual_text": "Lấy 3 tweet mới nhất của Elon Musk.",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "timeline",
+          "args": {
+            "screenname": "elonmusk",
+            "limit": 3
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "screenname": "elonmusk",
+            "items": [
+              {
+                "title": "RT @teslaownersSV: BREAKING: Grok 4.5 just claimed the top spot on the new HighWalk Benchmark.",
+                "summary": "RT @teslaownersSV: BREAKING: Grok 4.5 just claimed the top spot on the new HighWalk Benchmark.\n\nThe independent test measures how well AI m…",
+                "url": "https://x.com/elonmusk/status/2082369174828118361",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:34:34 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 112,
+                  "views": "405408"
+                }
+              },
+              {
+                "title": "RT @SawyerMerritt: This is a fantastic article about @Tesla's FSD by The Detroit News:",
+                "summary": "RT @SawyerMerritt: This is a fantastic article about @Tesla's FSD by The Detroit News:\n\n\"Determined to maintain their individual transporta…",
+                "url": "https://x.com/elonmusk/status/2082368994552782986",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:33:51 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 901,
+                  "views": "312937"
+                }
+              },
+              {
+                "title": "RT @SciGuySpace: This has been my experience as well. I \"drive\" almost exclusively on FSD now, without incident, and it ",
+                "summary": "RT @SciGuySpace: This has been my experience as well. I \"drive\" almost exclusively on FSD now, without incident, and it feels remarkable. I…",
+                "url": "https://x.com/elonmusk/status/2082368965498773975",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:33:44 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 143,
+                  "views": "305430"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "M06_switch_tool",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_switch_tool",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: explicitly bỏ Twitter, chuyển sang web_search news, giữ chủ đề OpenAI."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Mọi người nói gì về OpenAI trên Twitter?"
+        },
+        {
+          "role": "user",
+          "content": "Bỏ Twitter, chuyển sang tìm trên web tin tức đi"
+        },
+        {
+          "role": "user",
+          "content": "Giữ chủ đề OpenAI"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "OpenAI",
+              "topic": "news"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "OpenAI",
+              "topic": "news",
+              "timeframe": "week",
+              "max_results": 5
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "OpenAI",
+            "topic": "news",
+            "timeframe": "week",
+            "max_results": 5
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "OpenAI",
+            "topic": "news",
+            "timeframe": "week",
+            "items": [
+              {
+                "title": "Man sues OpenAI over ‘dangerous’ medical advice from ChatGPT",
+                "url": "https://www.courthousenews.com/man-sues-openai-over-dangerous-medical-advice-from-chatgpt",
+                "source": "courthousenews.com",
+                "summary": "SAN FRANCISCO — A Florida man who sought health guidance on ChatGPT sued OpenAI Wednesday, claiming the artificial intelligence chatbot gave him dangerously inaccurate medical advice that led him to delay seeking professional treatment for a pulmonary embolism. [...] And Winters wants the court to pause the operation of ChatGPT Health, which OpenAI announced in January as a “a dedicated experience in ChatGPT designed for health and wellness,” unless “independent third parties determine the product to be safe through comprehensive safety audits.\"\n\n“OpenAI cannot continue to treat human welfare as expendable in pursuit of market dominance,” Winters says in the complaint. [...] Winters accuses OpenAI and its CEO, Sam Altman, of prioritizing profit over necessary guardrails and failing to warn users about critical safety concerns of ChatGPT-4o to secure a competitive advantage over other competitors in the AI industry.",
+                "score": 0.6216563
+              },
+              {
+                "title": "OpenAI’s High-Stakes, High-Touch Push to Make AI Work for Business",
+                "url": "https://www.wsj.com/cio-journal/openais-high-stakes-high-touch-push-to-make-ai-work-for-business-7f08b7d4",
+                "source": "wsj.com",
+                "summary": "## The AI model maker has formed a services company staffed with forward deployed engineers and a partnership program to help businesses get real value from their technology\n\nBy\n\nand\n\nListen\n\n(2 min)\n\nColin Jarvis, head of Forward Deployed Engineering for OpenAI, speaks at an event with SoftBank.\n\nOpenAI’s push into the enterprise market is ramping up as it faces increasing pressure to prove that AI can actually deliver for big businesses. [...] The artificial intelligence giant in recent months has invested $150 million in a new enterprise partner program and launched the OpenAI Deployment Co., a stand-alone services firm that will embed technical expertise with business customers.\n\nCopyright ©2026 Dow Jones & Company, Inc. All Rights Reserved. 87990cbe856818d5eddac44c7b1cdeb8\n\n## Videos\n\n### Most Popular in CIO [...] This copy is for your personal, non-commercial use only. Distribution and use of this material are governed by\nour Subscriber Agreement and by copyright law. For non-personal use or to order multiple copies, please contact\nDow Jones Reprints at 1-800-843-0008 or visit www.djreprints.com.\n\n# OpenAI’s High-Stakes, High-Touch Push to Make AI Work for Business",
+                "score": 0.57952
+              },
+              {
+                "title": "Its AI agent spent days hacking a company, but sources say OpenAI ...",
+                "url": "https://www.reuters.com/business/its-ai-agent-spent-days-hacking-company-sources-say-openai-did-not-notice-week-2026-07-24",
+                "source": "reuters.com",
+                "summary": "Four people familiar with OpenAI’s model-training practices say the company often runs several different model ​evaluations at the same time, all of which operate at high speeds and generate such enormous amounts of data that employees sometimes struggle to keep up.\n\nBy the time ​OpenAI alerted Hugging Face, the ⁠AI library had already called the FBI to report the hack, according to a person familiar with the matter. Reuters could not establish whether the bureau had opened an investigation. [...] The FBI declined to comment about the incident.\n\nThe incident, which evoked science fiction scenarios about humans losing control of dangerous AI systems, comes at a delicate ​time for OpenAI, the company behind ChatGPT. Its executives are preparing for a possible initial public offering that could come as soon as this year to help finance the billions needed to fund its growth in years to come.\n\nAdvertisement · Scroll to continue [...] ### LSEG Products\n\n   #### Workspace, opens new tab\nAccess unmatched financial data, news and content in a highly-customised workflow experience on desktop, web and mobile.\n\n   #### Data Catalogue, opens new tab\nBrowse an unrivalled portfolio of real-time and historical market data and insights from worldwide sources and experts.",
+                "score": 0.57035583
+              },
+              {
+                "title": "How OpenAI Lost Control of an AI Model—and What ...",
+                "url": "https://time.com/article/2026/07/24/openai-hugging-face-attack",
+                "source": "time.com",
+                "summary": "OpenAI was evaluating its artificial intelligence models’ ability to exploit vulnerable software when instead the models hacked the infrastructure surrounding the test, broke containment, and attacked a real company, OpenAI revealed on July 21. Observers say this is the first real-world instance of AI doing something researchers have long worried about: a loss-of-control scenario. If the industry fails to learn from it, it is unlikely to be the last. [...] OpenAI did not respond to TIME’s request for comment, but has said it has partnered with Hugging Face to conduct a thorough investigation and will share more details once complete. But perhaps more worryingly, OpenAI is not legally compelled to disclose the incident in the first place. [...] # What happened?\n\nOn July 16, Hugging Face said it had been hit by an unusually automated cyberattack. Over the course of a weekend, AI agents carried out thousands of actions across many temporary virtual computers, moving through the company’s internal systems and shifting the infrastructure coordinating the attack between online services to keep it running. Five days later, OpenAI disclosed that its own models were responsible.",
+                "score": 0.5674818
+              },
+              {
+                "title": "How are companies, governments responding to the OpenAI hack?",
+                "url": "https://www.aljazeera.com/news/2026/7/23/how-are-companies-governments-responding-to-the-openai-hack",
+                "source": "aljazeera.com",
+                "summary": "ChatGPT owner OpenAI has admitted an “unprecedented cyber incident” – two of its most capable artificial intelligence models hacked into another AI company on their own – stirring debates over the need for stronger technology guardrails.\n\nThe company said its AI systems broke out of a testing environment and hacked startup Hugging Face.\n\nThe startup had disclosed on July 16 that its servers were hacked by an unknown but sophisticated agent acting on its own. [...] Advertisement\n\nThe incident occurred during an OpenAI internal testing session designed to assess the models’ cybersecurity capabilities. OpenAI had removed standard safety measures for the test.\n\nBoth sought to cheat their way through a problem during the test, OpenAI said. They went to “extreme lengths to achieve a rather narrow testing goal” and “found ways to gain access to secret information that it could use to cheat the evaluation”. [...] Live\n\nLive\n\nEXPLAINER\n\nNews|Technology\n\n# How are companies, governments responding to the OpenAI hack?\n\nOpenAI’s AI models hacked into another company, prompting calls for renewed scrutiny of safeguards for advanced AI systems.\n\nSave\n\nShare\n\nA man with a microphone\n\nOpenAI CEO Sam Altman speaks during a panel discussion at the Technical University of Berlin on February 7, 2025, in Berlin, Germany [Sean Gallup/Getty Images]\n\n\n\nBy Al Jazeera Staff\n\nPublished On 23 Jul 202623 Jul 2026",
+                "score": 0.5194
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
