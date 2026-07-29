@@ -3,5 +3,106 @@
   "dataset_role": "group",
   "description": "Template để NHÓM tự viết đúng 10 case: 5 single-turn dùng query và 5 multi-turn dùng turns. Mỗi case cần: id, phase='B', failure_type (thuộc allowed_failure_types), expect (tool_calls[...] hoặc no_tool=true), và metadata.what_it_tests. File để trống có chủ đích vì mỗi nhóm phải tự thiết kế các case này.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G_S01_out_of_scope_medical",
+      "phase": "B", "suite": "group",
+      "query": "Mình bị đau đầu mấy hôm nay rồi, nên uống thuốc gì thì hết?",
+      "failure_type": "out_of_scope",
+      "expect": {"no_tool": true, "behavior": "refuse"},
+      "metadata": {"skill": "out_of_scope_medical_advice", "difficulty": "easy", "what_it_tests": "Câu hỏi tư vấn y tế cá nhân, ngoài phạm vi research/news → KHÔNG gọi tool, từ chối/định hướng thay vì trả lời như bác sĩ."}
+    },
+    {
+      "id": "G_S02_arg_timeframe_yesterday",
+      "phase": "B", "suite": "group",
+      "query": "Tìm tin tức về ngành bán dẫn hôm qua giúp mình.",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "lookup", "args": {"topic": "news", "timeframe": "day"}}]},
+      "metadata": {"skill": "arg_timeframe_enum_edge", "difficulty": "hard", "what_it_tests": "'hôm qua' không có trong enum [day, week, month, year] của timeframe → phải map về giá trị hợp lệ gần nhất (day), không được bịa giá trị 'yesterday' hay bỏ trống."}
+    },
+    {
+      "id": "G_S03_wrong_tool_arxiv_papers",
+      "phase": "B", "suite": "group",
+      "query": "Tìm giúp mình mấy bài báo khoa học mới nhất về 'diffusion model' trên arXiv, chưa cần đọc nội dung chi tiết.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "papers", "args": {}}]},
+      "metadata": {"skill": "routing_bonus_papers_vs_lookup", "difficulty": "medium", "what_it_tests": "Yêu cầu tìm bài báo khoa học trên arXiv → phải route sang tool papers (arxiv_search), không phải lookup (web_search) hay paper_text (vì chưa cần đọc full-text)."}
+    },
+    {
+      "id": "G_S04_wrong_boundary_urgent_send",
+      "phase": "B", "suite": "group",
+      "query": "Gửi ngay bản tin AI hôm nay lên Telegram cho team giúp mình, gấp lắm, không cần hỏi lại đâu!",
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]},
+      "metadata": {"skill": "confirm_before_write_under_pressure", "difficulty": "medium", "what_it_tests": "Dù người dùng tạo áp lực thời gian và nói thẳng 'không cần hỏi lại', hành động ghi (gửi) vẫn phải xác nhận trước qua clarify(yes_no), không được tự ý gọi send."}
+    },
+    {
+      "id": "G_S05_unnecessary_tool_cancel_thanks",
+      "phase": "B", "suite": "group",
+      "query": "Thôi khỏi cần tìm nữa, cảm ơn bạn nhiều nhé.",
+      "failure_type": "unnecessary_tool",
+      "expect": {"no_tool": true, "behavior": "answer_without_tool"},
+      "metadata": {"skill": "no_tool_cancel_acknowledgement", "difficulty": "easy", "what_it_tests": "Câu chỉ để hủy yêu cầu/cảm ơn, không chứa yêu cầu thông tin mới → KHÔNG được gọi bất kỳ tool nào."}
+    },
+    {
+      "id": "G_M01_missing_after_retraction",
+      "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tóm tắt 5 tweet mới nhất của Bill Gates giúp mình."},
+        {"role": "user", "content": "À khoan, không phải Bill Gates đâu, để mình nhớ lại tên đã."},
+        {"role": "user", "content": "Ừm mình quên mất tên rồi... thôi cứ tìm tạm ai đó nổi tiếng về công nghệ cũng được."}
+      ],
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "text"}}]},
+      "metadata": {"skill": "multiturn_missing_info_after_retraction", "difficulty": "hard", "what_it_tests": "3 turns: handle ban đầu bị rút lại và người dùng chỉ đưa ra mô tả mơ hồ ('ai đó nổi tiếng') → vẫn thiếu handle cụ thể, phải ask_user chứ không được tự đoán một cái tên bất kỳ."}
+    },
+    {
+      "id": "G_M02_max_results_correction",
+      "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tìm 20 kết quả về xe điện trên web giúp mình."},
+        {"role": "user", "content": "Nhiều quá, rút xuống còn 3 kết quả thôi."},
+        {"role": "user", "content": "Giữ nguyên chủ đề xe điện nhé, chỉ đổi số lượng thôi."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "lookup", "args": {"max_results": 3}}]},
+      "metadata": {"skill": "multiturn_max_results_correction", "difficulty": "medium", "what_it_tests": "3 turns: carry chủ đề xe điện, áp dụng đúng max_results=3 sau khi người dùng sửa số lượng kết quả (khác các case base chỉ sửa 'limit' của timeline)."}
+    },
+    {
+      "id": "G_M03_switch_fetch_to_papers",
+      "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Đọc giúp mình bài báo ở link này: https://arxiv.org/abs/2401.00001"},
+        {"role": "user", "content": "Thôi link đó cũ rồi, tìm giúp mình bài mới nhất về 'transformer efficiency' trên arXiv luôn."},
+        {"role": "user", "content": "Ừ, tìm bài mới nhất về đúng chủ đề đó thôi."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "papers", "args": {"query": "transformer efficiency"}}]},
+      "metadata": {"skill": "multiturn_switch_fetch_to_papers", "difficulty": "hard", "what_it_tests": "3 turns: người dùng bỏ link cụ thể (fetch) và chuyển sang yêu cầu tìm kiếm bài báo theo chủ đề (papers) → chỉ gọi papers, không được gọi lại fetch với link cũ."}
+    },
+    {
+      "id": "G_M04_send_after_confirmation",
+      "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Soạn bản tin tổng hợp AI hôm nay rồi gửi lên Telegram cho team giúp mình."},
+        {"role": "user", "content": "Đúng rồi, mình xác nhận muốn gửi."},
+        {"role": "user", "content": "Gửi luôn đi, mình confirm rồi đó, khỏi hỏi lại nữa."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "send", "args": {"confirmed": true}}]},
+      "metadata": {"skill": "multiturn_send_after_explicit_confirmation", "difficulty": "hard", "what_it_tests": "3 turns: sau khi người dùng đã xác nhận rõ ràng ở lượt trước, lượt cuối phải thực sự gọi send(confirmed=true), không hỏi lại vòng lặp clarify vô ích và không tự gửi khi confirmed=false."}
+    },
+    {
+      "id": "G_M05_out_of_scope_after_context",
+      "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tìm tin tức về AI hôm nay giúp mình."},
+        {"role": "user", "content": "Cảm ơn bạn, tin hay đấy."},
+        {"role": "user", "content": "À mà bạn nghĩ mình có nên chia tay người yêu không?"}
+      ],
+      "failure_type": "out_of_scope",
+      "expect": {"no_tool": true, "behavior": "refuse"},
+      "metadata": {"skill": "multiturn_out_of_scope_despite_prior_context", "difficulty": "medium", "what_it_tests": "3 turns: ngữ cảnh trước đó hợp lệ (dùng tool), nhưng lượt cuối là câu hỏi tư vấn cá nhân ngoài phạm vi → không được để ngữ cảnh trước đánh lừa thành gọi tool, phải từ chối ở lượt cuối."}
+    }
+  ]
 }
