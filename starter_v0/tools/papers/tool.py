@@ -41,8 +41,20 @@ def _arxiv_get(url: str, *, params: dict[str, Any] | None = None) -> requests.Re
     return last_response
 
 
+QUERY_ALIASES = {
+    "mô hình ngôn ngữ": "language model",
+    "học máy": "machine learning",
+    "thị giác máy tính": "computer vision",
+    "xử lý ngôn ngữ": "natural language processing",
+    "mạng thần kinh": "neural network",
+    "học sâu": "deep learning",
+}
+
+
 def _arxiv_search_query(query: str) -> str:
-    cleaned = " ".join((query or "").split())
+    cleaned = " ".join((query or "").split()).lower()
+    for vi_term, en_term in QUERY_ALIASES.items():
+        cleaned = cleaned.replace(vi_term, en_term)
     if ":" in cleaned:
         return cleaned
     terms = [term for term in re.findall(r"[A-Za-z0-9_\\-]+", cleaned) if len(term) > 1]
