@@ -15,7 +15,7 @@ class OpenAIProvider:
         *,
         api_key_env: str = "OPENAI_API_KEY",
         base_url: str | None = None,
-        default_model: str = "gpt-4o-mini",
+        default_model: str = "gpt-5-nano",
     ) -> None:
         self.api_key_env = api_key_env
         self.base_url = base_url
@@ -40,11 +40,13 @@ class OpenAIProvider:
             raise RuntimeError(f"Missing API key env var: {self.api_key_env}")
 
         client = OpenAI(api_key=api_key, base_url=self.base_url)
+        selected_model = model or self.default_model
         kwargs: dict[str, Any] = {
-            "model": model or self.default_model,
+            "model": selected_model,
             "messages": messages,
-            "temperature": temperature,
         }
+        if not selected_model.startswith("gpt-5"):
+            kwargs["temperature"] = temperature
         if tools:
             kwargs["tools"] = tools
         if tool_choice is not None:

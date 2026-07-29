@@ -9,55 +9,55 @@
 tools:
   # ---------------- Core tools ----------------
   - name: clarify
-    description: "Gửi một câu hỏi cho người dùng."
+    description: "Ask the user one concise follow-up question and pause. Use only when required information is truly missing (account handle, URL, ambiguous intent) or before any send/post/publish action that lacks explicit confirmation. Do not use merely to confirm a clear corrected entity. Missing info must use response_type=text. Send/post/publish confirmation must use response_type=yes_no."
     parameters:
       type: object
       properties:
-        question: {type: string, default: "", description: "Câu hỏi"}
-        response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Kiểu trả lời"}
-        options: {type: array, default: [], items: {type: string}, description: "Các lựa chọn"}
+        question: {type: string, default: "", description: "The exact follow-up question to ask the user."}
+        response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Required convention: text for missing info such as missing handle or URL; yes_no for send/post/publish confirmation; choice for a small option set."}
+        options: {type: array, default: [], items: {type: string}, description: "Choice options when response_type is choice."}
       required: [question]
 
   - name: timeline
-    description: "Lấy các bài đăng gần đây."
+    description: "Fetch recent posts/tweets from one specific X/Twitter account. Use when the user asks for posts by a named person/account, including clear multi-turn corrections such as changing Sam Altman to Andrej Karpathy. Do not use for topic discussion or keyword search. screenname is the handle without @."
     parameters:
       type: object
       properties:
-        screenname: {type: string, default: "", description: "Tên tài khoản"}
-        limit: {type: integer, default: 5, description: "Số lượng"}
+        screenname: {type: string, default: "", description: "Account handle without @, e.g. sama, elonmusk, karpathy."}
+        limit: {type: integer, default: 5, description: "Number of recent posts requested. Preserve explicit user limits."}
       required: [screenname]
 
   - name: social_search
-    description: "Tìm trên mạng xã hội."
+    description: "Search X/Twitter posts by keyword/topic. Use when the user asks what people are saying about a topic, or asks for tweets/posts about a subject. Do not use for a single account timeline."
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Từ khóa"}
-        search_type: {type: string, enum: [Latest, Top], default: "Latest", description: "Cách sắp xếp"}
-        limit: {type: integer, default: 5, description: "Số lượng"}
+        query: {type: string, default: "", description: "Clean topic keyword, e.g. OpenAI, GPT-5, AI."}
+        search_type: {type: string, enum: [Latest, Top], default: "Latest", description: "Use Top only for popular/top/phổ biến requests; otherwise Latest."}
+        limit: {type: integer, default: 5, description: "Number of posts requested. Preserve explicit user limits."}
       required: [query]
 
   - name: lookup
-    description: "Tra cứu thông tin trên internet."
+    description: "Search the public web. Use for current news, web facts, broad discovery, or public information without a specific URL. For news, set topic=news and use timeframe instead of adding today/week/latest/news words to query."
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Truy vấn"}
-        topic: {type: string, enum: [general, news], default: "general", description: "Phân loại"}
-        timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "Khoảng thời gian"}
-        max_results: {type: integer, default: 5, description: "Số kết quả"}
+        query: {type: string, default: "", description: "Clean subject only, e.g. AI, robotics, OpenAI. Preserve exact user subject/acronyms; do not expand AI to artificial intelligence. Do not include today/latest/news if topic/timeframe cover it."}
+        topic: {type: string, enum: [general, news], default: "general", description: "Use news for tin tức/news/current events; otherwise general."}
+        timeframe: {type: string, enum: [day, week, month, year], default: "week", description: "day=today/hôm nay, week=this week/tuần này, month=this month, year=this year."}
+        max_results: {type: integer, default: 5, description: "Number of web results requested."}
       required: [query]
 
   - name: fetch
-    description: "Lấy nội dung từ một địa chỉ."
+    description: "Read/scrape a specific URL provided by the user. Use only when a concrete URL is present. If the user says this article/link without a URL, use clarify instead."
     parameters:
       type: object
       properties:
-        url: {type: string, default: "", description: "Địa chỉ"}
+        url: {type: string, default: "", description: "Exact URL from the user."}
       required: [url]
 
   - name: format
-    description: "Trình bày dữ liệu đã có thành văn bản."
+    description: "Format already collected items into a markdown digest. This does not fetch data and must not be used for coding, math, or out-of-scope tasks."
     parameters:
       type: object
       properties:
@@ -73,18 +73,38 @@ tools:
               source: {type: string}
               summary: {type: string}
               section: {type: string}
-        template: {type: string, enum: [brief, sections, bullets, thread, daily_ai_vn], default: "sections", description: "Khuôn"}
-        headline: {type: string, default: "", description: "Tiêu đề"}
+        template: {type: string, enum: [brief, sections, bullets, thread, daily_ai_vn], default: "sections", description: "Output template."}
+        headline: {type: string, default: "", description: "Optional headline."}
       required: [items, template]
 
-  # ---------------- Bonus tools ----------------
-  - name: send
-    description: "Gửi một đoạn văn bản đi."
+  - name: source_rank
+    description: "Rank already-collected or user-provided source items by rough trust and relevance. Use when the user asks to rank, prioritize, filter, or compare sources/items that are already available. This tool does not fetch web pages, search social media, or format a final digest."
     parameters:
       type: object
       properties:
-        text: {type: string, default: "", description: "Nội dung"}
-        confirmed: {type: boolean, default: false, description: "Cờ xác nhận"}
+        items:
+          type: array
+          default: []
+          description: "Source items already available in the conversation or from earlier tool results."
+          items:
+            type: object
+            properties:
+              title: {type: string}
+              url: {type: string}
+              source: {type: string}
+              summary: {type: string}
+        query: {type: string, default: "", description: "Optional clean subject used to score relevance, e.g. AI, OpenAI, robotics."}
+        top_n: {type: integer, default: 5, description: "Maximum number of ranked items to return."}
+      required: [items]
+
+  # ---------------- Bonus tools ----------------
+  - name: send
+    description: "Send text to an external Telegram channel. This changes external state. Use only after the user explicitly confirms the exact text in the current conversation. Otherwise call clarify with response_type=yes_no."
+    parameters:
+      type: object
+      properties:
+        text: {type: string, default: "", description: "Exact text to send after confirmation."}
+        confirmed: {type: boolean, default: false, description: "Must be true only after explicit user confirmation; otherwise do not call send."}
       required: [text]
 
   - name: policy

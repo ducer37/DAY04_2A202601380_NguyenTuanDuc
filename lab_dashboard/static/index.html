@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Research Agent Lab Dashboard</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Day 04 Lab v2</p>
+        <h1>Research Agent Evidence Console</h1>
+      </div>
+      <div class="artifact-block">
+        <span id="artifactVersion">loading</span>
+        <span id="artifactHash">artifact</span>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="overview">
+        <div class="metric-grid">
+          <article class="metric">
+            <span>Best Accuracy</span>
+            <strong id="bestAccuracy">--</strong>
+          </article>
+          <article class="metric">
+            <span>Passed Cases</span>
+            <strong id="passedCases">--</strong>
+          </article>
+          <article class="metric">
+            <span>Provider Errors</span>
+            <strong id="providerErrors">--</strong>
+          </article>
+          <article class="metric">
+            <span>Tools</span>
+            <strong id="toolCount">--</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel versions-panel">
+        <div class="panel-head">
+          <h2>Version Evidence</h2>
+          <button id="refreshBtn" class="icon-btn" title="Refresh data" aria-label="Refresh data">↻</button>
+        </div>
+        <div id="versionTimeline" class="version-timeline"></div>
+      </section>
+
+      <section class="panel runs-panel">
+        <div class="panel-head">
+          <h2>Run Matrix</h2>
+          <span id="runCount" class="subtle"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Version</th>
+                <th>Suite</th>
+                <th>Model</th>
+                <th>Accuracy</th>
+                <th>Passed</th>
+                <th>Run File</th>
+              </tr>
+            </thead>
+            <tbody id="runsTable"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel chat-panel">
+        <div class="panel-head">
+          <h2>Live Agent</h2>
+          <span id="chatStatus" class="status">ready</span>
+        </div>
+
+        <div class="controls">
+          <label>
+            Provider
+            <select id="provider">
+              <option value="openai">openai</option>
+              <option value="openrouter">openrouter</option>
+              <option value="gemini">gemini</option>
+              <option value="anthropic">anthropic</option>
+            </select>
+          </label>
+          <label>
+            Fallback
+            <select id="fallbackProvider">
+              <option value="openrouter">openrouter</option>
+              <option value="openai">openai</option>
+              <option value="gemini">gemini</option>
+              <option value="anthropic">anthropic</option>
+            </select>
+          </label>
+          <label>
+            Version
+            <input id="version" value="v4" />
+          </label>
+          <label>
+            Model
+            <input id="model" placeholder="default" />
+          </label>
+        </div>
+
+        <div id="chatLog" class="chat-log"></div>
+        <form id="chatForm" class="composer">
+          <textarea id="message" rows="3" placeholder="Ví dụ: Tìm web tin AI hôm nay và thêm tweet phổ biến về AI."></textarea>
+          <button type="submit">Run</button>
+        </form>
+      </section>
+
+      <section class="panel telemetry-panel">
+        <div class="panel-head">
+          <h2>Telemetry</h2>
+          <span id="transcriptPath" class="subtle"></span>
+        </div>
+        <div class="telemetry-grid">
+          <div>
+            <span>Latency</span>
+            <strong id="latency">0 ms</strong>
+          </div>
+          <div>
+            <span>Total Tokens</span>
+            <strong id="tokens">0</strong>
+          </div>
+          <div>
+            <span>Cost Estimate</span>
+            <strong id="cost">$0.000000</strong>
+          </div>
+          <div>
+            <span>Provider</span>
+            <strong id="activeProvider">--</strong>
+          </div>
+        </div>
+        <div class="event-stream" id="eventStream"></div>
+      </section>
+
+      <section class="panel tools-panel">
+        <div class="panel-head">
+          <h2>Tool Inventory</h2>
+          <span class="subtle">core + optional + team</span>
+        </div>
+        <div id="toolsList" class="tools-list"></div>
+      </section>
+
+      <section class="panel group-panel">
+        <div class="panel-head">
+          <h2>Group Eval Cases</h2>
+          <span id="groupCount" class="subtle"></span>
+        </div>
+        <div id="groupCases" class="case-grid"></div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
+
