@@ -7,3 +7,5 @@ requests>=2.31.0
 PyYAML>=6.0
 # Optional arXiv PDF extraction (`paper_text`):
 pypdf>=4.0.0
+# Web chat UI (`main.py` at the repo root):
+Flask>=3.0.0

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Research Agent — ReAct Console</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦞</text></svg>" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="dot" id="conn-dot"></span>
+        <div>
+          <h1>Research Agent</h1>
+          <p class="sub" id="brand-sub">starter_v0 · ReAct console</p>
+        </div>
+      </div>
+
+      <div class="meters" id="meters">
+        <div class="meter" title="Prompt tokens billed this session">
+          <span class="meter-label">tokens in</span>
+          <span class="meter-value" id="m-in">0</span>
+        </div>
+        <div class="meter" title="Completion tokens billed this session">
+          <span class="meter-label">tokens out</span>
+          <span class="meter-value" id="m-out">0</span>
+        </div>
+        <div class="meter" title="Total tokens this session">
+          <span class="meter-label">total</span>
+          <span class="meter-value" id="m-total">0</span>
+        </div>
+        <div class="meter" title="Turns / tool calls this session">
+          <span class="meter-label">turns · tools</span>
+          <span class="meter-value" id="m-turns">0 · 0</span>
+        </div>
+        <div class="meter" title="Latency of the last turn (average in brackets)">
+          <span class="meter-label">latency</span>
+          <span class="meter-value" id="m-latency">—</span>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="ghost" id="btn-settings" title="Session settings">⚙︎</button>
+        <button class="ghost" id="btn-reset" title="New session (clears history + counters)">⟳</button>
+      </div>
+    </header>
+
+    <section class="settings" id="settings" hidden>
+      <label>Provider
+        <select id="cfg-provider">
+          <option value="openrouter">openrouter</option>
+          <option value="openai">openai</option>
+          <option value="anthropic">anthropic</option>
+          <option value="gemini">gemini</option>
+        </select>
+      </label>
+      <label>Model
+        <input id="cfg-model" type="text" placeholder="provider default" />
+      </label>
+      <label>Version
+        <input id="cfg-version" type="text" placeholder="v0" size="6" />
+      </label>
+      <label>Max tool rounds
+        <input id="cfg-rounds" type="number" min="1" max="12" />
+      </label>
+      <label>History window
+        <input id="cfg-history" type="number" min="0" max="20" />
+      </label>
+      <label>Typing delay (ms/chunk)
+        <input id="cfg-delay" type="number" min="0" max="200" />
+      </label>
+      <button class="primary" id="btn-apply">Apply &amp; restart session</button>
+      <p class="settings-note" id="settings-note"></p>
+    </section>
+
+    <main class="chat" id="chat">
+      <div class="welcome" id="welcome">
+        <h2>ReAct console</h2>
+        <p>
+          Every turn is shown in full: the model's thought, each tool call with its
+          parameters, the raw tool response, per-step latency, and the running token
+          counter for this session.
+        </p>
+        <div class="tool-chips" id="tool-chips"></div>
+        <div class="examples">
+          <button class="example">Tổng hợp tin AI trong tuần qua thành digest ngắn</button>
+          <button class="example">Tìm 3 bài arXiv mới về agent evaluation và tóm tắt</button>
+          <button class="example">Chính sách nội bộ nói gì về trích dẫn nguồn?</button>
+        </div>
+      </div>
+    </main>
+
+    <footer class="composer">
+      <div class="composer-inner">
+        <textarea id="input" rows="1" placeholder="Ask the research agent…  (Enter to send, Shift+Enter for newline)"></textarea>
+        <button class="primary send" id="btn-send" title="Send">➤</button>
+        <button class="danger send" id="btn-stop" title="Stop" hidden>■</button>
+      </div>
+      <p class="foot-note" id="foot-note"></p>
+    </footer>
+  </div>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
