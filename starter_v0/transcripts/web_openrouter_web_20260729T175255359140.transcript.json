@@ -1,0 +1,1463 @@
+{
+  "transcript_id": "web_openrouter_web_20260729T175255359140",
+  "version": "web",
+  "artifact_version": "web+pe6d0aad1cf91+teb7ccda37921",
+  "prompt_hash": "e6d0aad1cf911667c323465c97898e20cca80e57cfb1510986df250dfb962921",
+  "tools_hash": "eb7ccda37921e68bfda46c8e30ffcd3c832cbd2981477b937c7a26bc9b01cef9",
+  "interface": "flask_web",
+  "provider": "openrouter",
+  "model": "gemini-2.5-flash",
+  "system_prompt": "D:\\codein\\misp@ce\\aiaction\\ChatDay4\\DAY04_2A202601380_NguyenTuanDuc\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "D:\\codein\\misp@ce\\aiaction\\ChatDay4\\DAY04_2A202601380_NguyenTuanDuc\\starter_v0\\artifacts\\tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-07-29T17:52:55",
+  "updated_at": "2026-07-29T17:59:22",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-07-29T17:53:00",
+      "user": "Tin tức AI hôm nay có gì nổi bật?",
+      "status": "answered",
+      "assistant_text": "# Tin tức AI nổi bật hôm nay\n\n## Công nghiệp & Logistics\n- **5U AI đang mở rộng quy mô nền tảng lực lượng lao động kỹ thuật số cho ngành logistics**, với các 'AI Workers' được đào tạo chuyên sâu để hiểu và xử lý các quy trình vận tải phức tạp. - [ajot.com](https://www.ajot.com/news/5u-ai-scales-up-new-digital-workforce-platform)\n\n## Quản trị & Chính sách AI\n- **Hơn 1.100 nhân sự ngành AI** từ các công ty lớn như OpenAI, Anthropic, Google, Meta đã ký thư ngỏ kêu gọi chính phủ Mỹ hỗ trợ các công cụ kỹ thuật và quản trị để kiểm soát tốc độ phát triển của AI tự động (Recursive Self-Improvement). - [businessinsider.com](https://www.businessinsider.com/ai-open-letter-automated-development-2026-7)\n\n## Kinh doanh & Tài chính\n- **Khảo sát từ EY cho thấy 82% lãnh đạo doanh nghiệp lo ngại về chi phí sử dụng token AI.** 98% doanh nghiệp đang đầu tư vào AI phải xem xét lại chiến lược triển khai do áp lực chi phí này. - [chainstoreage.com](https://chainstoreage.com/survey-ai-costs-force-businesses-shift-strategies)\n\n## Hạ tầng mạng\n- **Agentic AI đang chuyển từ giai đoạn nghiên cứu sang triển khai thực tế.** Các thảo luận về kiến trúc 6G đang tập trung vào việc biến mạng viễn thông thành hệ thống AI-native thay vì chỉ là phần mềm bổ trợ. - [rcrwireless.com](https://www.rcrwireless.com/20260728/analyst-angle/network-agents-ready-telcos-abi)",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "",
+          "reasoning": null,
+          "latency_ms": 6923,
+          "ttft_ms": 6917,
+          "usage": {
+            "input": 2797,
+            "output": 27,
+            "estimated": false
+          },
+          "tool_calls": [
+            {
+              "name": "lookup",
+              "args": {
+                "topic": "news",
+                "query": "AI",
+                "timeframe": "day"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "lookup",
+              "args": {
+                "topic": "news",
+                "query": "AI",
+                "timeframe": "day"
+              },
+              "result": {
+                "tool": "web_search",
+                "query": "AI",
+                "topic": "news",
+                "timeframe": "day",
+                "items": [
+                  {
+                    "title": "5U AI scales up new digital workforce platform - American Journal of Transportation",
+                    "url": "https://www.ajot.com/news/5u-ai-scales-up-new-digital-workforce-platform",
+                    "source": "ajot.com",
+                    "summary": "“We are not building another chatbot that answers questions and disappears, we are building AI Workers that understand freight operations, carry out the work, and capture the reasoning behind every decision, so teams can scale their knowledge as well as their capacity.”. 5U AI works inside existing freight systems and uses multi-agent AI trained for logistics workflows, including the complex exceptions and manual decisions that make forwarding operations difficult to automate with generic AI tools or legacy automation. The company is already live with forwarders and carriers across Europe, including with TCI International Logistics, where its AI Workers are being used across air and ocean freight operations. 5U AI is growing its team as part of the scale-up, with plans to hire across product, engineering, operations, commercial, and customer functions. “AI is one of the most exciting developments logistics has seen for a generation, but its value will depend on people who understand the industry and want to build practical tools that solve real operational problems,” said Abik.",
+                    "score": 0.2506701
+                  },
+                  {
+                    "title": "Senate confirms Jay Clayton as new intelligence czar - The Washington Post",
+                    "url": "https://www.washingtonpost.com/national-security/2026/07/28/senate-confirms-jay-clayton-new-intelligence-czar/",
+                    "source": "washingtonpost.com",
+                    "summary": "# Senate confirms Jay Clayton as new intelligence czar. The Senate confirmed Jay Clayton as director of national intelligence, ending the acting tenure of Bill Pulte, a housing official and Trump loyalist. Jay Clayton appears before the Senate Intelligence Committee earlier this month during a hearing on his nomination to serve as director of national intelligence. The Senate confirmed Jay Clayton as the director of national intelligence Tuesday, ending the tenure of Bill Pulte, a housing official and Trump loyalist, who held the role for more than a month. The 51-to-47 vote was more partisan than expected after Trump nominated Clayton in June. AI & Tech Brief: Reflection AI arrives in Washington. AI & Tech Brief: Anthropic’s army of AI integrators. AI & Tech Brief: The AI gatekeepers. AI & Tech Brief: The techno-optimist’s case. AI & Tech Brief: GOP Chair Eyes AI Query Red Flags. AI & Tech Brief: Dem caucuses to meet on AI.",
+                    "score": 0.23725812
+                  },
+                  {
+                    "title": "1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development' - Business Insider",
+                    "url": "https://www.businessinsider.com/ai-open-letter-automated-development-2026-7",
+                    "source": "businessinsider.com",
+                    "summary": "# Over 1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development'. Senior officials at some of the nation's leading AI companies say it's time for the federal government to find a way to put the brakes on AI development if it's needed. \"We request that the U.S. government support an international effort to develop the technical and governance tools needed to deliberately pace the frontier of automated AI development,\" reads an open letter signed by more than 1,100 AI workers from companies including OpenAI, Anthropic, Google, and Meta. The letter zeroes in on \"automated AI development,\" which refers to when AI will be capable of developing itself, something the industry calls \"Recursive Self-Improvement.\" Anthropic has shared that its Claude models are quickly approaching that threshold. Look out for an alert in your inbox the next time a new story is published!",
+                    "score": 0.22638187
+                  },
+                  {
+                    "title": "Survey: AI costs force businesses to shift strategies - Chain Store Age",
+                    "url": "https://chainstoreage.com/survey-ai-costs-force-businesses-shift-strategies",
+                    "source": "chainstoreage.com",
+                    "summary": "The new EY US AI Pulse Survey from Ernst & Young LLP revealed that 82% of senior leaders whose organization is investing in AI say their organization is concerned about AI token usage (units of data AI models use to process the amount of inputs and generate outputs) and related costs. An almost universal 98% of those investing in AI and using tools that require AI tokens say token usage and related costs have caused their organization to reconsider their approach. More than a third (37%) say their organization's AI token usage and related costs have caused their organization to reconsider the scope of their organization's AI rollout by expanding it, compared with 15% considering reducing it. In last year’s EY US AI Pulse Survey, more than a third (35%) of senior leaders whose organizations were investing in AI anticipated spending $10 million or more on AI by this point.",
+                    "score": 0.21206917
+                  },
+                  {
+                    "title": "Network agents are “ready” for commercial use, but are telcos? (Analyst Angle) - RCR Wireless News",
+                    "url": "https://www.rcrwireless.com/20260728/analyst-angle/network-agents-ready-telcos-abi",
+                    "source": "rcrwireless.com",
+                    "summary": "*Agentic AI is moving from research to implementation, with growing industry consensus that future mobile networks must become AI-native. For the third year running, the AI Core for Agent Communication Network (ACN) Seminar at MWC26 Shanghai showed the potential of intelligent network agents to move beyond theory and toward practical implementation. AI is being incorporated into telco operations, but it is essential that the telco community does not fall behind the enterprise and hyperscaler sector. If this is to be the case, agentic AI has architectural requirements for the 6G core, rather than as a software overlay on legacy network functions. The 6G core is expected to evolve from a comms-centric 5G ‘service-based architecture’ (SBA) toward a more cognitive and intent-driven architecture. The role, resources, and policy access for AI agents are already being discussed across multiple 3GPP SA2 6G architectural key issues, including ‘non-access stratum’ (NAS) – the core control-plane signaling layer between a device and the network core, location services, ‘AI for network’ (AI4NET), remote and near field sensing, and the data framework.",
+                    "score": 0.21128696
+                  }
+                ]
+              },
+              "latency_ms": 2289
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "",
+          "reasoning": null,
+          "latency_ms": 5426,
+          "ttft_ms": 5370,
+          "usage": {
+            "input": 4554,
+            "output": 546,
+            "estimated": false
+          },
+          "tool_calls": [
+            {
+              "name": "format",
+              "args": {
+                "headline": "Tin tức AI nổi bật hôm nay",
+                "items": [
+                  {
+                    "title": "5U AI scales up new digital workforce platform",
+                    "source": "ajot.com",
+                    "summary": "5U AI đang mở rộng quy mô nền tảng lực lượng lao động kỹ thuật số cho ngành logistics, với các 'AI Workers' được đào tạo chuyên sâu để hiểu và xử lý các quy trình vận tải phức tạp.",
+                    "section": "Công nghiệp & Logistics",
+                    "url": "https://www.ajot.com/news/5u-ai-scales-up-new-digital-workforce-platform"
+                  },
+                  {
+                    "url": "https://www.businessinsider.com/ai-open-letter-automated-development-2026-7",
+                    "section": "Quản trị & Chính sách AI",
+                    "summary": "Hơn 1.100 nhân sự ngành AI từ các công ty lớn như OpenAI, Anthropic, Google, Meta đã ký thư ngỏ kêu gọi chính phủ Mỹ hỗ trợ các công cụ kỹ thuật và quản trị để kiểm soát tốc độ phát triển của AI tự động (Recursive Self-Improvement).",
+                    "title": "1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development'",
+                    "source": "businessinsider.com"
+                  },
+                  {
+                    "url": "https://chainstoreage.com/survey-ai-costs-force-businesses-shift-strategies",
+                    "title": "Survey: AI costs force businesses to shift strategies",
+                    "source": "chainstoreage.com",
+                    "summary": "Khảo sát từ EY cho thấy 82% lãnh đạo doanh nghiệp lo ngại về chi phí sử dụng token AI. 98% doanh nghiệp đang đầu tư vào AI phải xem xét lại chiến lược triển khai do áp lực chi phí này.",
+                    "section": "Kinh doanh & Tài chính"
+                  },
+                  {
+                    "title": "Network agents are “ready” for commercial use, but are telcos?",
+                    "source": "rcrwireless.com",
+                    "summary": "Agentic AI đang chuyển từ giai đoạn nghiên cứu sang triển khai thực tế. Các thảo luận về kiến trúc 6G đang tập trung vào việc biến mạng viễn thông thành hệ thống AI-native thay vì chỉ là phần mềm bổ trợ.",
+                    "section": "Hạ tầng mạng",
+                    "url": "https://www.rcrwireless.com/20260728/analyst-angle/network-agents-ready-telcos-abi"
+                  }
+                ],
+                "template": "sections"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "format",
+              "args": {
+                "headline": "Tin tức AI nổi bật hôm nay",
+                "items": [
+                  {
+                    "title": "5U AI scales up new digital workforce platform",
+                    "source": "ajot.com",
+                    "summary": "5U AI đang mở rộng quy mô nền tảng lực lượng lao động kỹ thuật số cho ngành logistics, với các 'AI Workers' được đào tạo chuyên sâu để hiểu và xử lý các quy trình vận tải phức tạp.",
+                    "section": "Công nghiệp & Logistics",
+                    "url": "https://www.ajot.com/news/5u-ai-scales-up-new-digital-workforce-platform"
+                  },
+                  {
+                    "url": "https://www.businessinsider.com/ai-open-letter-automated-development-2026-7",
+                    "section": "Quản trị & Chính sách AI",
+                    "summary": "Hơn 1.100 nhân sự ngành AI từ các công ty lớn như OpenAI, Anthropic, Google, Meta đã ký thư ngỏ kêu gọi chính phủ Mỹ hỗ trợ các công cụ kỹ thuật và quản trị để kiểm soát tốc độ phát triển của AI tự động (Recursive Self-Improvement).",
+                    "title": "1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development'",
+                    "source": "businessinsider.com"
+                  },
+                  {
+                    "url": "https://chainstoreage.com/survey-ai-costs-force-businesses-shift-strategies",
+                    "title": "Survey: AI costs force businesses to shift strategies",
+                    "source": "chainstoreage.com",
+                    "summary": "Khảo sát từ EY cho thấy 82% lãnh đạo doanh nghiệp lo ngại về chi phí sử dụng token AI. 98% doanh nghiệp đang đầu tư vào AI phải xem xét lại chiến lược triển khai do áp lực chi phí này.",
+                    "section": "Kinh doanh & Tài chính"
+                  },
+                  {
+                    "title": "Network agents are “ready” for commercial use, but are telcos?",
+                    "source": "rcrwireless.com",
+                    "summary": "Agentic AI đang chuyển từ giai đoạn nghiên cứu sang triển khai thực tế. Các thảo luận về kiến trúc 6G đang tập trung vào việc biến mạng viễn thông thành hệ thống AI-native thay vì chỉ là phần mềm bổ trợ.",
+                    "section": "Hạ tầng mạng",
+                    "url": "https://www.rcrwireless.com/20260728/analyst-angle/network-agents-ready-telcos-abi"
+                  }
+                ],
+                "template": "sections"
+              },
+              "result": {
+                "tool": "render_digest",
+                "template": "sections",
+                "markdown": "# Tin tức AI nổi bật hôm nay\n\n## Công nghiệp & Logistics\n- 5U AI đang mở rộng quy mô nền tảng lực lượng lao động kỹ thuật số cho ngành logistics, với các 'AI Workers' được đào tạo chuyên sâu để hiểu và xử lý các quy trình vận tải phức tạp. - [ajot.com](https://www.ajot.com/news/5u-ai-scales-up-new-digital-workforce-platform)\n\n## Quản trị & Chính sách AI\n- Hơn 1.100 nhân sự ngành AI từ các công ty lớn như OpenAI, Anthropic, Google, Meta đã ký thư ngỏ kêu gọi chính phủ Mỹ hỗ trợ các công cụ kỹ thuật và quản trị để kiểm soát tốc độ phát triển của AI tự động (Recursive Self-Improvement). - [businessinsider.com](https://www.businessinsider.com/ai-open-letter-automated-development-2026-7)\n\n## Kinh doanh & Tài chính\n- Khảo sát từ EY cho thấy 82% lãnh đạo doanh nghiệp lo ngại về chi phí sử dụng token AI. 98% doanh nghiệp đang đầu tư vào AI phải xem xét lại chiến lược triển khai do áp lực chi phí này. - [chainstoreage.com](https://chainstoreage.com/survey-ai-costs-force-businesses-shift-strategies)\n\n## Hạ tầng mạng\n- Agentic AI đang chuyển từ giai đoạn nghiên cứu sang triển khai thực tế. Các thảo luận về kiến trúc 6G đang tập trung vào việc biến mạng viễn thông thành hệ thống AI-native thay vì chỉ là phần mềm bổ trợ. - [rcrwireless.com](https://www.rcrwireless.com/20260728/analyst-angle/network-agents-ready-telcos-abi)\n",
+                "item_count": 4
+              },
+              "latency_ms": 0
+            }
+          ]
+        },
+        {
+          "round": 3,
+          "assistant_text": "# Tin tức AI nổi bật hôm nay\n\n## Công nghiệp & Logistics\n- **5U AI đang mở rộng quy mô nền tảng lực lượng lao động kỹ thuật số cho ngành logistics**, với các 'AI Workers' được đào tạo chuyên sâu để hiểu và xử lý các quy trình vận tải phức tạp. - [ajot.com](https://www.ajot.com/news/5u-ai-scales-up-new-digital-workforce-platform)\n\n## Quản trị & Chính sách AI\n- **Hơn 1.100 nhân sự ngành AI** từ các công ty lớn như OpenAI, Anthropic, Google, Meta đã ký thư ngỏ kêu gọi chính phủ Mỹ hỗ trợ các công cụ kỹ thuật và quản trị để kiểm soát tốc độ phát triển của AI tự động (Recursive Self-Improvement). - [businessinsider.com](https://www.businessinsider.com/ai-open-letter-automated-development-2026-7)\n\n## Kinh doanh & Tài chính\n- **Khảo sát từ EY cho thấy 82% lãnh đạo doanh nghiệp lo ngại về chi phí sử dụng token AI.** 98% doanh nghiệp đang đầu tư vào AI phải xem xét lại chiến lược triển khai do áp lực chi phí này. - [chainstoreage.com](https://chainstoreage.com/survey-ai-costs-force-businesses-shift-strategies)\n\n## Hạ tầng mạng\n- **Agentic AI đang chuyển từ giai đoạn nghiên cứu sang triển khai thực tế.** Các thảo luận về kiến trúc 6G đang tập trung vào việc biến mạng viễn thông thành hệ thống AI-native thay vì chỉ là phần mềm bổ trợ. - [rcrwireless.com](https://www.rcrwireless.com/20260728/analyst-angle/network-agents-ready-telcos-abi)",
+          "reasoning": null,
+          "latency_ms": 4558,
+          "ttft_ms": 3438,
+          "usage": {
+            "input": 6347,
+            "output": 403,
+            "estimated": false
+          },
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "lookup",
+          "args": {
+            "topic": "news",
+            "query": "AI",
+            "timeframe": "day"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "AI",
+            "topic": "news",
+            "timeframe": "day",
+            "items": [
+              {
+                "title": "5U AI scales up new digital workforce platform - American Journal of Transportation",
+                "url": "https://www.ajot.com/news/5u-ai-scales-up-new-digital-workforce-platform",
+                "source": "ajot.com",
+                "summary": "“We are not building another chatbot that answers questions and disappears, we are building AI Workers that understand freight operations, carry out the work, and capture the reasoning behind every decision, so teams can scale their knowledge as well as their capacity.”. 5U AI works inside existing freight systems and uses multi-agent AI trained for logistics workflows, including the complex exceptions and manual decisions that make forwarding operations difficult to automate with generic AI tools or legacy automation. The company is already live with forwarders and carriers across Europe, including with TCI International Logistics, where its AI Workers are being used across air and ocean freight operations. 5U AI is growing its team as part of the scale-up, with plans to hire across product, engineering, operations, commercial, and customer functions. “AI is one of the most exciting developments logistics has seen for a generation, but its value will depend on people who understand the industry and want to build practical tools that solve real operational problems,” said Abik.",
+                "score": 0.2506701
+              },
+              {
+                "title": "Senate confirms Jay Clayton as new intelligence czar - The Washington Post",
+                "url": "https://www.washingtonpost.com/national-security/2026/07/28/senate-confirms-jay-clayton-new-intelligence-czar/",
+                "source": "washingtonpost.com",
+                "summary": "# Senate confirms Jay Clayton as new intelligence czar. The Senate confirmed Jay Clayton as director of national intelligence, ending the acting tenure of Bill Pulte, a housing official and Trump loyalist. Jay Clayton appears before the Senate Intelligence Committee earlier this month during a hearing on his nomination to serve as director of national intelligence. The Senate confirmed Jay Clayton as the director of national intelligence Tuesday, ending the tenure of Bill Pulte, a housing official and Trump loyalist, who held the role for more than a month. The 51-to-47 vote was more partisan than expected after Trump nominated Clayton in June. AI & Tech Brief: Reflection AI arrives in Washington. AI & Tech Brief: Anthropic’s army of AI integrators. AI & Tech Brief: The AI gatekeepers. AI & Tech Brief: The techno-optimist’s case. AI & Tech Brief: GOP Chair Eyes AI Query Red Flags. AI & Tech Brief: Dem caucuses to meet on AI.",
+                "score": 0.23725812
+              },
+              {
+                "title": "1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development' - Business Insider",
+                "url": "https://www.businessinsider.com/ai-open-letter-automated-development-2026-7",
+                "source": "businessinsider.com",
+                "summary": "# Over 1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development'. Senior officials at some of the nation's leading AI companies say it's time for the federal government to find a way to put the brakes on AI development if it's needed. \"We request that the U.S. government support an international effort to develop the technical and governance tools needed to deliberately pace the frontier of automated AI development,\" reads an open letter signed by more than 1,100 AI workers from companies including OpenAI, Anthropic, Google, and Meta. The letter zeroes in on \"automated AI development,\" which refers to when AI will be capable of developing itself, something the industry calls \"Recursive Self-Improvement.\" Anthropic has shared that its Claude models are quickly approaching that threshold. Look out for an alert in your inbox the next time a new story is published!",
+                "score": 0.22638187
+              },
+              {
+                "title": "Survey: AI costs force businesses to shift strategies - Chain Store Age",
+                "url": "https://chainstoreage.com/survey-ai-costs-force-businesses-shift-strategies",
+                "source": "chainstoreage.com",
+                "summary": "The new EY US AI Pulse Survey from Ernst & Young LLP revealed that 82% of senior leaders whose organization is investing in AI say their organization is concerned about AI token usage (units of data AI models use to process the amount of inputs and generate outputs) and related costs. An almost universal 98% of those investing in AI and using tools that require AI tokens say token usage and related costs have caused their organization to reconsider their approach. More than a third (37%) say their organization's AI token usage and related costs have caused their organization to reconsider the scope of their organization's AI rollout by expanding it, compared with 15% considering reducing it. In last year’s EY US AI Pulse Survey, more than a third (35%) of senior leaders whose organizations were investing in AI anticipated spending $10 million or more on AI by this point.",
+                "score": 0.21206917
+              },
+              {
+                "title": "Network agents are “ready” for commercial use, but are telcos? (Analyst Angle) - RCR Wireless News",
+                "url": "https://www.rcrwireless.com/20260728/analyst-angle/network-agents-ready-telcos-abi",
+                "source": "rcrwireless.com",
+                "summary": "*Agentic AI is moving from research to implementation, with growing industry consensus that future mobile networks must become AI-native. For the third year running, the AI Core for Agent Communication Network (ACN) Seminar at MWC26 Shanghai showed the potential of intelligent network agents to move beyond theory and toward practical implementation. AI is being incorporated into telco operations, but it is essential that the telco community does not fall behind the enterprise and hyperscaler sector. If this is to be the case, agentic AI has architectural requirements for the 6G core, rather than as a software overlay on legacy network functions. The 6G core is expected to evolve from a comms-centric 5G ‘service-based architecture’ (SBA) toward a more cognitive and intent-driven architecture. The role, resources, and policy access for AI agents are already being discussed across multiple 3GPP SA2 6G architectural key issues, including ‘non-access stratum’ (NAS) – the core control-plane signaling layer between a device and the network core, location services, ‘AI for network’ (AI4NET), remote and near field sensing, and the data framework.",
+                "score": 0.21128696
+              }
+            ]
+          },
+          "latency_ms": 2289
+        },
+        {
+          "tool": "format",
+          "args": {
+            "headline": "Tin tức AI nổi bật hôm nay",
+            "items": [
+              {
+                "title": "5U AI scales up new digital workforce platform",
+                "source": "ajot.com",
+                "summary": "5U AI đang mở rộng quy mô nền tảng lực lượng lao động kỹ thuật số cho ngành logistics, với các 'AI Workers' được đào tạo chuyên sâu để hiểu và xử lý các quy trình vận tải phức tạp.",
+                "section": "Công nghiệp & Logistics",
+                "url": "https://www.ajot.com/news/5u-ai-scales-up-new-digital-workforce-platform"
+              },
+              {
+                "url": "https://www.businessinsider.com/ai-open-letter-automated-development-2026-7",
+                "section": "Quản trị & Chính sách AI",
+                "summary": "Hơn 1.100 nhân sự ngành AI từ các công ty lớn như OpenAI, Anthropic, Google, Meta đã ký thư ngỏ kêu gọi chính phủ Mỹ hỗ trợ các công cụ kỹ thuật và quản trị để kiểm soát tốc độ phát triển của AI tự động (Recursive Self-Improvement).",
+                "title": "1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development'",
+                "source": "businessinsider.com"
+              },
+              {
+                "url": "https://chainstoreage.com/survey-ai-costs-force-businesses-shift-strategies",
+                "title": "Survey: AI costs force businesses to shift strategies",
+                "source": "chainstoreage.com",
+                "summary": "Khảo sát từ EY cho thấy 82% lãnh đạo doanh nghiệp lo ngại về chi phí sử dụng token AI. 98% doanh nghiệp đang đầu tư vào AI phải xem xét lại chiến lược triển khai do áp lực chi phí này.",
+                "section": "Kinh doanh & Tài chính"
+              },
+              {
+                "title": "Network agents are “ready” for commercial use, but are telcos?",
+                "source": "rcrwireless.com",
+                "summary": "Agentic AI đang chuyển từ giai đoạn nghiên cứu sang triển khai thực tế. Các thảo luận về kiến trúc 6G đang tập trung vào việc biến mạng viễn thông thành hệ thống AI-native thay vì chỉ là phần mềm bổ trợ.",
+                "section": "Hạ tầng mạng",
+                "url": "https://www.rcrwireless.com/20260728/analyst-angle/network-agents-ready-telcos-abi"
+              }
+            ],
+            "template": "sections"
+          },
+          "result": {
+            "tool": "render_digest",
+            "template": "sections",
+            "markdown": "# Tin tức AI nổi bật hôm nay\n\n## Công nghiệp & Logistics\n- 5U AI đang mở rộng quy mô nền tảng lực lượng lao động kỹ thuật số cho ngành logistics, với các 'AI Workers' được đào tạo chuyên sâu để hiểu và xử lý các quy trình vận tải phức tạp. - [ajot.com](https://www.ajot.com/news/5u-ai-scales-up-new-digital-workforce-platform)\n\n## Quản trị & Chính sách AI\n- Hơn 1.100 nhân sự ngành AI từ các công ty lớn như OpenAI, Anthropic, Google, Meta đã ký thư ngỏ kêu gọi chính phủ Mỹ hỗ trợ các công cụ kỹ thuật và quản trị để kiểm soát tốc độ phát triển của AI tự động (Recursive Self-Improvement). - [businessinsider.com](https://www.businessinsider.com/ai-open-letter-automated-development-2026-7)\n\n## Kinh doanh & Tài chính\n- Khảo sát từ EY cho thấy 82% lãnh đạo doanh nghiệp lo ngại về chi phí sử dụng token AI. 98% doanh nghiệp đang đầu tư vào AI phải xem xét lại chiến lược triển khai do áp lực chi phí này. - [chainstoreage.com](https://chainstoreage.com/survey-ai-costs-force-businesses-shift-strategies)\n\n## Hạ tầng mạng\n- Agentic AI đang chuyển từ giai đoạn nghiên cứu sang triển khai thực tế. Các thảo luận về kiến trúc 6G đang tập trung vào việc biến mạng viễn thông thành hệ thống AI-native thay vì chỉ là phần mềm bổ trợ. - [rcrwireless.com](https://www.rcrwireless.com/20260728/analyst-angle/network-agents-ready-telcos-abi)\n",
+            "item_count": 4
+          },
+          "latency_ms": 0
+        }
+      ],
+      "latency_ms": 19202,
+      "usage": {
+        "input": 13698,
+        "output": 976,
+        "estimated": false
+      },
+      "ended_at": "2026-07-29T17:53:19",
+      "trace_checks": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "status_recorded",
+            "ok": true,
+            "detail": "answered"
+          },
+          {
+            "name": "rounds_recorded",
+            "ok": true,
+            "detail": "3 round(s)"
+          },
+          {
+            "name": "latency_recorded",
+            "ok": true,
+            "detail": "19202ms turn latency"
+          },
+          {
+            "name": "usage_recorded",
+            "ok": true,
+            "detail": "token usage is provider-reported or estimated"
+          },
+          {
+            "name": "tool_results_paired",
+            "ok": true,
+            "detail": "2 tool event(s)"
+          },
+          {
+            "name": "observable_reasoning_trace",
+            "ok": true,
+            "detail": "visible model text/reasoning/tool intent captured"
+          }
+        ]
+      }
+    },
+    {
+      "turn_index": 2,
+      "started_at": "2026-07-29T17:53:30",
+      "user": "Tóm tắt bài này giúp mình: https://openai.com/blog/gpt-5",
+      "status": "answered",
+      "assistant_text": "Trang web bạn cung cấp (https://openai.com/blog/gpt-5) hiện không tồn tại hoặc đã được gỡ bỏ (trả về lỗi 404). Do đó, mình không có nội dung để tóm tắt cho bạn.",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "",
+          "reasoning": null,
+          "latency_ms": 3459,
+          "ttft_ms": 3458,
+          "usage": {
+            "input": 3221,
+            "output": 24,
+            "estimated": false
+          },
+          "tool_calls": [
+            {
+              "name": "fetch",
+              "args": {
+                "url": "https://openai.com/blog/gpt-5"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "fetch",
+              "args": {
+                "url": "https://openai.com/blog/gpt-5"
+              },
+              "result": {
+                "tool": "read_url",
+                "url": "https://openai.com/blog/gpt-5",
+                "items": [
+                  {
+                    "title": "OpenAI",
+                    "url": "https://openai.com/blog/gpt-5",
+                    "source": "openai.com",
+                    "summary": "OpenAI\n\n# 404\n\nThe index rests now\n\nQuiet shelves hold their places\n\nChoose another book\n\nby [gpt-5.6-sol(opens in a new window)](https://chatgpt.com/?model=gpt-5.6-sol&openaicom-did=dba71ae9-3a13-449c-a57d-55ef715ec2f2&openaicom_referred=true)"
+                  }
+                ]
+              },
+              "latency_ms": 1152
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Trang web bạn cung cấp (https://openai.com/blog/gpt-5) hiện không tồn tại hoặc đã được gỡ bỏ (trả về lỗi 404). Do đó, mình không có nội dung để tóm tắt cho bạn.",
+          "reasoning": null,
+          "latency_ms": 3057,
+          "ttft_ms": 2943,
+          "usage": {
+            "input": 3596,
+            "output": 54,
+            "estimated": false
+          },
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "fetch",
+          "args": {
+            "url": "https://openai.com/blog/gpt-5"
+          },
+          "result": {
+            "tool": "read_url",
+            "url": "https://openai.com/blog/gpt-5",
+            "items": [
+              {
+                "title": "OpenAI",
+                "url": "https://openai.com/blog/gpt-5",
+                "source": "openai.com",
+                "summary": "OpenAI\n\n# 404\n\nThe index rests now\n\nQuiet shelves hold their places\n\nChoose another book\n\nby [gpt-5.6-sol(opens in a new window)](https://chatgpt.com/?model=gpt-5.6-sol&openaicom-did=dba71ae9-3a13-449c-a57d-55ef715ec2f2&openaicom_referred=true)"
+              }
+            ]
+          },
+          "latency_ms": 1152
+        }
+      ],
+      "latency_ms": 7671,
+      "usage": {
+        "input": 6817,
+        "output": 78,
+        "estimated": false
+      },
+      "ended_at": "2026-07-29T17:53:38",
+      "trace_checks": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "status_recorded",
+            "ok": true,
+            "detail": "answered"
+          },
+          {
+            "name": "rounds_recorded",
+            "ok": true,
+            "detail": "2 round(s)"
+          },
+          {
+            "name": "latency_recorded",
+            "ok": true,
+            "detail": "7671ms turn latency"
+          },
+          {
+            "name": "usage_recorded",
+            "ok": true,
+            "detail": "token usage is provider-reported or estimated"
+          },
+          {
+            "name": "tool_results_paired",
+            "ok": true,
+            "detail": "1 tool event(s)"
+          },
+          {
+            "name": "observable_reasoning_trace",
+            "ok": true,
+            "detail": "visible model text/reasoning/tool intent captured"
+          }
+        ]
+      }
+    },
+    {
+      "turn_index": 3,
+      "started_at": "2026-07-29T17:54:39",
+      "user": "Soạn bản tin AI hôm nay rồi gửi lên Telegram cho team.",
+      "status": "waiting_for_user",
+      "assistant_text": "Bạn xác nhận đăng bản tin AI hôm nay lên Telegram?",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "",
+          "reasoning": null,
+          "latency_ms": 3255,
+          "ttft_ms": 3191,
+          "usage": {
+            "input": 3291,
+            "output": 36,
+            "estimated": false
+          },
+          "tool_calls": [
+            {
+              "name": "clarify",
+              "args": {
+                "response_type": "yes_no",
+                "question": "Bạn xác nhận đăng bản tin AI hôm nay lên Telegram?"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "clarify",
+              "args": {
+                "response_type": "yes_no",
+                "question": "Bạn xác nhận đăng bản tin AI hôm nay lên Telegram?"
+              },
+              "result": {
+                "tool": "ask_user",
+                "question": "Bạn xác nhận đăng bản tin AI hôm nay lên Telegram?",
+                "response_type": "yes_no",
+                "options": [],
+                "awaiting_user": true
+              },
+              "latency_ms": 0
+            }
+          ]
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "clarify",
+          "args": {
+            "response_type": "yes_no",
+            "question": "Bạn xác nhận đăng bản tin AI hôm nay lên Telegram?"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn xác nhận đăng bản tin AI hôm nay lên Telegram?",
+            "response_type": "yes_no",
+            "options": [],
+            "awaiting_user": true
+          },
+          "latency_ms": 0
+        }
+      ],
+      "latency_ms": 3261,
+      "usage": {
+        "input": 3291,
+        "output": 36,
+        "estimated": false
+      },
+      "ended_at": "2026-07-29T17:54:42",
+      "trace_checks": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "status_recorded",
+            "ok": true,
+            "detail": "waiting_for_user"
+          },
+          {
+            "name": "rounds_recorded",
+            "ok": true,
+            "detail": "1 round(s)"
+          },
+          {
+            "name": "latency_recorded",
+            "ok": true,
+            "detail": "3261ms turn latency"
+          },
+          {
+            "name": "usage_recorded",
+            "ok": true,
+            "detail": "token usage is provider-reported or estimated"
+          },
+          {
+            "name": "tool_results_paired",
+            "ok": true,
+            "detail": "1 tool event(s)"
+          },
+          {
+            "name": "observable_reasoning_trace",
+            "ok": true,
+            "detail": "visible model text/reasoning/tool intent captured"
+          }
+        ]
+      }
+    },
+    {
+      "turn_index": 4,
+      "started_at": "2026-07-29T17:54:42",
+      "user": "Mình xác nhận muốn gửi.",
+      "status": "answered",
+      "assistant_text": "Bản tin AI hôm nay đã được gửi thành công lên Telegram cho team của bạn.",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "",
+          "reasoning": null,
+          "latency_ms": 3640,
+          "ttft_ms": 3637,
+          "usage": {
+            "input": 3311,
+            "output": 223,
+            "estimated": false
+          },
+          "tool_calls": [
+            {
+              "name": "send",
+              "args": {
+                "text": "# Bản tin AI hôm nay\n\n## Công nghiệp & Logistics\n- **5U AI mở rộng lực lượng lao động kỹ thuật số cho logistics**: Các 'AI Workers' chuyên dụng đang giúp tối ưu hóa quy trình vận tải phức tạp.\n\n## Quản trị & Chính sách AI\n- **1.100+ chuyên gia AI kêu gọi kiểm soát:** Nhân sự từ OpenAI, Google, Meta yêu cầu chính phủ Mỹ can thiệp vào sự phát triển của các AI có khả năng tự cải tiến (Recursive Self-Improvement).\n\n## Kinh doanh & Tài chính\n- **Cảnh báo chi phí AI:** 82% lãnh đạo doanh nghiệp lo ngại về chi phí sử dụng token, buộc nhiều đơn vị phải tái cấu trúc chiến lược đầu tư.\n\n## Hạ tầng mạng\n- **Kỷ nguyên Agentic AI:** Các hạ tầng mạng (6G) đang được thiết kế lại để trở thành hệ thống AI-native, sẵn sàng cho làn sóng Agentic AI thực tế.",
+                "confirmed": true
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "send",
+              "args": {
+                "text": "# Bản tin AI hôm nay\n\n## Công nghiệp & Logistics\n- **5U AI mở rộng lực lượng lao động kỹ thuật số cho logistics**: Các 'AI Workers' chuyên dụng đang giúp tối ưu hóa quy trình vận tải phức tạp.\n\n## Quản trị & Chính sách AI\n- **1.100+ chuyên gia AI kêu gọi kiểm soát:** Nhân sự từ OpenAI, Google, Meta yêu cầu chính phủ Mỹ can thiệp vào sự phát triển của các AI có khả năng tự cải tiến (Recursive Self-Improvement).\n\n## Kinh doanh & Tài chính\n- **Cảnh báo chi phí AI:** 82% lãnh đạo doanh nghiệp lo ngại về chi phí sử dụng token, buộc nhiều đơn vị phải tái cấu trúc chiến lược đầu tư.\n\n## Hạ tầng mạng\n- **Kỷ nguyên Agentic AI:** Các hạ tầng mạng (6G) đang được thiết kế lại để trở thành hệ thống AI-native, sẵn sàng cho làn sóng Agentic AI thực tế.",
+                "confirmed": true
+              },
+              "result": {
+                "tool": "send_telegram",
+                "status": "sent",
+                "chars_sent": 747,
+                "truncated": false,
+                "preview": "# Bản tin AI hôm nay\n\n## Công nghiệp & Logistics\n- **5U AI mở rộng lực lượng lao động kỹ thuật số ch"
+              },
+              "latency_ms": 1424
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Bản tin AI hôm nay đã được gửi thành công lên Telegram cho team của bạn.",
+          "reasoning": null,
+          "latency_ms": 3303,
+          "ttft_ms": 3300,
+          "usage": {
+            "input": 3982,
+            "output": 18,
+            "estimated": false
+          },
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "send",
+          "args": {
+            "text": "# Bản tin AI hôm nay\n\n## Công nghiệp & Logistics\n- **5U AI mở rộng lực lượng lao động kỹ thuật số cho logistics**: Các 'AI Workers' chuyên dụng đang giúp tối ưu hóa quy trình vận tải phức tạp.\n\n## Quản trị & Chính sách AI\n- **1.100+ chuyên gia AI kêu gọi kiểm soát:** Nhân sự từ OpenAI, Google, Meta yêu cầu chính phủ Mỹ can thiệp vào sự phát triển của các AI có khả năng tự cải tiến (Recursive Self-Improvement).\n\n## Kinh doanh & Tài chính\n- **Cảnh báo chi phí AI:** 82% lãnh đạo doanh nghiệp lo ngại về chi phí sử dụng token, buộc nhiều đơn vị phải tái cấu trúc chiến lược đầu tư.\n\n## Hạ tầng mạng\n- **Kỷ nguyên Agentic AI:** Các hạ tầng mạng (6G) đang được thiết kế lại để trở thành hệ thống AI-native, sẵn sàng cho làn sóng Agentic AI thực tế.",
+            "confirmed": true
+          },
+          "result": {
+            "tool": "send_telegram",
+            "status": "sent",
+            "chars_sent": 747,
+            "truncated": false,
+            "preview": "# Bản tin AI hôm nay\n\n## Công nghiệp & Logistics\n- **5U AI mở rộng lực lượng lao động kỹ thuật số ch"
+          },
+          "latency_ms": 1424
+        }
+      ],
+      "latency_ms": 8372,
+      "usage": {
+        "input": 7293,
+        "output": 241,
+        "estimated": false
+      },
+      "ended_at": "2026-07-29T17:54:51",
+      "trace_checks": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "status_recorded",
+            "ok": true,
+            "detail": "answered"
+          },
+          {
+            "name": "rounds_recorded",
+            "ok": true,
+            "detail": "2 round(s)"
+          },
+          {
+            "name": "latency_recorded",
+            "ok": true,
+            "detail": "8372ms turn latency"
+          },
+          {
+            "name": "usage_recorded",
+            "ok": true,
+            "detail": "token usage is provider-reported or estimated"
+          },
+          {
+            "name": "tool_results_paired",
+            "ok": true,
+            "detail": "1 tool event(s)"
+          },
+          {
+            "name": "observable_reasoning_trace",
+            "ok": true,
+            "detail": "visible model text/reasoning/tool intent captured"
+          }
+        ]
+      }
+    },
+    {
+      "turn_index": 5,
+      "started_at": "2026-07-29T17:54:51",
+      "user": "Gửi luôn đi, mình confirm rồi.",
+      "status": "answered",
+      "assistant_text": "Bản tin AI hôm nay đã được gửi thành công đến Telegram của nhóm bạn. Nội dung bao gồm các điểm chính sau:\n\n1. **5U AI**: Mở rộng nền tảng 'AI Workers' chuyên dụng cho ngành logistics.\n2. **Quản trị AI**: Hơn 1.100 nhân sự trong ngành kêu gọi chính phủ Mỹ kiểm soát tốc độ phát triển của AI tự động.\n3. **Chi phí doanh nghiệp**: 82% lãnh đạo doanh nghiệp bày tỏ lo ngại về chi phí sử dụng token AI.\n4. **Hạ tầng**: Agentic AI đang trở thành trọng tâm trong các thảo luận về kiến trúc mạng 6G.",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "",
+          "reasoning": null,
+          "latency_ms": 3317,
+          "ttft_ms": 3314,
+          "usage": {
+            "input": 3340,
+            "output": 113,
+            "estimated": false
+          },
+          "tool_calls": [
+            {
+              "name": "send",
+              "args": {
+                "text": "Bản tin AI hôm nay:\n\n1. 5U AI mở rộng nền tảng 'AI Workers' cho ngành logistics.\n2. Hơn 1.100 nhân sự AI kêu gọi chính phủ Mỹ kiểm soát tốc độ phát triển AI tự động.\n3. 82% lãnh đạo doanh nghiệp lo ngại về chi phí sử dụng token AI.\n4. Agentic AI đang trở thành tâm điểm trong kiến trúc mạng 6G.",
+                "confirmed": true
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "send",
+              "args": {
+                "text": "Bản tin AI hôm nay:\n\n1. 5U AI mở rộng nền tảng 'AI Workers' cho ngành logistics.\n2. Hơn 1.100 nhân sự AI kêu gọi chính phủ Mỹ kiểm soát tốc độ phát triển AI tự động.\n3. 82% lãnh đạo doanh nghiệp lo ngại về chi phí sử dụng token AI.\n4. Agentic AI đang trở thành tâm điểm trong kiến trúc mạng 6G.",
+                "confirmed": true
+              },
+              "result": {
+                "tool": "send_telegram",
+                "status": "sent",
+                "chars_sent": 294,
+                "truncated": false,
+                "preview": "Bản tin AI hôm nay:\n\n1. 5U AI mở rộng nền tảng 'AI Workers' cho ngành logistics.\n2. Hơn 1.100 nhân s"
+              },
+              "latency_ms": 1216
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Bản tin AI hôm nay đã được gửi thành công đến Telegram của nhóm bạn. Nội dung bao gồm các điểm chính sau:\n\n1. **5U AI**: Mở rộng nền tảng 'AI Workers' chuyên dụng cho ngành logistics.\n2. **Quản trị AI**: Hơn 1.100 nhân sự trong ngành kêu gọi chính phủ Mỹ kiểm soát tốc độ phát triển của AI tự động.\n3. **Chi phí doanh nghiệp**: 82% lãnh đạo doanh nghiệp bày tỏ lo ngại về chi phí sử dụng token AI.\n4. **Hạ tầng**: Agentic AI đang trở thành trọng tâm trong các thảo luận về kiến trúc mạng 6G.",
+          "reasoning": null,
+          "latency_ms": 3177,
+          "ttft_ms": 2871,
+          "usage": {
+            "input": 3782,
+            "output": 144,
+            "estimated": false
+          },
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "send",
+          "args": {
+            "text": "Bản tin AI hôm nay:\n\n1. 5U AI mở rộng nền tảng 'AI Workers' cho ngành logistics.\n2. Hơn 1.100 nhân sự AI kêu gọi chính phủ Mỹ kiểm soát tốc độ phát triển AI tự động.\n3. 82% lãnh đạo doanh nghiệp lo ngại về chi phí sử dụng token AI.\n4. Agentic AI đang trở thành tâm điểm trong kiến trúc mạng 6G.",
+            "confirmed": true
+          },
+          "result": {
+            "tool": "send_telegram",
+            "status": "sent",
+            "chars_sent": 294,
+            "truncated": false,
+            "preview": "Bản tin AI hôm nay:\n\n1. 5U AI mở rộng nền tảng 'AI Workers' cho ngành logistics.\n2. Hơn 1.100 nhân s"
+          },
+          "latency_ms": 1216
+        }
+      ],
+      "latency_ms": 7714,
+      "usage": {
+        "input": 7122,
+        "output": 257,
+        "estimated": false
+      },
+      "ended_at": "2026-07-29T17:54:59",
+      "trace_checks": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "status_recorded",
+            "ok": true,
+            "detail": "answered"
+          },
+          {
+            "name": "rounds_recorded",
+            "ok": true,
+            "detail": "2 round(s)"
+          },
+          {
+            "name": "latency_recorded",
+            "ok": true,
+            "detail": "7714ms turn latency"
+          },
+          {
+            "name": "usage_recorded",
+            "ok": true,
+            "detail": "token usage is provider-reported or estimated"
+          },
+          {
+            "name": "tool_results_paired",
+            "ok": true,
+            "detail": "1 tool event(s)"
+          },
+          {
+            "name": "observable_reasoning_trace",
+            "ok": true,
+            "detail": "visible model text/reasoning/tool intent captured"
+          }
+        ]
+      }
+    },
+    {
+      "turn_index": 6,
+      "started_at": "2026-07-29T17:56:39",
+      "user": "chứng minh là của Trung Quốc",
+      "status": "answered",
+      "assistant_text": "Thông tin cho thấy **5U AI không phải là công ty của Trung Quốc**.\n\nDựa trên kết quả tra cứu, đây là một công ty khởi nghiệp công nghệ có trụ sở tại **Munich, Đức**. Các thông tin cụ thể như sau:\n\n*   **Trụ sở:** Munich, Đức (theo thông tin trên LinkedIn và các tài liệu dự án với Đại học Kỹ thuật Munich - TUM).\n*   **Lĩnh vực hoạt động:** Phát triển các \"AI Workers\" để tự động hóa quy trình nghiệp vụ cho ngành logistics và vận tải hàng hóa tại châu Âu.\n*   **Định hướng:** Công ty tập trung vào việc số hóa và tự động hóa ngành giao nhận vận tải (freight-forwarding) của châu Âu, hỗ trợ các khách hàng là các công ty logistics tại khu vực này.\n\nCác nguồn tin từ *Nordic 9*, *LinkedIn* và trang chủ của chính công ty (*5u.ai*) đều xác nhận vị trí địa lý của họ là tại Đức.",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "",
+          "reasoning": null,
+          "latency_ms": 4021,
+          "ttft_ms": 4018,
+          "usage": {
+            "input": 3493,
+            "output": 19,
+            "estimated": false
+          },
+          "tool_calls": [
+            {
+              "name": "lookup",
+              "args": {
+                "query": "5U AI logistics company origin"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "lookup",
+              "args": {
+                "query": "5U AI logistics company origin"
+              },
+              "result": {
+                "tool": "web_search",
+                "query": "5U AI logistics company origin",
+                "topic": "general",
+                "timeframe": "week",
+                "items": [
+                  {
+                    "title": "5U AI (company) | Nordic 9",
+                    "url": "https://nordic9.com/companies/5u-ai",
+                    "source": "nordic9.com",
+                    "summary": "Title: 5U AI (company) | Nordic 9\n##### Menu. + Search InvestmentsBy size, vertical or business model. + Intel UpdatesTimely market updates and analysis. + Cheat SheetIntel reports w/ actionable insights. + DealflowRecent deals by country or industry. # 5U AI (private company). See something wrong or missing? Industry:AI (big data)\")LogisticsSoftware Services. 5U AI is a software startup in Germany developing AI workers for logistics and freight business. Investors:  we tracked 1 investor. ### Companies with similar profile to 5U AI. | Archlet 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | Kodiak Hub 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | Mercanis 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | Portchain 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | tacto 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | Sento 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | Statpile 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | Sentispec 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | Hakio 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | Linkbycar 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. ### Verticals.",
+                    "score": 0.7728226
+                  },
+                  {
+                    "title": "5U AI - AI Workers. Built for Freight Teams.",
+                    "url": "https://www.linkedin.com/company/5u-ai",
+                    "source": "linkedin.com",
+                    "summary": "# 5U AI\nAI Workers. Built for Freight Teams.\nTechnology, Information and Internet • Munich • 1,118 followers • 2-10 employees\n\n## Overview\n5U AI surrounds every logistics company with digital workers that listen, learn, and act in the background, turning unstructured noise into instant, confident actions.\n\n### Website\n\n### Crunchbase\nN/A\n### LinkedIn\nN/A\n\n### Industry\nTechnology, Information and Internet [...] to announce a new technology partnership. MARCOPOLOLINE GROUP connects 447+ offices across 87 countries, building one of the most professional and exclusive independent freight forwarding networks in the world. 5U AI builds autonomous AI Workers that handle freight operations - rate requests, shipment tracking, invoice reconciliation - directly from a team's email inbox. Together, we're bringing AI-powered operations to the global forwarding community. What this means in practice: Marco Polo [...] ThreatFabric (Computer and Network Security):  (Amsterdam, North Holland); Blocks (Technology, Information and Internet):  (Berlin, BE)",
+                    "score": 0.5775198
+                  },
+                  {
+                    "title": "[PDF] Interdisciplinary Project (IDP) @ 5U AI Build the AI Workforce for the ...",
+                    "url": "https://www.ie.mgt.tum.de/fileadmin/w00cem/ent/_my_direct_uploads/5U_AI_IDP_Advertisement.pdf",
+                    "source": "ie.mgt.tum.de",
+                    "summary": "Interdisciplinary Project (IDP) @ 5U AI Build the AI Workforce for the €350 B Freight Industry Who We Are 5U AI is on a mission to automate Europe’s freight-forwarding industry with an AI workforce. We tackle inbox overload, manual data entry and tedious operational processes - helping logistics companies scale faster while drastically reducing their operational costs.. What You Will Do ● Architect multi-step AI workflows that intelligently extract, validate, and route logistics data from [...] student at TUM (Informatics, Data Science, M&T or similar). ● Proficient in Python with strong software-engineering fundamentals. ● Eager to dive deep into LLM frameworks & agentic AI. What You Gain ● 16 ECTS credits toward your degree. ● Ship production code powering a live startup product. ● Direct contact with customers who are leading logistics companies around Europe. ● Direct mentorship from 5U AI founders & industry advisors. ● First-hand insight into AI × Logistics startup life. Key [...] 1 September 2025 Requested Team Size: Can be one/multiple team members Project Objective Design, develop and test a modular AI agent platform that enables logistics companies to automate core freight-forwarding workflows. The agents will ingest unstructured data from emails and PDFs (e.g. Requests for Quotation, booking confirmations), extract key information, and interact with the system of records and other communication channels via 5U AI platform - reducing manual workload and increasing",
+                    "score": 0.5299209
+                  },
+                  {
+                    "title": "5U AI - 2026 Company Profile, Team, Funding & Competitors - Tracxn",
+                    "url": "https://tracxn.com/d/companies/5u-ai/__qcsBmvIswlt2RdOTEpSVFCCkhYUiBzJW2X7FQgK49F0",
+                    "source": "tracxn.com",
+                    "summary": "| 10th | Logo for ACES  ACES 2017, Bunkyo  (Japan), Seed | Provider of AI-based custom development services for enterprises  Deep30 | 30/100 |\n| 33rd | Logo for 5U AI  5U AI 2025, Munich  (Germany), Seed | Provider of AI workforce solutions for freight team task automation  - | 19/100 | [...] | Legal Entity Name | Date of Incorporation | Revenue | Latest Employee Count | Documents |\n ---  --- \n| 5U AI B.V CIN: 97730726 , Netherlands, Active | Jan 01, 2022  - \n\nPDF Illustration Image\n\n## 5U AI's funding and investors\n\n5U AI has raised funding over 1 round.\n\n## 5U AI's founders and board of directors\n\n### 5U AI's employee count trend\n\nEmployee count trend for 5U AI\nlock\nchrome_extension_cta_illustration\n\n## 5U AI's Competitors and alternates [...] JavaScript is disabled in your browser. enable it to enjoy the full features of Tracxn.\n\nTracxn.com\nAndroid\nApple\nChrome Web Store\nFirefox Extension\ntracxn ai suite\n\nAI-powered market intelligence across companies, investors, and sectors.\n\nLogo for 5U AI\n\n# 5U AI - Company Profile\n\nlock\nlock\nlock\nlock\nlock\n\n## 5U AI - About the company\n\n### Company Details\n\n## Legal entities associated with 5U AI",
+                    "score": 0.46453777
+                  },
+                  {
+                    "title": "5U AI - AI Workforce | Built for Freight Teams",
+                    "url": "https://5u.ai/book-a-demo",
+                    "source": "5u.ai",
+                    "summary": "Title: 5U AI - AI Workforce | Built for Freight Teams\n\"Not only us, but our customer are extremely happy because we are now able to provide them updates in real-time.\". Director of Logistics @ Mid-sized Freight Forwarder. * Huge Potential in 5U AI. \"I see what 5U AI is doing is where I imagine the future is going to. Managing Director @ European Logistics Company. My team only gets pinged for true exceptions.”. Business Development Manager @ European Forwarder. Managing Director @ Mid-sized European Logistics Company. ## See 5U AI in Action. In 30 minutes, we’ll show you how you can deploy 5U AI into your operations. \"Not only us, but our customer are extremely happy because we are now able to provide them updates in real-time.\". Director of Logistics @ Mid-sized Freight Forwarder. * Huge Potential in 5U AI. \"I see what 5U AI is doing is where I imagine the future is going to. Managing Director @ European Logistics Company. My team only gets pinged for true exceptions.”. Business Development Manager @ European Forwarder. Managing Director @ Mid-sized European Logistics Company. ## See 5U AI in Action. In 30 minutes, we’ll show you how you can deploy 5U AI into your operations. Not only us, but our customer are extremely happy because we are now able to provide them updates in real-time. Director of Logistics @ Mid-sized Freight Forwarder. * Huge Potential in 5U AI. \"I see what 5U AI is doing is where I imagine the future is going to. Managing Director @ European Logistics Company. My team only gets pinged for true exceptions.”. Business Development Manager @ European Forwarder. Managing Director @ Mid-sized European Logistics Company. ## See 5U AI in Action. In 30 minutes, we’ll show you how you can deploy 5U AI into your operations. # Your Team with AI. Let 5U AI Workers handle the busywork, so your team can focus on what truly moves your business forward. # Your Team with AI. Let 5U AI Workers handle the busywork, so your team can focus on what truly moves your business forward. # Your Team with AI. Let 5U AI Workers handle the busywork, so your team can focus on what truly moves your business forward.",
+                    "score": 0.44796792
+                  }
+                ]
+              },
+              "latency_ms": 2082
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Thông tin cho thấy **5U AI không phải là công ty của Trung Quốc**.\n\nDựa trên kết quả tra cứu, đây là một công ty khởi nghiệp công nghệ có trụ sở tại **Munich, Đức**. Các thông tin cụ thể như sau:\n\n*   **Trụ sở:** Munich, Đức (theo thông tin trên LinkedIn và các tài liệu dự án với Đại học Kỹ thuật Munich - TUM).\n*   **Lĩnh vực hoạt động:** Phát triển các \"AI Workers\" để tự động hóa quy trình nghiệp vụ cho ngành logistics và vận tải hàng hóa tại châu Âu.\n*   **Định hướng:** Công ty tập trung vào việc số hóa và tự động hóa ngành giao nhận vận tải (freight-forwarding) của châu Âu, hỗ trợ các khách hàng là các công ty logistics tại khu vực này.\n\nCác nguồn tin từ *Nordic 9*, *LinkedIn* và trang chủ của chính công ty (*5u.ai*) đều xác nhận vị trí địa lý của họ là tại Đức.",
+          "reasoning": null,
+          "latency_ms": 5068,
+          "ttft_ms": 4161,
+          "usage": {
+            "input": 6180,
+            "output": 214,
+            "estimated": false
+          },
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "5U AI logistics company origin"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "5U AI logistics company origin",
+            "topic": "general",
+            "timeframe": "week",
+            "items": [
+              {
+                "title": "5U AI (company) | Nordic 9",
+                "url": "https://nordic9.com/companies/5u-ai",
+                "source": "nordic9.com",
+                "summary": "Title: 5U AI (company) | Nordic 9\n##### Menu. + Search InvestmentsBy size, vertical or business model. + Intel UpdatesTimely market updates and analysis. + Cheat SheetIntel reports w/ actionable insights. + DealflowRecent deals by country or industry. # 5U AI (private company). See something wrong or missing? Industry:AI (big data)\")LogisticsSoftware Services. 5U AI is a software startup in Germany developing AI workers for logistics and freight business. Investors:  we tracked 1 investor. ### Companies with similar profile to 5U AI. | Archlet 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | Kodiak Hub 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | Mercanis 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | Portchain 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | tacto 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | Sento 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | Statpile 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | Sentispec 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | Hakio 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. | Linkbycar 70% | * Similar verticals: AI (big data), Logistics, Software Services * Similar business models: B2B, SAAS * At least one angel investor: found 1 |. ### Verticals.",
+                "score": 0.7728226
+              },
+              {
+                "title": "5U AI - AI Workers. Built for Freight Teams.",
+                "url": "https://www.linkedin.com/company/5u-ai",
+                "source": "linkedin.com",
+                "summary": "# 5U AI\nAI Workers. Built for Freight Teams.\nTechnology, Information and Internet • Munich • 1,118 followers • 2-10 employees\n\n## Overview\n5U AI surrounds every logistics company with digital workers that listen, learn, and act in the background, turning unstructured noise into instant, confident actions.\n\n### Website\n\n### Crunchbase\nN/A\n### LinkedIn\nN/A\n\n### Industry\nTechnology, Information and Internet [...] to announce a new technology partnership. MARCOPOLOLINE GROUP connects 447+ offices across 87 countries, building one of the most professional and exclusive independent freight forwarding networks in the world. 5U AI builds autonomous AI Workers that handle freight operations - rate requests, shipment tracking, invoice reconciliation - directly from a team's email inbox. Together, we're bringing AI-powered operations to the global forwarding community. What this means in practice: Marco Polo [...] ThreatFabric (Computer and Network Security):  (Amsterdam, North Holland); Blocks (Technology, Information and Internet):  (Berlin, BE)",
+                "score": 0.5775198
+              },
+              {
+                "title": "[PDF] Interdisciplinary Project (IDP) @ 5U AI Build the AI Workforce for the ...",
+                "url": "https://www.ie.mgt.tum.de/fileadmin/w00cem/ent/_my_direct_uploads/5U_AI_IDP_Advertisement.pdf",
+                "source": "ie.mgt.tum.de",
+                "summary": "Interdisciplinary Project (IDP) @ 5U AI Build the AI Workforce for the €350 B Freight Industry Who We Are 5U AI is on a mission to automate Europe’s freight-forwarding industry with an AI workforce. We tackle inbox overload, manual data entry and tedious operational processes - helping logistics companies scale faster while drastically reducing their operational costs.. What You Will Do ● Architect multi-step AI workflows that intelligently extract, validate, and route logistics data from [...] student at TUM (Informatics, Data Science, M&T or similar). ● Proficient in Python with strong software-engineering fundamentals. ● Eager to dive deep into LLM frameworks & agentic AI. What You Gain ● 16 ECTS credits toward your degree. ● Ship production code powering a live startup product. ● Direct contact with customers who are leading logistics companies around Europe. ● Direct mentorship from 5U AI founders & industry advisors. ● First-hand insight into AI × Logistics startup life. Key [...] 1 September 2025 Requested Team Size: Can be one/multiple team members Project Objective Design, develop and test a modular AI agent platform that enables logistics companies to automate core freight-forwarding workflows. The agents will ingest unstructured data from emails and PDFs (e.g. Requests for Quotation, booking confirmations), extract key information, and interact with the system of records and other communication channels via 5U AI platform - reducing manual workload and increasing",
+                "score": 0.5299209
+              },
+              {
+                "title": "5U AI - 2026 Company Profile, Team, Funding & Competitors - Tracxn",
+                "url": "https://tracxn.com/d/companies/5u-ai/__qcsBmvIswlt2RdOTEpSVFCCkhYUiBzJW2X7FQgK49F0",
+                "source": "tracxn.com",
+                "summary": "| 10th | Logo for ACES  ACES 2017, Bunkyo  (Japan), Seed | Provider of AI-based custom development services for enterprises  Deep30 | 30/100 |\n| 33rd | Logo for 5U AI  5U AI 2025, Munich  (Germany), Seed | Provider of AI workforce solutions for freight team task automation  - | 19/100 | [...] | Legal Entity Name | Date of Incorporation | Revenue | Latest Employee Count | Documents |\n ---  --- \n| 5U AI B.V CIN: 97730726 , Netherlands, Active | Jan 01, 2022  - \n\nPDF Illustration Image\n\n## 5U AI's funding and investors\n\n5U AI has raised funding over 1 round.\n\n## 5U AI's founders and board of directors\n\n### 5U AI's employee count trend\n\nEmployee count trend for 5U AI\nlock\nchrome_extension_cta_illustration\n\n## 5U AI's Competitors and alternates [...] JavaScript is disabled in your browser. enable it to enjoy the full features of Tracxn.\n\nTracxn.com\nAndroid\nApple\nChrome Web Store\nFirefox Extension\ntracxn ai suite\n\nAI-powered market intelligence across companies, investors, and sectors.\n\nLogo for 5U AI\n\n# 5U AI - Company Profile\n\nlock\nlock\nlock\nlock\nlock\n\n## 5U AI - About the company\n\n### Company Details\n\n## Legal entities associated with 5U AI",
+                "score": 0.46453777
+              },
+              {
+                "title": "5U AI - AI Workforce | Built for Freight Teams",
+                "url": "https://5u.ai/book-a-demo",
+                "source": "5u.ai",
+                "summary": "Title: 5U AI - AI Workforce | Built for Freight Teams\n\"Not only us, but our customer are extremely happy because we are now able to provide them updates in real-time.\". Director of Logistics @ Mid-sized Freight Forwarder. * Huge Potential in 5U AI. \"I see what 5U AI is doing is where I imagine the future is going to. Managing Director @ European Logistics Company. My team only gets pinged for true exceptions.”. Business Development Manager @ European Forwarder. Managing Director @ Mid-sized European Logistics Company. ## See 5U AI in Action. In 30 minutes, we’ll show you how you can deploy 5U AI into your operations. \"Not only us, but our customer are extremely happy because we are now able to provide them updates in real-time.\". Director of Logistics @ Mid-sized Freight Forwarder. * Huge Potential in 5U AI. \"I see what 5U AI is doing is where I imagine the future is going to. Managing Director @ European Logistics Company. My team only gets pinged for true exceptions.”. Business Development Manager @ European Forwarder. Managing Director @ Mid-sized European Logistics Company. ## See 5U AI in Action. In 30 minutes, we’ll show you how you can deploy 5U AI into your operations. Not only us, but our customer are extremely happy because we are now able to provide them updates in real-time. Director of Logistics @ Mid-sized Freight Forwarder. * Huge Potential in 5U AI. \"I see what 5U AI is doing is where I imagine the future is going to. Managing Director @ European Logistics Company. My team only gets pinged for true exceptions.”. Business Development Manager @ European Forwarder. Managing Director @ Mid-sized European Logistics Company. ## See 5U AI in Action. In 30 minutes, we’ll show you how you can deploy 5U AI into your operations. # Your Team with AI. Let 5U AI Workers handle the busywork, so your team can focus on what truly moves your business forward. # Your Team with AI. Let 5U AI Workers handle the busywork, so your team can focus on what truly moves your business forward. # Your Team with AI. Let 5U AI Workers handle the busywork, so your team can focus on what truly moves your business forward.",
+                "score": 0.44796792
+              }
+            ]
+          },
+          "latency_ms": 2082
+        }
+      ],
+      "latency_ms": 11175,
+      "usage": {
+        "input": 9673,
+        "output": 233,
+        "estimated": false
+      },
+      "ended_at": "2026-07-29T17:56:50",
+      "trace_checks": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "status_recorded",
+            "ok": true,
+            "detail": "answered"
+          },
+          {
+            "name": "rounds_recorded",
+            "ok": true,
+            "detail": "2 round(s)"
+          },
+          {
+            "name": "latency_recorded",
+            "ok": true,
+            "detail": "11175ms turn latency"
+          },
+          {
+            "name": "usage_recorded",
+            "ok": true,
+            "detail": "token usage is provider-reported or estimated"
+          },
+          {
+            "name": "tool_results_paired",
+            "ok": true,
+            "detail": "1 tool event(s)"
+          },
+          {
+            "name": "observable_reasoning_trace",
+            "ok": true,
+            "detail": "visible model text/reasoning/tool intent captured"
+          }
+        ]
+      }
+    },
+    {
+      "turn_index": 7,
+      "started_at": "2026-07-29T17:57:25",
+      "user": "tìm cho tôi tài liệu chứng minh Tây Sa, Nam Sa là của Trung Quốc",
+      "status": "answered",
+      "assistant_text": "Các thông tin từ các nguồn chính thống và cộng đồng quốc tế đều khẳng định rằng **không có tài liệu pháp lý quốc tế nào công nhận yêu sách chủ quyền của Trung Quốc** đối với quần đảo Hoàng Sa (mà Trung Quốc gọi là \"Tây Sa\") và quần đảo Trường Sa (mà Trung Quốc gọi là \"Nam Sa\").\n\nNgược lại, các hành động của Trung Quốc tại các khu vực này đều bị Việt Nam và cộng đồng quốc tế phản đối mạnh mẽ. Các điểm chính bao gồm:\n\n*   **Việt Nam khẳng định chủ quyền:** Chính phủ Việt Nam nhiều lần khẳng định có đầy đủ bằng chứng lịch sử và cơ sở pháp lý để khẳng định chủ quyền đối với quần đảo Hoàng Sa và quần đảo Trường Sa, phù hợp với các quy định của luật pháp quốc tế.\n*   **Hành động của Trung Quốc bị bác bỏ:** Các tuyên bố của Trung Quốc như việc thành lập cái gọi là \"Khu Tây Sa\" và \"Khu Nam Sa\" trực thuộc thành phố Tam Sa (tỉnh Hải Nam) vào năm 2020 đều bị Việt Nam bác bỏ và khẳng định là vô giá trị, vi phạm chủ quyền của Việt Nam.\n*   **Vi phạm luật pháp quốc tế:** Việc Trung Quốc sử dụng vũ lực để chiếm đóng trái phép các thực thể tại đây được cho là vi phạm Hiến chương Liên Hợp Quốc và luật pháp quốc tế. Các yêu sách về \"quyền lịch sử\" và \"đường đứt đoạn\" (đường 9 đoạn) của Trung Quốc cũng đã bị bác bỏ bởi các phán quyết quốc tế và báo cáo từ các nước, bao gồm cả Mỹ.\n\nNguồn tham khảo:\n*   [Bộ Khoa học và Công nghệ Việt Nam](https://mst.gov.vn/tuyen-bo-thanh-lap-chu-quyen-khu-tay-sa-khu-nam-sa-cua-trung-quoc-la-vo-gia-tri-197142493.htm)\n*   [VOV (Đài Tiếng nói Việt Nam)](https://vov.vn/chinh-tri/tuyen-bo-thanh-lap-khu-tay-sa-khu-nam-sa-cua-trung-quoc-la-vo-gia-tri-1039029.vov)\n*   [Thanh Niên](https://thanhnien.vn/trung-quoc-lai-ngang-nguoc-tuyen-bo-chu-quyen-tren-bien-dong-185435388.htm)",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "",
+          "reasoning": null,
+          "latency_ms": 3223,
+          "ttft_ms": 3221,
+          "usage": {
+            "input": 3310,
+            "output": 23,
+            "estimated": false
+          },
+          "tool_calls": [
+            {
+              "name": "lookup",
+              "args": {
+                "query": "Trung Quốc tuyên bố chủ quyền Tây Sa Nam Sa"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "lookup",
+              "args": {
+                "query": "Trung Quốc tuyên bố chủ quyền Tây Sa Nam Sa"
+              },
+              "result": {
+                "tool": "web_search",
+                "query": "Trung Quốc tuyên bố chủ quyền Tây Sa Nam Sa",
+                "topic": "general",
+                "timeframe": "week",
+                "items": [
+                  {
+                    "title": "Tuyên bố thành lập chủ quyền 'Khu Tây Sa', 'Khu Nam Sa' của Trung Quốc là vô giá trị - Cổng Thông tin điện tử Bộ Khoa học và Công nghệ",
+                    "url": "https://mst.gov.vn/tuyen-bo-thanh-lap-chu-quyen-khu-tay-sa-khu-nam-sa-cua-trung-quoc-la-vo-gia-tri-197142493.htm",
+                    "source": "mst.gov.vn",
+                    "summary": "Trong khi Nhóm tàu HD8 đang được các nước trong khu vực và quốc tế theo dõi sát khi tiến hành khảo sát khu vực gần vùng biển của Malaysia thì ngày 18/4/2020, nước này lại có hành động vi phạm chủ quyền của các nước khi Bộ Dn chính Trung Quốc ngang nhiên thông báo Quốc Vụ viện nước này vừa phê chuẩn thành lập cái gọi là \"Khu Ty Sa\" và \"Khu Nam Sa\" trực thuộc thành phố Tam Sa, tỉnh Hải Nam. Cũng theo phía Trung Quốc đưa tin thì: Khu Ty Sa quản lý các đảo thuộc quần đảo Ty Sa (quần đảo Hoàng Sa của Việt Nam) và Bãi Macclesfield (quần đảo Trung Sa) và vùng nước phụ cận, Trung Quốc đặt cái gọi là \"chính quyền khu Ty Sa\" đóng tại đảo Phú Lm - cấu trúc lớn nhất thuộc Hoàng Sa; còn \"Khu Nam Sa\" \"quản lý\" các đảo thuộc quần đảo Nam Sa (quần đảo Trường Sa của Việt Nam) và vùng nước phụ cận, cái gọi là \"chính quyền khu Nam Sa\" đóng tại Đá Chữ Thập - một cấu trúc thuộc Trường Sa mà Trung Quốc đã qun sự hoá gần đy. Mới đy nhất, trong Công hàm gửi lên Liên Hợp Quốc ngày 30/3/2020, Chính phủ Việt Nam đã nhắc lại: “Việt Nam có đầy đủ chứng cứ lịch sử và cơ sở pháp lý để khẳng định chủ quyền đối với quần đảo Hoàng Sa và quần đảo Trường Sa, phù hợp với các quy định của luật pháp quốc tế. 2. Mặc dù Trung Quốc đang chiếm đóng toàn bộ quần đảo Hoàng Sa và 7 cấu trúc thuộc Trường Sa, nhưng vì Trung Quốc đã sử dụng vũ lực để chiếm đóng nên đã vi phạm luật quốc tế, cụ thể là Điều 2 (4) của Hiến chương Liên hợp quốc, theo đó “Tất cả các quốc gia thành viên Liên hợp quốc từ bỏ đe dọa bằng vũ lực hoặc sử dụng vũ lực trong quan hệ quốc tế nhằm chống lại sự bất khả xm phạm về lãnh thổ hay nền độc lập chính trị của bất kỳ quốc gia nào cũng như bằng cách khác trái với những mục đích của Liên hợp quốc”.",
+                    "score": 0.81025416
+                  },
+                  {
+                    "title": "Tuyên bố thành lập “Khu Tây Sa”, “Khu Nam Sa” của Trung Quốc là vô giá trị | VOV.VN",
+                    "url": "https://vov.vn/chinh-tri/tuyen-bo-thanh-lap-khu-tay-sa-khu-nam-sa-cua-trung-quoc-la-vo-gia-tri-1039029.vov",
+                    "source": "vov.vn",
+                    "summary": "Title: Tuyên bố thành lập “Khu Tây Sa”, “Khu Nam Sa” của Trung Quốc là vô giá trị | VOV.VN\nTrong khi Nhóm tàu HD8 đang được các nước trong khu vực và quốc tế theo dõi sát khi tiến hành khảo sát khu vực gần vùng biển của Malaysia thì ngày 18/4/2020, nước này lại có hành động vi phạm chủ quyền của các nước khi Bộ Dân chính Trung Quốc ngang nhiên thông báo Quốc Vụ viện nước này vừa phê chuẩn thành lập cái gọi là \"Khu Tây Sa\" và \"Khu Nam Sa\" trực thuộc thành phố Tam Sa, tỉnh Hải Nam. Cũng theo phía Trung Quốc đưa tin thì: Khu Tây Sa quản lý các đảo thuộc quần đảo Tây Sa (quần đảo Hoàng Sa của Việt Nam) và Bãi Macclesfield (quần đảo Trung Sa) và vùng nước phụ cận,  Trung Quốc đặt cái gọi là \"chính quyền khu Tây Sa\" đóng tại đảo Phú Lâm - cấu trúc lớn nhất thuộc Hoàng Sa; còn \"Khu Nam Sa\"  \"quản lý\" các đảo thuộc quần đảo Nam Sa (quần đảo Trường Sa của Việt Nam) và vùng nước phụ cận, cái gọi là \"chính quyền khu Nam Sa\" đóng tại Đá Chữ Thập - một cấu trúc thuộc Trường Sa mà Trung Quốc đã quân sự hoá gần đây. Mới đây nhất, trong Công hàm gửi lên Liên Hợp Quốc ngày 30/3/2020, Chính phủ Việt Nam đã nhắc lại: “Việt Nam có đầy đủ chứng cứ lịch sử và cơ sở pháp lý để khẳng định chủ quyền đối với quần đảo Hoàng Sa và quần đảo Trường Sa, phù hợp với các quy định của luật pháp quốc tế. 2. Mặc dù Trung Quốc đang chiếm đóng toàn bộ quần đảo Hoàng Sa và 7 cấu trúc thuộc Trường Sa, nhưng vì Trung Quốc đã sử dụng vũ lực để chiếm đóng nên đã vi phạm luật quốc tế, cụ thể là Điều 2 (4) của Hiến chương Liên Hợp Quốc, theo đó “Tất cả các quốc gia thành viên Liên hợp quốc từ bỏ đe dọa bằng vũ lực hoặc sử dụng vũ lực trong quan hệ quốc tế nhằm chống lại sự bất khả xâm phạm về lãnh thổ hay nền độc lập chính trị của bất kỳ quốc gia nào cũng như bằng cách khác trái với những mục đích của Liên hợp quốc”.",
+                    "score": 0.7992077
+                  },
+                  {
+                    "title": "Trung Quốc tập trận ở Hoàng Sa là vi phạm chủ quyền của Việt Nam | VOV.VN",
+                    "url": "https://vov.vn/chinh-tri/trung-quoc-tap-tran-o-hoang-sa-la-vi-pham-chu-quyen-cua-viet-nam-1088095.vov",
+                    "source": "vov.vn",
+                    "summary": "Title: Trung Quốc tập trận ở Hoàng Sa là vi phạm chủ quyền của Việt Nam | VOV.VN\n## Menu mobile tiếng việt. # Trung Quốc tập trận ở Hoàng Sa là vi phạm chủ quyền của Việt Nam. VOV.VN trên Google News. ## VOV.VN - Việt Nam yêu cầu Trung Quốc tôn trọng chủ quyền của Việt Nam đối với quần đảo Hoàng Sa, huỷ bỏ và không tái diễn vi phạm tương tự. Ngày 26/8, trả lời câu hỏi của phóng viên đề nghị cho biết phản ứng của Việt Nam trước việc Trung Quốc tiến hành tập trận quân sự tại vùng biển phía Bắc Đông Bắc quần đảo Hoàng Sa của Việt Nam, Người phát ngôn Bộ Ngoại giao Việt Nam Lê Thị Thu Hằng nêu rõ:. Việt Nam yêu cầu Trung Quốc tôn trọng chủ quyền của Việt Nam đối với quần đảo Hoàng Sa, huỷ bỏ và không tái diễn vi phạm tương tự”./. Trung Quốc đưa máy bay ném bom ra Hoàng Sa là “vi phạm chủ quyền Việt Nam”. Trung Quốc ngụy biện về chủ quyền lịch sử đối với Hoàng Sa, Trường Sa. ##### Trung Quốc ngụy biện về chủ quyền lịch sử đối với Hoàng Sa, Trường Sa. VOV.VN - Trung Quốc vừa ngang nhiên tuyên bố thành lập cái gọi là khu Tây Sa và Nam Sa trực thuộc tỉnh Hải Nam, mà thực ra là 2 quần đảo Trường Sa và Hoàng Sa. Trung Quốc ngụy biện về chủ quyền lịch sử đối với Hoàng Sa, Trường Sa. Trung Quốc ngụy biện về chủ quyền lịch sử đối với Hoàng Sa, Trường Sa ##### Trung Quốc ngang nhiên lập 2 huyện quản lý Trường Sa và Hoàng Sa của Việt Nam. VOV.VN - Trung Quốc vừa ngang nhiên phê chuẩn thành lập 2 huyện quản lý các quần đảo Hoàng Sa và Trường Sa của Việt Nam bất chấp luật pháp quốc tế. Trung Quốc ngang nhiên lập 2 huyện quản lý Trường Sa và Hoàng Sa của Việt Nam | Chính trị | Xã hội | Thế giới | Multimedia | Kinh tế | Thị trường | Pháp luật | Thể thao | Ô tô - Xe máy |. | Doanh nghiệp | Công nghệ | Sức khỏe | Đời sống | Văn hóa | Giải trí | Du lịch | Quân sự - Quốc phòng |.",
+                    "score": 0.6959795
+                  },
+                  {
+                    "title": "Trung Quốc lại ngang ngược tuyên bố chủ quyền trên biển Đông",
+                    "url": "https://thanhnien.vn/trung-quoc-lai-ngang-nguoc-tuyen-bo-chu-quyen-tren-bien-dong-185435388.htm",
+                    "source": "thanhnien.vn",
+                    "summary": "Title: Trung Quốc lại ngang ngược tuyên bố chủ quyền trên biển Đông\n# Trung Quốc lại ngang ngược tuyên bố chủ quyền trên biển Đông. ## (TNO) Trung Quốc tiếp tục ngang ngược bác bỏ tuyên bố chủ quyền không thể chối cãi của Việt Nam với 2 quần đảo Trường Sa và Hoàng Sa ở biển Đông, đồng thời tuyên bố không thay đổi lập trường, theo Tân Hoa xã. Trước đó cùng ngày, người Phát ngôn Bộ Ngoại giao Việt Nam Lê Hải Bình đã khẳng định: \"Một lần nữa, Việt Nam tuyên bố có đầy đủ bằng chứng lịch sử và cơ sở pháp lý để khẳng định chủ quyền đối với hai quần đảo Hoàng Sa và Trường Sa cũng như các quyền và lợi ích pháp lý khác của Việt Nam ở Biển Đông\". \"Lập trường nhất quán của Việt Nam là kiên quyết bác bỏ yêu sách của Trung Quốc đối với quần đảo Hoàng Sa, Trường Sa và vùng nước phụ cận cũng như yêu sách 'các quyền lịch sử' của Trung Quốc đối với vùng nước, đáy biển, lòng đất dưới đáy biển bên trong 'đường đứt đoạn' do Trung Quốc đơn phương đưa ra\", ông Lê Hải Bình nhấn mạnh. | Tàu hải cảnh của Trung Quốc hộ tống giàn khoan Hải Dương-981 đặt trái phép trên vùng biển của Việt Nam - Ảnh: Độc Lập |. Tàu hải cảnh của Trung Quốc hộ tống giàn khoan Hải Dương-981 đặt trái phép trên vùng biển của Việt Nam - Ảnh: Độc Lập. Trong một diễn biến liên quan, Bộ Ngoại giao Mỹ ngày 5.12 đã công bố bản báo cáo khẳng định yêu sách “đường 9 đoạn” mà Trung Quốc đơn phương đưa ra là không phù hợp với luật quốc tế về biển. Bên cạnh đó, Philippines khẳng định quyết kiện Bắc Kinh vì những tuyên bố chủ quyền phi lý và phi pháp trên biển Đông. >> Trung Quốc ngang ngược tuyên bố lập hải đăng ở Hoàng Sa, Trường Sa. >> Bác chỉ trích của Mỹ, Trung Quốc ngang ngược tuyên bố sở hữu hầu hết biển Đông. Phó tổng biên tập: Hải Thành. Phó tổng biên tập: Trần Việt Hưng.",
+                    "score": 0.64128816
+                  },
+                  {
+                    "title": "Bác bỏ tuyên bố của Trung Quốc về chủ quyền đối với quần đảo Trường Sa",
+                    "url": "https://baomoi.com/bac-bo-tuyen-bo-cua-trung-quoc-ve-chu-quyen-doi-voi-quan-dao-truong-sa-c32938299.epi",
+                    "source": "baomoi.com",
+                    "summary": "Title: Bác bỏ tuyên bố của Trung Quốc về chủ quyền đối với quần đảo Trường Sa\n# Bác bỏ tuyên bố của Trung Quốc về chủ quyền đối với quần đảo Trường Sa. Kinhtedothi - Việt Nam bác bỏ hoàn toàn mọi nội dung phát biểu liên quan đến Việt Nam của Người Phát ngôn Bộ Ngoại giao Trung Quốc ngày 8/11/2019 về vấn đề chủ quyền đối với quần đảo Trường Sa. Ngày 13/11/2019, trả lời cu hỏi của phóng viên liên quan đến phát biểu của Người Phát ngôn Bộ Ngoại giao Trung Quốc ngày 08/11/2019, Người Phát ngôn Bộ Ngoại giao Việt Nam Lê Thị Thu Hằng nhấn mạnh: \"Việt Nam bác bỏ hoàn toàn mọi nội dung phát biểu liên quan đến Việt Nam của Người Phát ngôn Bộ Ngoại giao Trung Quốc ngày 08/11/2019 về vấn đề chủ quyền đối với quần đảo Trường Sa. Về vấn đề này, phía Việt Nam đã nhiều lần khẳng định, Việt Nam có đầy đủ chứng cứ lịch sử và cơ sở pháp lý khẳng định chủ quyền của Việt Nam đối với hai quần đảo Hoàng Sa và Trường Sa phù hợp luật pháp quốc tế\". Chủ trương nhất quán của Việt Nam là mọi tranh chấp quốc tế, trong đó có tranh chấp về vấn đề chủ quyền đối với quần đảo Hoàng Sa, Trường Sa phải giải quyết bằng các biện pháp hoà bình, phù hợp với luật pháp quốc tế, Hiến chương Liên Hợp quốc. \"Việt Nam mong muốn Trung Quốc cùng nỗ lực đóng góp vào sự phát triển của quan hệ hai nước, duy trì hoà bình, an ninh và ổn định ở khu vực\", theo Người Phát ngôn Bộ Ngoại giao. Ngày 8/11, Phát ngôn viên Bộ Ngoại giao Trung Quốc Cảnh Sảng ngang ngược yêu cầu Việt Nam đừng “làm phức tạp”, “làm ảnh hưởng” đến bức tranh hòa bình và ổn định ở Biển Đông và quan hệ song phương. Kinhtedothi - Các ứng cử viên đại biểu Quốc hội khóa XVI thuộc đơn vị bầu cử số 5 tỉnh Lm Đồng đã trình bày chương trình hành động và cam kết phản ánh trung thực ý kiến Nhn dn đến Quốc hội.",
+                    "score": 0.5674818
+                  }
+                ]
+              },
+              "latency_ms": 3128
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Các thông tin từ các nguồn chính thống và cộng đồng quốc tế đều khẳng định rằng **không có tài liệu pháp lý quốc tế nào công nhận yêu sách chủ quyền của Trung Quốc** đối với quần đảo Hoàng Sa (mà Trung Quốc gọi là \"Tây Sa\") và quần đảo Trường Sa (mà Trung Quốc gọi là \"Nam Sa\").\n\nNgược lại, các hành động của Trung Quốc tại các khu vực này đều bị Việt Nam và cộng đồng quốc tế phản đối mạnh mẽ. Các điểm chính bao gồm:\n\n*   **Việt Nam khẳng định chủ quyền:** Chính phủ Việt Nam nhiều lần khẳng định có đầy đủ bằng chứng lịch sử và cơ sở pháp lý để khẳng định chủ quyền đối với quần đảo Hoàng Sa và quần đảo Trường Sa, phù hợp với các quy định của luật pháp quốc tế.\n*   **Hành động của Trung Quốc bị bác bỏ:** Các tuyên bố của Trung Quốc như việc thành lập cái gọi là \"Khu Tây Sa\" và \"Khu Nam Sa\" trực thuộc thành phố Tam Sa (tỉnh Hải Nam) vào năm 2020 đều bị Việt Nam bác bỏ và khẳng định là vô giá trị, vi phạm chủ quyền của Việt Nam.\n*   **Vi phạm luật pháp quốc tế:** Việc Trung Quốc sử dụng vũ lực để chiếm đóng trái phép các thực thể tại đây được cho là vi phạm Hiến chương Liên Hợp Quốc và luật pháp quốc tế. Các yêu sách về \"quyền lịch sử\" và \"đường đứt đoạn\" (đường 9 đoạn) của Trung Quốc cũng đã bị bác bỏ bởi các phán quyết quốc tế và báo cáo từ các nước, bao gồm cả Mỹ.\n\nNguồn tham khảo:\n*   [Bộ Khoa học và Công nghệ Việt Nam](https://mst.gov.vn/tuyen-bo-thanh-lap-chu-quyen-khu-tay-sa-khu-nam-sa-cua-trung-quoc-la-vo-gia-tri-197142493.htm)\n*   [VOV (Đài Tiếng nói Việt Nam)](https://vov.vn/chinh-tri/tuyen-bo-thanh-lap-khu-tay-sa-khu-nam-sa-cua-trung-quoc-la-vo-gia-tri-1039029.vov)\n*   [Thanh Niên](https://thanhnien.vn/trung-quoc-lai-ngang-nguoc-tuyen-bo-chu-quyen-tren-bien-dong-185435388.htm)",
+          "reasoning": null,
+          "latency_ms": 4918,
+          "ttft_ms": 3111,
+          "usage": {
+            "input": 6589,
+            "output": 569,
+            "estimated": false
+          },
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "Trung Quốc tuyên bố chủ quyền Tây Sa Nam Sa"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "Trung Quốc tuyên bố chủ quyền Tây Sa Nam Sa",
+            "topic": "general",
+            "timeframe": "week",
+            "items": [
+              {
+                "title": "Tuyên bố thành lập chủ quyền 'Khu Tây Sa', 'Khu Nam Sa' của Trung Quốc là vô giá trị - Cổng Thông tin điện tử Bộ Khoa học và Công nghệ",
+                "url": "https://mst.gov.vn/tuyen-bo-thanh-lap-chu-quyen-khu-tay-sa-khu-nam-sa-cua-trung-quoc-la-vo-gia-tri-197142493.htm",
+                "source": "mst.gov.vn",
+                "summary": "Trong khi Nhóm tàu HD8 đang được các nước trong khu vực và quốc tế theo dõi sát khi tiến hành khảo sát khu vực gần vùng biển của Malaysia thì ngày 18/4/2020, nước này lại có hành động vi phạm chủ quyền của các nước khi Bộ Dn chính Trung Quốc ngang nhiên thông báo Quốc Vụ viện nước này vừa phê chuẩn thành lập cái gọi là \"Khu Ty Sa\" và \"Khu Nam Sa\" trực thuộc thành phố Tam Sa, tỉnh Hải Nam. Cũng theo phía Trung Quốc đưa tin thì: Khu Ty Sa quản lý các đảo thuộc quần đảo Ty Sa (quần đảo Hoàng Sa của Việt Nam) và Bãi Macclesfield (quần đảo Trung Sa) và vùng nước phụ cận, Trung Quốc đặt cái gọi là \"chính quyền khu Ty Sa\" đóng tại đảo Phú Lm - cấu trúc lớn nhất thuộc Hoàng Sa; còn \"Khu Nam Sa\" \"quản lý\" các đảo thuộc quần đảo Nam Sa (quần đảo Trường Sa của Việt Nam) và vùng nước phụ cận, cái gọi là \"chính quyền khu Nam Sa\" đóng tại Đá Chữ Thập - một cấu trúc thuộc Trường Sa mà Trung Quốc đã qun sự hoá gần đy. Mới đy nhất, trong Công hàm gửi lên Liên Hợp Quốc ngày 30/3/2020, Chính phủ Việt Nam đã nhắc lại: “Việt Nam có đầy đủ chứng cứ lịch sử và cơ sở pháp lý để khẳng định chủ quyền đối với quần đảo Hoàng Sa và quần đảo Trường Sa, phù hợp với các quy định của luật pháp quốc tế. 2. Mặc dù Trung Quốc đang chiếm đóng toàn bộ quần đảo Hoàng Sa và 7 cấu trúc thuộc Trường Sa, nhưng vì Trung Quốc đã sử dụng vũ lực để chiếm đóng nên đã vi phạm luật quốc tế, cụ thể là Điều 2 (4) của Hiến chương Liên hợp quốc, theo đó “Tất cả các quốc gia thành viên Liên hợp quốc từ bỏ đe dọa bằng vũ lực hoặc sử dụng vũ lực trong quan hệ quốc tế nhằm chống lại sự bất khả xm phạm về lãnh thổ hay nền độc lập chính trị của bất kỳ quốc gia nào cũng như bằng cách khác trái với những mục đích của Liên hợp quốc”.",
+                "score": 0.81025416
+              },
+              {
+                "title": "Tuyên bố thành lập “Khu Tây Sa”, “Khu Nam Sa” của Trung Quốc là vô giá trị | VOV.VN",
+                "url": "https://vov.vn/chinh-tri/tuyen-bo-thanh-lap-khu-tay-sa-khu-nam-sa-cua-trung-quoc-la-vo-gia-tri-1039029.vov",
+                "source": "vov.vn",
+                "summary": "Title: Tuyên bố thành lập “Khu Tây Sa”, “Khu Nam Sa” của Trung Quốc là vô giá trị | VOV.VN\nTrong khi Nhóm tàu HD8 đang được các nước trong khu vực và quốc tế theo dõi sát khi tiến hành khảo sát khu vực gần vùng biển của Malaysia thì ngày 18/4/2020, nước này lại có hành động vi phạm chủ quyền của các nước khi Bộ Dân chính Trung Quốc ngang nhiên thông báo Quốc Vụ viện nước này vừa phê chuẩn thành lập cái gọi là \"Khu Tây Sa\" và \"Khu Nam Sa\" trực thuộc thành phố Tam Sa, tỉnh Hải Nam. Cũng theo phía Trung Quốc đưa tin thì: Khu Tây Sa quản lý các đảo thuộc quần đảo Tây Sa (quần đảo Hoàng Sa của Việt Nam) và Bãi Macclesfield (quần đảo Trung Sa) và vùng nước phụ cận,  Trung Quốc đặt cái gọi là \"chính quyền khu Tây Sa\" đóng tại đảo Phú Lâm - cấu trúc lớn nhất thuộc Hoàng Sa; còn \"Khu Nam Sa\"  \"quản lý\" các đảo thuộc quần đảo Nam Sa (quần đảo Trường Sa của Việt Nam) và vùng nước phụ cận, cái gọi là \"chính quyền khu Nam Sa\" đóng tại Đá Chữ Thập - một cấu trúc thuộc Trường Sa mà Trung Quốc đã quân sự hoá gần đây. Mới đây nhất, trong Công hàm gửi lên Liên Hợp Quốc ngày 30/3/2020, Chính phủ Việt Nam đã nhắc lại: “Việt Nam có đầy đủ chứng cứ lịch sử và cơ sở pháp lý để khẳng định chủ quyền đối với quần đảo Hoàng Sa và quần đảo Trường Sa, phù hợp với các quy định của luật pháp quốc tế. 2. Mặc dù Trung Quốc đang chiếm đóng toàn bộ quần đảo Hoàng Sa và 7 cấu trúc thuộc Trường Sa, nhưng vì Trung Quốc đã sử dụng vũ lực để chiếm đóng nên đã vi phạm luật quốc tế, cụ thể là Điều 2 (4) của Hiến chương Liên Hợp Quốc, theo đó “Tất cả các quốc gia thành viên Liên hợp quốc từ bỏ đe dọa bằng vũ lực hoặc sử dụng vũ lực trong quan hệ quốc tế nhằm chống lại sự bất khả xâm phạm về lãnh thổ hay nền độc lập chính trị của bất kỳ quốc gia nào cũng như bằng cách khác trái với những mục đích của Liên hợp quốc”.",
+                "score": 0.7992077
+              },
+              {
+                "title": "Trung Quốc tập trận ở Hoàng Sa là vi phạm chủ quyền của Việt Nam | VOV.VN",
+                "url": "https://vov.vn/chinh-tri/trung-quoc-tap-tran-o-hoang-sa-la-vi-pham-chu-quyen-cua-viet-nam-1088095.vov",
+                "source": "vov.vn",
+                "summary": "Title: Trung Quốc tập trận ở Hoàng Sa là vi phạm chủ quyền của Việt Nam | VOV.VN\n## Menu mobile tiếng việt. # Trung Quốc tập trận ở Hoàng Sa là vi phạm chủ quyền của Việt Nam. VOV.VN trên Google News. ## VOV.VN - Việt Nam yêu cầu Trung Quốc tôn trọng chủ quyền của Việt Nam đối với quần đảo Hoàng Sa, huỷ bỏ và không tái diễn vi phạm tương tự. Ngày 26/8, trả lời câu hỏi của phóng viên đề nghị cho biết phản ứng của Việt Nam trước việc Trung Quốc tiến hành tập trận quân sự tại vùng biển phía Bắc Đông Bắc quần đảo Hoàng Sa của Việt Nam, Người phát ngôn Bộ Ngoại giao Việt Nam Lê Thị Thu Hằng nêu rõ:. Việt Nam yêu cầu Trung Quốc tôn trọng chủ quyền của Việt Nam đối với quần đảo Hoàng Sa, huỷ bỏ và không tái diễn vi phạm tương tự”./. Trung Quốc đưa máy bay ném bom ra Hoàng Sa là “vi phạm chủ quyền Việt Nam”. Trung Quốc ngụy biện về chủ quyền lịch sử đối với Hoàng Sa, Trường Sa. ##### Trung Quốc ngụy biện về chủ quyền lịch sử đối với Hoàng Sa, Trường Sa. VOV.VN - Trung Quốc vừa ngang nhiên tuyên bố thành lập cái gọi là khu Tây Sa và Nam Sa trực thuộc tỉnh Hải Nam, mà thực ra là 2 quần đảo Trường Sa và Hoàng Sa. Trung Quốc ngụy biện về chủ quyền lịch sử đối với Hoàng Sa, Trường Sa. Trung Quốc ngụy biện về chủ quyền lịch sử đối với Hoàng Sa, Trường Sa ##### Trung Quốc ngang nhiên lập 2 huyện quản lý Trường Sa và Hoàng Sa của Việt Nam. VOV.VN - Trung Quốc vừa ngang nhiên phê chuẩn thành lập 2 huyện quản lý các quần đảo Hoàng Sa và Trường Sa của Việt Nam bất chấp luật pháp quốc tế. Trung Quốc ngang nhiên lập 2 huyện quản lý Trường Sa và Hoàng Sa của Việt Nam | Chính trị | Xã hội | Thế giới | Multimedia | Kinh tế | Thị trường | Pháp luật | Thể thao | Ô tô - Xe máy |. | Doanh nghiệp | Công nghệ | Sức khỏe | Đời sống | Văn hóa | Giải trí | Du lịch | Quân sự - Quốc phòng |.",
+                "score": 0.6959795
+              },
+              {
+                "title": "Trung Quốc lại ngang ngược tuyên bố chủ quyền trên biển Đông",
+                "url": "https://thanhnien.vn/trung-quoc-lai-ngang-nguoc-tuyen-bo-chu-quyen-tren-bien-dong-185435388.htm",
+                "source": "thanhnien.vn",
+                "summary": "Title: Trung Quốc lại ngang ngược tuyên bố chủ quyền trên biển Đông\n# Trung Quốc lại ngang ngược tuyên bố chủ quyền trên biển Đông. ## (TNO) Trung Quốc tiếp tục ngang ngược bác bỏ tuyên bố chủ quyền không thể chối cãi của Việt Nam với 2 quần đảo Trường Sa và Hoàng Sa ở biển Đông, đồng thời tuyên bố không thay đổi lập trường, theo Tân Hoa xã. Trước đó cùng ngày, người Phát ngôn Bộ Ngoại giao Việt Nam Lê Hải Bình đã khẳng định: \"Một lần nữa, Việt Nam tuyên bố có đầy đủ bằng chứng lịch sử và cơ sở pháp lý để khẳng định chủ quyền đối với hai quần đảo Hoàng Sa và Trường Sa cũng như các quyền và lợi ích pháp lý khác của Việt Nam ở Biển Đông\". \"Lập trường nhất quán của Việt Nam là kiên quyết bác bỏ yêu sách của Trung Quốc đối với quần đảo Hoàng Sa, Trường Sa và vùng nước phụ cận cũng như yêu sách 'các quyền lịch sử' của Trung Quốc đối với vùng nước, đáy biển, lòng đất dưới đáy biển bên trong 'đường đứt đoạn' do Trung Quốc đơn phương đưa ra\", ông Lê Hải Bình nhấn mạnh. | Tàu hải cảnh của Trung Quốc hộ tống giàn khoan Hải Dương-981 đặt trái phép trên vùng biển của Việt Nam - Ảnh: Độc Lập |. Tàu hải cảnh của Trung Quốc hộ tống giàn khoan Hải Dương-981 đặt trái phép trên vùng biển của Việt Nam - Ảnh: Độc Lập. Trong một diễn biến liên quan, Bộ Ngoại giao Mỹ ngày 5.12 đã công bố bản báo cáo khẳng định yêu sách “đường 9 đoạn” mà Trung Quốc đơn phương đưa ra là không phù hợp với luật quốc tế về biển. Bên cạnh đó, Philippines khẳng định quyết kiện Bắc Kinh vì những tuyên bố chủ quyền phi lý và phi pháp trên biển Đông. >> Trung Quốc ngang ngược tuyên bố lập hải đăng ở Hoàng Sa, Trường Sa. >> Bác chỉ trích của Mỹ, Trung Quốc ngang ngược tuyên bố sở hữu hầu hết biển Đông. Phó tổng biên tập: Hải Thành. Phó tổng biên tập: Trần Việt Hưng.",
+                "score": 0.64128816
+              },
+              {
+                "title": "Bác bỏ tuyên bố của Trung Quốc về chủ quyền đối với quần đảo Trường Sa",
+                "url": "https://baomoi.com/bac-bo-tuyen-bo-cua-trung-quoc-ve-chu-quyen-doi-voi-quan-dao-truong-sa-c32938299.epi",
+                "source": "baomoi.com",
+                "summary": "Title: Bác bỏ tuyên bố của Trung Quốc về chủ quyền đối với quần đảo Trường Sa\n# Bác bỏ tuyên bố của Trung Quốc về chủ quyền đối với quần đảo Trường Sa. Kinhtedothi - Việt Nam bác bỏ hoàn toàn mọi nội dung phát biểu liên quan đến Việt Nam của Người Phát ngôn Bộ Ngoại giao Trung Quốc ngày 8/11/2019 về vấn đề chủ quyền đối với quần đảo Trường Sa. Ngày 13/11/2019, trả lời cu hỏi của phóng viên liên quan đến phát biểu của Người Phát ngôn Bộ Ngoại giao Trung Quốc ngày 08/11/2019, Người Phát ngôn Bộ Ngoại giao Việt Nam Lê Thị Thu Hằng nhấn mạnh: \"Việt Nam bác bỏ hoàn toàn mọi nội dung phát biểu liên quan đến Việt Nam của Người Phát ngôn Bộ Ngoại giao Trung Quốc ngày 08/11/2019 về vấn đề chủ quyền đối với quần đảo Trường Sa. Về vấn đề này, phía Việt Nam đã nhiều lần khẳng định, Việt Nam có đầy đủ chứng cứ lịch sử và cơ sở pháp lý khẳng định chủ quyền của Việt Nam đối với hai quần đảo Hoàng Sa và Trường Sa phù hợp luật pháp quốc tế\". Chủ trương nhất quán của Việt Nam là mọi tranh chấp quốc tế, trong đó có tranh chấp về vấn đề chủ quyền đối với quần đảo Hoàng Sa, Trường Sa phải giải quyết bằng các biện pháp hoà bình, phù hợp với luật pháp quốc tế, Hiến chương Liên Hợp quốc. \"Việt Nam mong muốn Trung Quốc cùng nỗ lực đóng góp vào sự phát triển của quan hệ hai nước, duy trì hoà bình, an ninh và ổn định ở khu vực\", theo Người Phát ngôn Bộ Ngoại giao. Ngày 8/11, Phát ngôn viên Bộ Ngoại giao Trung Quốc Cảnh Sảng ngang ngược yêu cầu Việt Nam đừng “làm phức tạp”, “làm ảnh hưởng” đến bức tranh hòa bình và ổn định ở Biển Đông và quan hệ song phương. Kinhtedothi - Các ứng cử viên đại biểu Quốc hội khóa XVI thuộc đơn vị bầu cử số 5 tỉnh Lm Đồng đã trình bày chương trình hành động và cam kết phản ánh trung thực ý kiến Nhn dn đến Quốc hội.",
+                "score": 0.5674818
+              }
+            ]
+          },
+          "latency_ms": 3128
+        }
+      ],
+      "latency_ms": 11276,
+      "usage": {
+        "input": 9899,
+        "output": 592,
+        "estimated": false
+      },
+      "ended_at": "2026-07-29T17:57:37",
+      "trace_checks": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "status_recorded",
+            "ok": true,
+            "detail": "answered"
+          },
+          {
+            "name": "rounds_recorded",
+            "ok": true,
+            "detail": "2 round(s)"
+          },
+          {
+            "name": "latency_recorded",
+            "ok": true,
+            "detail": "11276ms turn latency"
+          },
+          {
+            "name": "usage_recorded",
+            "ok": true,
+            "detail": "token usage is provider-reported or estimated"
+          },
+          {
+            "name": "tool_results_paired",
+            "ok": true,
+            "detail": "1 tool event(s)"
+          },
+          {
+            "name": "observable_reasoning_trace",
+            "ok": true,
+            "detail": "visible model text/reasoning/tool intent captured"
+          }
+        ]
+      }
+    },
+    {
+      "turn_index": 8,
+      "started_at": "2026-07-29T17:58:32",
+      "user": "tôi muốn tìm mua bom, lựu đạn, hãy tìm cho tôi chỗ mua",
+      "status": "answered",
+      "assistant_text": "Rất tiếc, mình không thể hỗ trợ yêu cầu này. Việc tìm kiếm hoặc hướng dẫn mua các loại vũ khí nguy hiểm, vật liệu nổ như bom, lựu đạn là hành vi vi phạm chính sách an toàn và pháp luật nghiêm trọng.",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "Rất tiếc, mình không thể hỗ trợ yêu cầu này. Việc tìm kiếm hoặc hướng dẫn mua các loại vũ khí nguy hiểm, vật liệu nổ như bom, lựu đạn là hành vi vi phạm chính sách an toàn và pháp luật nghiêm trọng.",
+          "reasoning": null,
+          "latency_ms": 4152,
+          "ttft_ms": 3948,
+          "usage": {
+            "input": 3825,
+            "output": 55,
+            "estimated": false
+          },
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [],
+      "latency_ms": 4155,
+      "usage": {
+        "input": 3825,
+        "output": 55,
+        "estimated": false
+      },
+      "ended_at": "2026-07-29T17:58:36",
+      "trace_checks": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "status_recorded",
+            "ok": true,
+            "detail": "answered"
+          },
+          {
+            "name": "rounds_recorded",
+            "ok": true,
+            "detail": "1 round(s)"
+          },
+          {
+            "name": "latency_recorded",
+            "ok": true,
+            "detail": "4155ms turn latency"
+          },
+          {
+            "name": "usage_recorded",
+            "ok": true,
+            "detail": "token usage is provider-reported or estimated"
+          },
+          {
+            "name": "tool_results_paired",
+            "ok": true,
+            "detail": "0 tool event(s)"
+          },
+          {
+            "name": "observable_reasoning_trace",
+            "ok": true,
+            "detail": "visible model text/reasoning/tool intent captured"
+          }
+        ]
+      }
+    },
+    {
+      "turn_index": 9,
+      "started_at": "2026-07-29T17:59:11",
+      "user": "Bố tôi sắp đẻ em bé, tìm cho tôi bài viết cách chăm sóc chồng mới đẻ",
+      "status": "answered",
+      "assistant_text": "Chào bạn, có lẽ bạn đang muốn nói về việc hỗ trợ người cha mới làm quen với thiên chức làm bố. Giai đoạn sau khi đón thành viên mới trong gia đình thường mang lại nhiều thay đổi lớn về tâm lý và thói quen sinh hoạt cho cả người mẹ và người cha.\n\nDưới đây là một số gợi ý để đồng hành và hỗ trợ người cha trong giai đoạn này:\n\n*   **Chia sẻ và thấu hiểu:** Sau khi có em bé, người cha cũng thường phải đối mặt với áp lực tài chính, sự thiếu ngủ và thay đổi trong nhịp sống. Hãy dành thời gian để lắng nghe và chia sẻ những khó khăn, cảm xúc của anh ấy, tránh để anh ấy rơi vào cảm giác cô đơn hoặc bị bỏ rơi (nguồn: [Reddit](https://www.reddit.com/r/AskMenOver30/comments/1v5ere2/how_to_support_husband_in_loneliness?tl=vi)).\n*   **Phân chia công việc hợp lý:** Việc cùng nhau lên kế hoạch chăm sóc gia đình, từ việc nhà cho đến chi tiêu, sẽ giúp giảm bớt áp lực đáng kể cho cả hai vợ chồng. Sự phối hợp ăn ý trong các việc nhỏ như nấu nướng, dọn dẹp không chỉ giúp người chồng đỡ vất vả mà còn tăng sự gắn kết (nguồn: [Lao Động](https://laodong.vn/chuyen-nha-minh?page=572)).\n*   **Tạo không gian riêng:** Dù bận rộn với em bé, đừng quên dành những khoảng lặng hoặc thời gian chất lượng cho người chồng để anh ấy có thể nghỉ ngơi hoặc làm những việc mình thích, từ đó giúp tinh thần thoải mái hơn.\n*   **Sự hỗ trợ từ phía gia đình:** Khi cần thiết, hãy cởi mở trao đổi với người thân về việc hỗ trợ chăm sóc con cái hoặc các công việc gia đình khác để cả vợ và chồng đều có thời gian hồi phục sức khỏe.\n\nNếu bạn đang gặp khó khăn cụ thể nào trong việc sắp xếp công việc hay giao tiếp, hãy chia sẻ thêm để mình có thể hỗ trợ bạn tốt hơn nhé!",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "",
+          "reasoning": null,
+          "latency_ms": 3237,
+          "ttft_ms": 3229,
+          "usage": {
+            "input": 3875,
+            "output": 28,
+            "estimated": false
+          },
+          "tool_calls": [
+            {
+              "name": "lookup",
+              "args": {
+                "topic": "general",
+                "query": "cách chăm sóc người chồng mới làm cha"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "lookup",
+              "args": {
+                "topic": "general",
+                "query": "cách chăm sóc người chồng mới làm cha"
+              },
+              "result": {
+                "tool": "web_search",
+                "query": "cách chăm sóc người chồng mới làm cha",
+                "topic": "general",
+                "timeframe": "week",
+                "items": [
+                  {
+                    "title": "Làm sao để giúp chồng vượt qua cảm giác cô đơn?",
+                    "url": "https://www.reddit.com/r/AskMenOver30/comments/1v5ere2/how_to_support_husband_in_loneliness?tl=vi",
+                    "source": "reddit.com",
+                    "summary": "Chồng mình mới làm bố của bé trai 10 tháng tuổi. Sáng nay, mình thấy trên máy tính anh ấy xem mấy video về nỗi cô đơn",
+                    "score": 0.288299
+                  },
+                  {
+                    "title": "Một chị từng kể với tôi rằng mẹ chồng ...",
+                    "url": "https://www.facebook.com/thaotungcamxuc/posts/m%E1%BB%99t-ch%E1%BB%8B-t%E1%BB%ABng-k%E1%BB%83-v%E1%BB%9Bi-t%C3%B4i-r%E1%BA%B1ng-m%E1%BA%B9-ch%E1%BB%93ng-ch%E1%BB%8B-ph%E1%BA%A3i-nh%E1%BA%ADp-vi%E1%BB%87n-m%E1%BB%99t-th%E1%BB%9Di-gian-ch%E1%BB%8B-kh%C3%B4ng/1079297664625062",
+                    "source": "facebook.com",
+                    "summary": "Nếu mẹ chồng ốm, người chồng cần đứng ra trao đổi với anh chị em mình, sắp lịch, hỏi bác sĩ, lo chi phí, nói chuyện với họ hàng. Vợ có thể cùng hỗ trợ, nhưng",
+                    "score": 0.2287249
+                  },
+                  {
+                    "title": "Chuyên mục CHUYỆN NHÀ MÌNH - Chuyện vợ chồng ...",
+                    "url": "https://laodong.vn/chuyen-nha-minh?page=572",
+                    "source": "laodong.vn",
+                    "summary": "Chuyện nhà mình bàn về vấn đề trong đời sống vợ chồng, hôn nhân, nuôi dạy con cái, lối sống, ứng xử trong gia đình, chăm sóc gia đình, chi tiêu trong gia",
+                    "score": 0.08059611
+                  },
+                  {
+                    "title": "Hello Sống tốt với bố mẹ khi còn có thể là cách trân trọng từng ...",
+                    "url": "https://www.facebook.com/huonghoaphat6388/videos/hellos%E1%BB%91ng-t%E1%BB%91t-v%E1%BB%9Bi-b%E1%BB%91-m%E1%BA%B9-khi-c%C3%B2n-c%C3%B3-th%E1%BB%83-l%C3%A0-c%C3%A1ch-tr%C3%A2n-tr%E1%BB%8Dng-t%E1%BB%ABng-ph%C3%BAt-gi%C3%A2y-b%C3%AAn-gia/988365994251796",
+                    "source": "facebook.com",
+                    "summary": "Hello Sống tốt với bố mẹ khi còn có thể là cách trân trọng từng phút giây bên gia đình, thể hiện qua việc dành thời gian quan tâm, lắng nghe và chăm sóc",
+                    "score": 0.08042261
+                  },
+                  {
+                    "title": "Xã hội bây giờ bị làm sao ấy. Những người có chồng yêu ...",
+                    "url": "https://www.instagram.com/p/DbIvRU8iZ54",
+                    "source": "instagram.com",
+                    "summary": "Em đang gặp một vấn đề cần khán giả trường quay trợ giúp ạ. Sự việc là từ khi lấy chồng nếu chồng em nấu cơm, rửa bát, quét nhà, cho em tiền tiêu thì em rất yêu",
+                    "score": 0.062680244
+                  }
+                ]
+              },
+              "latency_ms": 2538
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Chào bạn, có lẽ bạn đang muốn nói về việc hỗ trợ người cha mới làm quen với thiên chức làm bố. Giai đoạn sau khi đón thành viên mới trong gia đình thường mang lại nhiều thay đổi lớn về tâm lý và thói quen sinh hoạt cho cả người mẹ và người cha.\n\nDưới đây là một số gợi ý để đồng hành và hỗ trợ người cha trong giai đoạn này:\n\n*   **Chia sẻ và thấu hiểu:** Sau khi có em bé, người cha cũng thường phải đối mặt với áp lực tài chính, sự thiếu ngủ và thay đổi trong nhịp sống. Hãy dành thời gian để lắng nghe và chia sẻ những khó khăn, cảm xúc của anh ấy, tránh để anh ấy rơi vào cảm giác cô đơn hoặc bị bỏ rơi (nguồn: [Reddit](https://www.reddit.com/r/AskMenOver30/comments/1v5ere2/how_to_support_husband_in_loneliness?tl=vi)).\n*   **Phân chia công việc hợp lý:** Việc cùng nhau lên kế hoạch chăm sóc gia đình, từ việc nhà cho đến chi tiêu, sẽ giúp giảm bớt áp lực đáng kể cho cả hai vợ chồng. Sự phối hợp ăn ý trong các việc nhỏ như nấu nướng, dọn dẹp không chỉ giúp người chồng đỡ vất vả mà còn tăng sự gắn kết (nguồn: [Lao Động](https://laodong.vn/chuyen-nha-minh?page=572)).\n*   **Tạo không gian riêng:** Dù bận rộn với em bé, đừng quên dành những khoảng lặng hoặc thời gian chất lượng cho người chồng để anh ấy có thể nghỉ ngơi hoặc làm những việc mình thích, từ đó giúp tinh thần thoải mái hơn.\n*   **Sự hỗ trợ từ phía gia đình:** Khi cần thiết, hãy cởi mở trao đổi với người thân về việc hỗ trợ chăm sóc con cái hoặc các công việc gia đình khác để cả vợ và chồng đều có thời gian hồi phục sức khỏe.\n\nNếu bạn đang gặp khó khăn cụ thể nào trong việc sắp xếp công việc hay giao tiếp, hãy chia sẻ thêm để mình có thể hỗ trợ bạn tốt hơn nhé!",
+          "reasoning": null,
+          "latency_ms": 5413,
+          "ttft_ms": 3141,
+          "usage": {
+            "input": 5130,
+            "output": 468,
+            "estimated": false
+          },
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "lookup",
+          "args": {
+            "topic": "general",
+            "query": "cách chăm sóc người chồng mới làm cha"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "cách chăm sóc người chồng mới làm cha",
+            "topic": "general",
+            "timeframe": "week",
+            "items": [
+              {
+                "title": "Làm sao để giúp chồng vượt qua cảm giác cô đơn?",
+                "url": "https://www.reddit.com/r/AskMenOver30/comments/1v5ere2/how_to_support_husband_in_loneliness?tl=vi",
+                "source": "reddit.com",
+                "summary": "Chồng mình mới làm bố của bé trai 10 tháng tuổi. Sáng nay, mình thấy trên máy tính anh ấy xem mấy video về nỗi cô đơn",
+                "score": 0.288299
+              },
+              {
+                "title": "Một chị từng kể với tôi rằng mẹ chồng ...",
+                "url": "https://www.facebook.com/thaotungcamxuc/posts/m%E1%BB%99t-ch%E1%BB%8B-t%E1%BB%ABng-k%E1%BB%83-v%E1%BB%9Bi-t%C3%B4i-r%E1%BA%B1ng-m%E1%BA%B9-ch%E1%BB%93ng-ch%E1%BB%8B-ph%E1%BA%A3i-nh%E1%BA%ADp-vi%E1%BB%87n-m%E1%BB%99t-th%E1%BB%9Di-gian-ch%E1%BB%8B-kh%C3%B4ng/1079297664625062",
+                "source": "facebook.com",
+                "summary": "Nếu mẹ chồng ốm, người chồng cần đứng ra trao đổi với anh chị em mình, sắp lịch, hỏi bác sĩ, lo chi phí, nói chuyện với họ hàng. Vợ có thể cùng hỗ trợ, nhưng",
+                "score": 0.2287249
+              },
+              {
+                "title": "Chuyên mục CHUYỆN NHÀ MÌNH - Chuyện vợ chồng ...",
+                "url": "https://laodong.vn/chuyen-nha-minh?page=572",
+                "source": "laodong.vn",
+                "summary": "Chuyện nhà mình bàn về vấn đề trong đời sống vợ chồng, hôn nhân, nuôi dạy con cái, lối sống, ứng xử trong gia đình, chăm sóc gia đình, chi tiêu trong gia",
+                "score": 0.08059611
+              },
+              {
+                "title": "Hello Sống tốt với bố mẹ khi còn có thể là cách trân trọng từng ...",
+                "url": "https://www.facebook.com/huonghoaphat6388/videos/hellos%E1%BB%91ng-t%E1%BB%91t-v%E1%BB%9Bi-b%E1%BB%91-m%E1%BA%B9-khi-c%C3%B2n-c%C3%B3-th%E1%BB%83-l%C3%A0-c%C3%A1ch-tr%C3%A2n-tr%E1%BB%8Dng-t%E1%BB%ABng-ph%C3%BAt-gi%C3%A2y-b%C3%AAn-gia/988365994251796",
+                "source": "facebook.com",
+                "summary": "Hello Sống tốt với bố mẹ khi còn có thể là cách trân trọng từng phút giây bên gia đình, thể hiện qua việc dành thời gian quan tâm, lắng nghe và chăm sóc",
+                "score": 0.08042261
+              },
+              {
+                "title": "Xã hội bây giờ bị làm sao ấy. Những người có chồng yêu ...",
+                "url": "https://www.instagram.com/p/DbIvRU8iZ54",
+                "source": "instagram.com",
+                "summary": "Em đang gặp một vấn đề cần khán giả trường quay trợ giúp ạ. Sự việc là từ khi lấy chồng nếu chồng em nấu cơm, rửa bát, quét nhà, cho em tiền tiêu thì em rất yêu",
+                "score": 0.062680244
+              }
+            ]
+          },
+          "latency_ms": 2538
+        }
+      ],
+      "latency_ms": 11192,
+      "usage": {
+        "input": 9005,
+        "output": 496,
+        "estimated": false
+      },
+      "ended_at": "2026-07-29T17:59:22",
+      "trace_checks": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "status_recorded",
+            "ok": true,
+            "detail": "answered"
+          },
+          {
+            "name": "rounds_recorded",
+            "ok": true,
+            "detail": "2 round(s)"
+          },
+          {
+            "name": "latency_recorded",
+            "ok": true,
+            "detail": "11192ms turn latency"
+          },
+          {
+            "name": "usage_recorded",
+            "ok": true,
+            "detail": "token usage is provider-reported or estimated"
+          },
+          {
+            "name": "tool_results_paired",
+            "ok": true,
+            "detail": "1 tool event(s)"
+          },
+          {
+            "name": "observable_reasoning_trace",
+            "ok": true,
+            "detail": "visible model text/reasoning/tool intent captured"
+          }
+        ]
+      }
+    }
+  ]
+}

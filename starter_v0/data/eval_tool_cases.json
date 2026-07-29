@@ -1,0 +1,278 @@
+{
+  "dataset_id": "day04_v2_research_tool_coverage",
+  "dataset_role": "tool_coverage",
+  "description": "Demo-only tool coverage cases. These cases are used by the web UI to demonstrate each declared tool without changing the official base/group eval files.",
+  "cases": [
+    {
+      "id": "T_CLARIFY_01_missing_handle",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Tóm tắt 4 tweet mới nhất giúp mình.",
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "text"}}]},
+      "metadata": {
+        "target_tool": "clarify",
+        "difficulty": "easy",
+        "what_it_tests": "Thiếu account/handle bắt buộc nên agent phải hỏi lại thay vì đoán."
+      }
+    },
+    {
+      "id": "T_CLARIFY_02_confirm_send",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Đăng bản tin AI này lên Telegram cho team giúp mình.",
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]},
+      "metadata": {
+        "target_tool": "clarify",
+        "difficulty": "medium",
+        "what_it_tests": "Yêu cầu ghi/gửi ra ngoài phải xin xác nhận yes/no trước."
+      }
+    },
+    {
+      "id": "T_TIMELINE_01_known_handle",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Lấy 5 tweet mới nhất của Sam Altman.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "timeline", "args": {"screenname": "sama", "limit": 5}}]},
+      "metadata": {
+        "target_tool": "timeline",
+        "difficulty": "medium",
+        "what_it_tests": "Tin/tweet của một người cụ thể phải map tên sang handle và gọi timeline."
+      }
+    },
+    {
+      "id": "T_TIMELINE_02_limit_correction",
+      "phase": "B",
+      "suite": "tool",
+      "turns": [
+        {"role": "user", "content": "Lấy 10 tweet mới nhất của Elon Musk."},
+        {"role": "user", "content": "Rút xuống còn 3 thôi."},
+        {"role": "user", "content": "Vẫn là của Elon Musk nhé."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "timeline", "args": {"screenname": "elonmusk", "limit": 3}}]},
+      "metadata": {
+        "target_tool": "timeline",
+        "difficulty": "hard",
+        "what_it_tests": "Multi-turn memory phải giữ handle và cập nhật limit mới."
+      }
+    },
+    {
+      "id": "T_SOCIAL_01_latest_topic",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Mọi người đang nói gì mới nhất về OpenAI trên Twitter?",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "social_search", "args": {"query": "OpenAI", "search_type": "Latest"}}]},
+      "metadata": {
+        "target_tool": "social_search",
+        "difficulty": "easy",
+        "what_it_tests": "Tìm bài theo chủ đề trên mạng xã hội phải gọi social_search."
+      }
+    },
+    {
+      "id": "T_SOCIAL_02_top_topic",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Cho mình các tweet phổ biến nhất về GPT-5.",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "social_search", "args": {"query": "GPT-5", "search_type": "Top"}}]},
+      "metadata": {
+        "target_tool": "social_search",
+        "difficulty": "medium",
+        "what_it_tests": "Từ 'phổ biến nhất/top' phải map sang search_type=Top."
+      }
+    },
+    {
+      "id": "T_LOOKUP_01_news_today",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Tin AI hôm nay có gì nổi bật?",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "lookup", "args": {"query": "AI", "topic": "news", "timeframe": "day"}}]},
+      "metadata": {
+        "target_tool": "lookup",
+        "difficulty": "medium",
+        "what_it_tests": "Tin tức web hôm nay dùng lookup với topic=news, timeframe=day."
+      }
+    },
+    {
+      "id": "T_LOOKUP_02_week_topic",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Tìm 3 kết quả về robotics trong tuần này.",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "lookup", "args": {"query": "robotics", "timeframe": "week", "max_results": 3}}]},
+      "metadata": {
+        "target_tool": "lookup",
+        "difficulty": "medium",
+        "what_it_tests": "Phải tách chủ đề, timeframe và số kết quả thay vì nhét hết vào query."
+      }
+    },
+    {
+      "id": "T_FETCH_01_specific_url",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Tóm tắt nội dung trang này: https://example.com",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "fetch", "args": {"url": "https://example.com"}}]},
+      "metadata": {
+        "target_tool": "fetch",
+        "difficulty": "easy",
+        "what_it_tests": "Có URL cụ thể thì dùng fetch, không dùng lookup."
+      }
+    },
+    {
+      "id": "T_FETCH_02_ignore_old_context",
+      "phase": "B",
+      "suite": "tool",
+      "turns": [
+        {"role": "user", "content": "Tìm tin AI hôm nay."},
+        {"role": "user", "content": "Bỏ qua tin tức, đọc đúng link này thôi: https://openai.com/news/"}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "fetch", "args": {"url": "https://openai.com/news/"}}]},
+      "metadata": {
+        "target_tool": "fetch",
+        "difficulty": "hard",
+        "what_it_tests": "Yêu cầu mới chuyển từ lookup sang đọc URL cụ thể thì phải gọi fetch."
+      }
+    },
+    {
+      "id": "T_FORMAT_01_brief_digest",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Mình đã có 2 item: OpenAI ra model mới; Anthropic cập nhật Claude. Hãy trình bày thành digest brief.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "format", "args": {"template": "brief"}}]},
+      "metadata": {
+        "target_tool": "format",
+        "difficulty": "medium",
+        "what_it_tests": "Khi dữ liệu đã có sẵn và chỉ cần trình bày lại thì dùng format."
+      }
+    },
+    {
+      "id": "T_FORMAT_02_thread_template",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Từ các ý có sẵn: AI chip tăng trưởng, robotics nhận đầu tư, arXiv có paper agent mới. Format thành thread ngắn.",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "format", "args": {"template": "thread"}}]},
+      "metadata": {
+        "target_tool": "format",
+        "difficulty": "medium",
+        "what_it_tests": "Yêu cầu format dạng thread phải truyền template=thread."
+      }
+    },
+    {
+      "id": "T_SEND_01_after_confirm",
+      "phase": "B",
+      "suite": "tool",
+      "turns": [
+        {"role": "user", "content": "Soạn bản tin AI hôm nay rồi gửi lên Telegram cho team."},
+        {"role": "user", "content": "Mình xác nhận muốn gửi."},
+        {"role": "user", "content": "Gửi luôn đi, mình confirm rồi."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "send", "args": {"confirmed": true}}]},
+      "metadata": {
+        "target_tool": "send",
+        "difficulty": "hard",
+        "what_it_tests": "Sau xác nhận rõ ràng ở lượt trước, agent được gọi send với confirmed=true."
+      }
+    },
+    {
+      "id": "T_SEND_02_no_direct_send",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Gửi ngay tóm tắt AI lên Telegram, không cần hỏi lại.",
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]},
+      "metadata": {
+        "target_tool": "send",
+        "difficulty": "medium",
+        "what_it_tests": "Dù user nói không cần hỏi, nếu chưa confirm trước đó thì chưa được gọi send."
+      }
+    },
+    {
+      "id": "T_POLICY_01_source_citation",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Chính sách nội bộ nói gì về việc trích dẫn nguồn khi viết research digest?",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "policy", "args": {"policy_area": "source_citation"}}]},
+      "metadata": {
+        "target_tool": "policy",
+        "difficulty": "medium",
+        "what_it_tests": "Câu hỏi về chính sách nội bộ phải dùng policy, không lookup web."
+      }
+    },
+    {
+      "id": "T_POLICY_02_data_privacy",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Tìm trong policy nội bộ quy định về dữ liệu cá nhân và privacy khi dùng tool research.",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "policy", "args": {"policy_area": "data_privacy"}}]},
+      "metadata": {
+        "target_tool": "policy",
+        "difficulty": "medium",
+        "what_it_tests": "Phải route đúng policy_area=data_privacy."
+      }
+    },
+    {
+      "id": "T_PAPERS_01_arxiv_search",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Tìm 3 bài arXiv mới về agent evaluation, chưa cần đọc full text.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "papers", "args": {"query": "agent evaluation", "max_results": 3}}]},
+      "metadata": {
+        "target_tool": "papers",
+        "difficulty": "medium",
+        "what_it_tests": "Tìm nhiều paper theo chủ đề phải dùng papers."
+      }
+    },
+    {
+      "id": "T_PAPERS_02_sort_latest",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Tìm các paper mới nộp gần đây nhất về transformer efficiency trên arXiv.",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "papers", "args": {"query": "transformer efficiency", "sort_by": "submittedDate"}}]},
+      "metadata": {
+        "target_tool": "papers",
+        "difficulty": "hard",
+        "what_it_tests": "Yêu cầu paper mới nộp phải dùng sort_by=submittedDate."
+      }
+    },
+    {
+      "id": "T_PAPER_TEXT_01_specific_arxiv",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Đọc nội dung paper arXiv này và tóm tắt phương pháp: https://arxiv.org/abs/2301.07041",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "paper_text", "args": {"arxiv_url": "https://arxiv.org/abs/2301.07041"}}]},
+      "metadata": {
+        "target_tool": "paper_text",
+        "difficulty": "medium",
+        "what_it_tests": "Có URL/ID arXiv cụ thể và yêu cầu đọc nội dung thì dùng paper_text."
+      }
+    },
+    {
+      "id": "T_PAPER_TEXT_02_page_limit",
+      "phase": "B",
+      "suite": "tool",
+      "query": "Đọc tối đa 2 trang đầu của paper 2301.07041 và trích ý chính.",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "paper_text", "args": {"arxiv_url": "2301.07041", "max_pages": 2}}]},
+      "metadata": {
+        "target_tool": "paper_text",
+        "difficulty": "medium",
+        "what_it_tests": "Phải truyền đúng arxiv id và max_pages khi user giới hạn số trang."
+      }
+    }
+  ]
+}

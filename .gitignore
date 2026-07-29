@@ -17,6 +17,10 @@ starter/
 # Tool scratch output
 arxiv_papers/
 
+# Local web demo runtime
+web.out.log
+web.err.log
+
 # OS / editor
 .DS_Store
 Thumbs.db

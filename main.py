@@ -18,6 +18,7 @@ Run:
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import os
 import sys
@@ -54,6 +55,8 @@ from versioning import artifact_version_dict, build_artifact_version  # noqa: E4
 load_lab_env(STARTER)
 
 ARTIFACTS_DIR = STARTER / "artifacts"
+DATA_DIR = STARTER / "data"
+RUNS_DIR = STARTER / "runs"
 TRANSCRIPTS_DIR = STARTER / "transcripts"
 
 app = Flask(__name__, template_folder=str(ROOT / "templates"), static_folder=str(ROOT / "static"))
@@ -74,6 +77,165 @@ APP_CONFIG: dict[str, Any] = {
 
 SESSIONS: dict[str, dict[str, Any]] = {}
 SESSIONS_LOCK = threading.Lock()
+
+
+# --------------------------------------------------------------------------- #
+# Lab/demo metadata
+# --------------------------------------------------------------------------- #
+
+def read_json(path: Path, fallback: Any) -> Any:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return fallback
+
+
+def eval_case_summary(case: dict[str, Any], suite: str) -> dict[str, Any]:
+    turns = case.get("turns") or []
+    expect = case.get("expect") or {}
+    expected_tools = [call.get("name") for call in expect.get("tool_calls", []) if call.get("name")]
+    return {
+        "id": case.get("id"),
+        "suite": suite,
+        "phase": case.get("phase"),
+        "failure_type": case.get("failure_type"),
+        "difficulty": (case.get("metadata") or {}).get("difficulty"),
+        "skill": (case.get("metadata") or {}).get("skill"),
+        "target_tool": (case.get("metadata") or {}).get("target_tool"),
+        "what_it_tests": (case.get("metadata") or {}).get("what_it_tests"),
+        "query": case.get("query"),
+        "turns": turns,
+        "is_multiturn": bool(turns),
+        "expected_tools": expected_tools,
+        "expect": expect,
+    }
+
+
+def load_eval_suite(filename: str, suite: str) -> dict[str, Any]:
+    data = read_json(DATA_DIR / filename, {})
+    return {
+        "dataset_id": data.get("dataset_id"),
+        "description": data.get("description"),
+        "cases": [eval_case_summary(case, suite) for case in data.get("cases", [])],
+    }
+
+
+def tool_case_counts(cases: list[dict[str, Any]]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for case in cases:
+        tool = case.get("target_tool") or "other"
+        counts[tool] = counts.get(tool, 0) + 1
+    return dict(sorted(counts.items()))
+
+
+def read_version_log() -> list[dict[str, str]]:
+    path = ARTIFACTS_DIR / "version_log.csv"
+    if not path.exists():
+        return []
+    with path.open("r", encoding="utf-8", newline="") as handle:
+        return list(csv.DictReader(handle))
+
+
+def latest_run_summaries(limit: int = 8) -> list[dict[str, Any]]:
+    if not RUNS_DIR.exists():
+        return []
+    summaries: list[dict[str, Any]] = []
+    for path in sorted(RUNS_DIR.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True)[:limit]:
+        data = read_json(path, {})
+        aggregate = data.get("aggregate") or data.get("summary") or {}
+        summaries.append({
+            "file": path.name,
+            "path": str(path),
+            "version": data.get("version") or data.get("artifact_version"),
+            "suite": data.get("suite"),
+            "provider": data.get("provider"),
+            "case_accuracy": aggregate.get("case_accuracy"),
+            "passed": aggregate.get("passed") or aggregate.get("passed_cases"),
+            "total": aggregate.get("total") or aggregate.get("total_cases"),
+            "created_at": data.get("created_at") or data.get("run_started_at") or data.get("generated_at"),
+        })
+    return summaries
+
+
+def build_memory_snapshot(session: dict[str, Any]) -> dict[str, Any]:
+    history = session.get("history", [])
+    window = max(0, int(session["config"].get("history_window", 0)))
+    recent = history[-window * 2:] if window else []
+    user_messages = [m.get("content", "") for m in recent if m.get("role") == "user"]
+    assistant_messages = [m.get("content", "") for m in recent if m.get("role") == "assistant"]
+    return {
+        "history_window": window,
+        "stored_messages": len(history),
+        "recent_user_messages": user_messages[-5:],
+        "last_user": user_messages[-1] if user_messages else None,
+        "last_assistant": assistant_messages[-1] if assistant_messages else None,
+    }
+
+
+def verify_turn_log(turn_record: dict[str, Any]) -> dict[str, Any]:
+    rounds = turn_record.get("rounds") or []
+    tool_events = turn_record.get("tool_events") or []
+    checks = [
+        {
+            "name": "status_recorded",
+            "ok": turn_record.get("status") in {"answered", "waiting_for_user", "max_tool_rounds"},
+            "detail": turn_record.get("status"),
+        },
+        {
+            "name": "rounds_recorded",
+            "ok": len(rounds) > 0,
+            "detail": f"{len(rounds)} round(s)",
+        },
+        {
+            "name": "latency_recorded",
+            "ok": all(isinstance(r.get("latency_ms"), int) for r in rounds) and isinstance(turn_record.get("latency_ms"), int),
+            "detail": f"{turn_record.get('latency_ms', 0)}ms turn latency",
+        },
+        {
+            "name": "usage_recorded",
+            "ok": all(isinstance((r.get("usage") or {}).get("input"), int) for r in rounds),
+            "detail": "token usage is provider-reported or estimated",
+        },
+        {
+            "name": "tool_results_paired",
+            "ok": sum(len(r.get("tool_calls") or []) for r in rounds) == len(tool_events),
+            "detail": f"{len(tool_events)} tool event(s)",
+        },
+        {
+            "name": "observable_reasoning_trace",
+            "ok": any((r.get("reasoning") or r.get("assistant_text") or r.get("tool_calls")) for r in rounds),
+            "detail": "visible model text/reasoning/tool intent captured",
+        },
+    ]
+    return {
+        "passed": all(check["ok"] for check in checks),
+        "checks": checks,
+    }
+
+
+def session_history_public(session: dict[str, Any]) -> dict[str, Any]:
+    turns = []
+    for turn in session["transcript"].get("turns", []):
+        turns.append({
+            "turn_index": turn.get("turn_index"),
+            "status": turn.get("status"),
+            "user": turn.get("user"),
+            "assistant_text": turn.get("assistant_text"),
+            "latency_ms": turn.get("latency_ms"),
+            "usage": turn.get("usage"),
+            "rounds": len(turn.get("rounds") or []),
+            "tool_calls": [
+                call.get("name")
+                for round_record in turn.get("rounds") or []
+                for call in round_record.get("tool_calls") or []
+            ],
+            "trace_checks": turn.get("trace_checks"),
+        })
+    return {
+        "session": session_public(session),
+        "memory": build_memory_snapshot(session),
+        "turns": turns,
+    }
 
 
 # --------------------------------------------------------------------------- #
@@ -269,14 +431,21 @@ def stream_model_call(
 
 def create_session(overrides: dict[str, Any] | None = None) -> dict[str, Any]:
     overrides = overrides or {}
+
+    def int_config(name: str) -> int:
+        value = overrides.get(name)
+        if value is None or value == "":
+            value = APP_CONFIG[name]
+        return int(value)
+
     config = {
         "provider": overrides.get("provider") or APP_CONFIG["provider"],
         "model": overrides.get("model") or APP_CONFIG["model"],
         "version": overrides.get("version") or APP_CONFIG["version"],
-        "max_tool_rounds": int(overrides.get("max_tool_rounds") or APP_CONFIG["max_tool_rounds"]),
-        "history_window": int(overrides.get("history_window") or APP_CONFIG["history_window"]),
+        "max_tool_rounds": int_config("max_tool_rounds"),
+        "history_window": int_config("history_window"),
         "temperature": float(overrides.get("temperature", APP_CONFIG["temperature"])),
-        "stream_delay_ms": int(overrides.get("stream_delay_ms", APP_CONFIG["stream_delay_ms"])),
+        "stream_delay_ms": int_config("stream_delay_ms"),
     }
 
     system_prompt_path: Path = APP_CONFIG["system_prompt_path"]
@@ -355,6 +524,7 @@ def session_public(session: dict[str, Any]) -> dict[str, Any]:
             "latency_ms_total": session["latency_ms_total"],
             "latency_ms_avg": round(session["latency_ms_total"] / turns) if turns else 0,
         },
+        "memory": build_memory_snapshot(session),
         "transcript_path": str(session["transcript_path"]),
     }
 
@@ -521,7 +691,9 @@ def run_turn(session: dict[str, Any], user_text: str) -> Iterator[dict[str, Any]
         "usage": turn_tokens,
         "ended_at": now_iso(),
     })
+    turn_record["trace_checks"] = verify_turn_log(turn_record)
     session["transcript"]["turns"].append(turn_record)
+    session["transcript"]["updated_at"] = now_iso()
     write_transcript(session["transcript_path"], session["transcript"])
 
     yield {
@@ -532,6 +704,7 @@ def run_turn(session: dict[str, Any], user_text: str) -> Iterator[dict[str, Any]
         "latency_ms": turn_latency,
         "usage": turn_tokens,
         "rounds": len(rounds_record),
+        "trace_checks": turn_record["trace_checks"],
         "session": session_public(session),
     }
 
@@ -547,6 +720,38 @@ def sse(payload: dict[str, Any]) -> str:
 @app.get("/")
 def index() -> str:
     return render_template("index.html")
+
+
+@app.get("/api/lab")
+def api_lab() -> Any:
+    base_suite = load_eval_suite("eval_base.json", "base")
+    group_suite = load_eval_suite("eval_group.json", "group")
+    tool_suite = load_eval_suite("eval_tool_cases.json", "tool")
+    version_rows = read_version_log()
+    declarations = load_tool_declarations(APP_CONFIG["tools_path"])
+    return jsonify({
+        "artifact_version": build_artifact_version(
+            APP_CONFIG["version"],
+            APP_CONFIG["system_prompt_path"],
+            APP_CONFIG["tools_path"],
+        ).artifact_version,
+        "base": base_suite,
+        "group": group_suite,
+        "tool_cases": tool_suite,
+        "case_count": {
+            "base": len(base_suite["cases"]),
+            "group": len(group_suite["cases"]),
+            "tool": len(tool_suite["cases"]),
+            "total": len(base_suite["cases"]) + len(group_suite["cases"]) + len(tool_suite["cases"]),
+        },
+        "tool_case_count": tool_case_counts(tool_suite["cases"]),
+        "version_log": version_rows,
+        "latest_runs": latest_run_summaries(),
+        "tools": [
+            {"name": d.get("name"), "description": d.get("description", "")}
+            for d in declarations
+        ],
+    })
 
 
 @app.get("/api/defaults")
@@ -580,6 +785,14 @@ def api_get_session(session_id: str) -> Any:
     return jsonify(session_public(session))
 
 
+@app.get("/api/session/<session_id>/history")
+def api_get_session_history(session_id: str) -> Any:
+    session = get_session(session_id)
+    if session is None:
+        return jsonify({"error": "unknown_session"}), 404
+    return jsonify(session_history_public(session))
+
+
 @app.post("/api/session/<session_id>/reset")
 def api_reset_session(session_id: str) -> Any:
     session = get_session(session_id)
@@ -589,6 +802,27 @@ def api_reset_session(session_id: str) -> Any:
         SESSIONS.pop(session_id, None)
     fresh = create_session(session["config"])
     return jsonify(session_public(fresh))
+
+
+@app.get("/api/transcripts")
+def api_transcripts() -> Any:
+    transcript_dir = Path(APP_CONFIG["transcripts_dir"])
+    items = []
+    if transcript_dir.exists():
+        for path in sorted(transcript_dir.glob("*.transcript.json"), key=lambda p: p.stat().st_mtime, reverse=True)[:20]:
+            data = read_json(path, {})
+            turns = data.get("turns") or []
+            items.append({
+                "file": path.name,
+                "path": str(path),
+                "provider": data.get("provider"),
+                "model": data.get("model"),
+                "artifact_version": data.get("artifact_version"),
+                "turns": len(turns),
+                "updated_at": data.get("updated_at"),
+                "last_user": turns[-1].get("user") if turns else None,
+            })
+    return jsonify(items)
 
 
 @app.post("/api/chat")

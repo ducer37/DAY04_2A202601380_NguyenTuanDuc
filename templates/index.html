@@ -3,8 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Research Agent — ReAct Console</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦞</text></svg>" />
+  <title>Research Agent Lab Demo</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}" />
 </head>
 <body>
@@ -13,37 +12,41 @@
       <div class="brand">
         <span class="dot" id="conn-dot"></span>
         <div>
-          <h1>Research Agent</h1>
-          <p class="sub" id="brand-sub">starter_v0 · ReAct console</p>
+          <h1>Research Agent Lab</h1>
+          <p class="sub" id="brand-sub">loading session</p>
         </div>
       </div>
 
       <div class="meters" id="meters">
-        <div class="meter" title="Prompt tokens billed this session">
+        <div class="meter" title="Prompt tokens in this session">
           <span class="meter-label">tokens in</span>
           <span class="meter-value" id="m-in">0</span>
         </div>
-        <div class="meter" title="Completion tokens billed this session">
+        <div class="meter" title="Completion tokens in this session">
           <span class="meter-label">tokens out</span>
           <span class="meter-value" id="m-out">0</span>
         </div>
-        <div class="meter" title="Total tokens this session">
+        <div class="meter" title="Total tokens in this session">
           <span class="meter-label">total</span>
           <span class="meter-value" id="m-total">0</span>
         </div>
-        <div class="meter" title="Turns / tool calls this session">
-          <span class="meter-label">turns · tools</span>
-          <span class="meter-value" id="m-turns">0 · 0</span>
+        <div class="meter" title="Turns and tool calls">
+          <span class="meter-label">turns / tools</span>
+          <span class="meter-value" id="m-turns">0 / 0</span>
         </div>
-        <div class="meter" title="Latency of the last turn (average in brackets)">
+        <div class="meter" title="Average turn latency">
           <span class="meter-label">latency</span>
-          <span class="meter-value" id="m-latency">—</span>
+          <span class="meter-value" id="m-latency">--</span>
+        </div>
+        <div class="meter" title="Latest trace verification">
+          <span class="meter-label">trace check</span>
+          <span class="meter-value" id="m-trace">--</span>
         </div>
       </div>
 
       <div class="top-actions">
-        <button class="ghost" id="btn-settings" title="Session settings">⚙︎</button>
-        <button class="ghost" id="btn-reset" title="New session (clears history + counters)">⟳</button>
+        <button class="ghost icon-btn" id="btn-settings" title="Session settings" aria-label="Session settings">CFG</button>
+        <button class="ghost icon-btn" id="btn-reset" title="New session" aria-label="New session">NEW</button>
       </div>
     </header>
 
@@ -60,7 +63,7 @@
         <input id="cfg-model" type="text" placeholder="provider default" />
       </label>
       <label>Version
-        <input id="cfg-version" type="text" placeholder="v0" size="6" />
+        <input id="cfg-version" type="text" placeholder="v3" size="6" />
       </label>
       <label>Max tool rounds
         <input id="cfg-rounds" type="number" min="1" max="12" />
@@ -68,38 +71,125 @@
       <label>History window
         <input id="cfg-history" type="number" min="0" max="20" />
       </label>
-      <label>Typing delay (ms/chunk)
+      <label>Typing delay
         <input id="cfg-delay" type="number" min="0" max="200" />
       </label>
-      <button class="primary" id="btn-apply">Apply &amp; restart session</button>
+      <button class="primary" id="btn-apply">Apply and restart</button>
       <p class="settings-note" id="settings-note"></p>
     </section>
 
-    <main class="chat" id="chat">
-      <div class="welcome" id="welcome">
-        <h2>ReAct console</h2>
-        <p>
-          Every turn is shown in full: the model's thought, each tool call with its
-          parameters, the raw tool response, per-step latency, and the running token
-          counter for this session.
-        </p>
-        <div class="tool-chips" id="tool-chips"></div>
-        <div class="examples">
-          <button class="example">Tổng hợp tin AI trong tuần qua thành digest ngắn</button>
-          <button class="example">Tìm 3 bài arXiv mới về agent evaluation và tóm tắt</button>
-          <button class="example">Chính sách nội bộ nói gì về trích dẫn nguồn?</button>
-        </div>
-      </div>
-    </main>
+    <main class="demo-shell">
+      <aside class="panel lab-panel">
+        <section class="panel-section">
+          <div class="section-head">
+            <h2>Lab Map</h2>
+            <span class="mini" id="artifact-chip">artifact --</span>
+          </div>
+          <div class="lab-stats" id="lab-stats"></div>
+          <div class="phase-list" id="phase-list"></div>
+        </section>
 
-    <footer class="composer">
-      <div class="composer-inner">
-        <textarea id="input" rows="1" placeholder="Ask the research agent…  (Enter to send, Shift+Enter for newline)"></textarea>
-        <button class="primary send" id="btn-send" title="Send">➤</button>
-        <button class="danger send" id="btn-stop" title="Stop" hidden>■</button>
-      </div>
-      <p class="foot-note" id="foot-note"></p>
-    </footer>
+        <section class="panel-section">
+          <div class="section-head">
+            <h2>Latest Runs</h2>
+            <span class="mini">eval results</span>
+          </div>
+          <div class="run-list" id="run-list"></div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-head">
+            <h2>Eval Cases</h2>
+            <span class="mini" id="case-count">-- cases</span>
+          </div>
+          <div class="segmented" id="case-filters">
+            <button class="active" data-filter="all">All</button>
+            <button data-filter="base">Base</button>
+            <button data-filter="group">Group</button>
+            <button data-filter="multi">Multi</button>
+          </div>
+          <div class="case-list" id="case-list"></div>
+        </section>
+      </aside>
+
+      <section class="workbench">
+        <div class="case-detail" id="case-detail">
+          <div>
+            <p class="eyebrow">Selected case</p>
+            <h2 id="case-title">Pick a base or group case</h2>
+            <p id="case-desc">Use real eval cases to demo routing, memory carry-over, boundary checks, and tool arguments.</p>
+          </div>
+          <div class="case-actions">
+            <button class="ghost" id="btn-load-case" disabled>Load turn</button>
+            <button class="primary" id="btn-run-case" disabled>Run case</button>
+          </div>
+        </div>
+
+        <div class="chat" id="chat">
+          <div class="welcome" id="welcome">
+            <h2>Live ReAct Demo</h2>
+            <p>Run a case or ask freely. Each turn streams text, tool calls, tool responses, latency, token usage, memory state, and trace verification.</p>
+            <div class="tool-chips" id="tool-chips"></div>
+          </div>
+        </div>
+
+        <footer class="composer">
+          <div class="composer-inner">
+            <textarea id="input" rows="1" placeholder="Ask the research agent... Enter to send, Shift+Enter for newline"></textarea>
+            <button class="primary send" id="btn-send" title="Send">Send</button>
+            <button class="danger send" id="btn-stop" title="Stop" hidden>Stop</button>
+          </div>
+          <p class="foot-note" id="foot-note"></p>
+        </footer>
+      </section>
+
+      <aside class="panel inspector">
+        <section class="panel-section">
+          <div class="section-head">
+            <h2>Memory</h2>
+            <span class="mini" id="memory-window">window --</span>
+          </div>
+          <div class="memory-list" id="memory-list"></div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-head">
+            <h2>Trace Verify</h2>
+            <span class="mini" id="trace-status">waiting</span>
+          </div>
+          <div class="check-list" id="trace-checks"></div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-head">
+            <h2>Chat History</h2>
+            <span class="mini" id="history-count">0 turns</span>
+          </div>
+          <div class="history-list" id="history-list"></div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-head">
+            <h2>Saved Logs</h2>
+            <button class="link-btn" id="btn-refresh-logs">refresh</button>
+          </div>
+          <div class="transcript-list" id="transcript-list"></div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-head">
+            <h2>Tool Cases</h2>
+            <span class="mini" id="tool-case-count">-- cases</span>
+          </div>
+          <select class="tool-case-select" id="tool-case-filter" aria-label="Tool case category">
+            <option value="base">Base cases</option>
+            <option value="group">Group cases</option>
+            <option value="all-tools">All tool cases</option>
+          </select>
+          <div class="tool-case-list" id="tool-case-list"></div>
+        </section>
+      </aside>
+    </main>
   </div>
 
   <script src="{{ url_for('static', filename='app.js') }}"></script>
