@@ -264,6 +264,37 @@ def stream_model_call(
 
 
 # --------------------------------------------------------------------------- #
+# Tool result classification
+# --------------------------------------------------------------------------- #
+
+def classify_result(result: Any) -> str:
+    """Label a tool result for the UI.
+
+    Keyed on the result *shape*, never on tool names, so renaming a tool in
+    artifacts/tools.yaml cannot break the rendering — the same rename-proof
+    convention starter_v0/chat.py uses for the `awaiting_user` pause flag.
+
+    ok       — ordinary success
+    error    — the tool raised or returned an error payload
+    blocked  — an outward action refused for lack of confirmation
+    sent     — an outward, irreversible action actually went through
+    pending  — the run paused to ask the user something
+    """
+    if not isinstance(result, dict):
+        return "ok"
+    if result.get("error"):
+        return "error"
+    if result.get("awaiting_user"):
+        return "pending"
+    status = result.get("status")
+    if status == "needs_confirmation":
+        return "blocked"
+    if status == "sent":
+        return "sent"
+    return "ok"
+
+
+# --------------------------------------------------------------------------- #
 # Session management
 # --------------------------------------------------------------------------- #
 
@@ -401,6 +432,7 @@ def run_turn(session: dict[str, Any], user_text: str) -> Iterator[dict[str, Any]
 
     status = "max_tool_rounds"
     assistant_text = f"Stopped after {max_rounds} tool rounds. Inspect the trace above for details."
+    awaiting: dict[str, Any] | None = None
 
     for round_index in range(1, max_rounds + 1):
         yield {"type": "round_start", "round": round_index, "turn": turn_index}
@@ -469,7 +501,9 @@ def run_turn(session: dict[str, Any], user_text: str) -> Iterator[dict[str, Any]
 
             tool_result = event.get("result")
             ok = not (isinstance(tool_result, dict) and tool_result.get("error"))
+            outcome = classify_result(tool_result)
             event["latency_ms"] = tool_latency
+            event["outcome"] = outcome
             round_record["tool_results"].append(event)
             all_tool_events.append(event)
             session["tool_calls"] += 1
@@ -481,6 +515,7 @@ def run_turn(session: dict[str, Any], user_text: str) -> Iterator[dict[str, Any]
                 "turn": turn_index,
                 "name": call.name,
                 "ok": ok,
+                "outcome": outcome,
                 "result": tool_result,
                 "latency_ms": tool_latency,
             }
@@ -494,6 +529,15 @@ def run_turn(session: dict[str, Any], user_text: str) -> Iterator[dict[str, Any]
                     or call.args.get("question")
                     or "Bạn bổ sung thêm thông tin nhé."
                 )
+                awaiting = {
+                    "question": assistant_text,
+                    "response_type": (
+                        tool_result.get("response_type")
+                        or call.args.get("response_type")
+                        or "text"
+                    ),
+                    "options": tool_result.get("options") or call.args.get("options") or [],
+                }
                 paused = True
                 break
 
@@ -517,6 +561,7 @@ def run_turn(session: dict[str, Any], user_text: str) -> Iterator[dict[str, Any]
     turn_record.update({
         "status": status,
         "assistant_text": assistant_text,
+        "awaiting": awaiting,
         "latency_ms": turn_latency,
         "usage": turn_tokens,
         "ended_at": now_iso(),
@@ -529,6 +574,7 @@ def run_turn(session: dict[str, Any], user_text: str) -> Iterator[dict[str, Any]
         "turn": turn_index,
         "status": status,
         "text": assistant_text,
+        "awaiting": awaiting,
         "latency_ms": turn_latency,
         "usage": turn_tokens,
         "rounds": len(rounds_record),

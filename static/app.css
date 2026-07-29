@@ -19,6 +19,9 @@
 
 * { box-sizing: border-box; }
 
+/* Our display rules would otherwise beat the UA's [hidden] { display: none }. */
+[hidden] { display: none !important; }
+
 html, body {
   margin: 0;
   height: 100%;
@@ -177,24 +180,37 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 .trace-head .caret { transition: transform 0.15s; display: inline-block; }
 .trace.collapsed .caret { transform: rotate(-90deg); }
 .trace.collapsed .trace-body { display: none; }
+.trace-head:hover { color: var(--fg); }
 .trace-head .spacer { margin-left: auto; }
 .trace-head .tag { color: var(--fg-faint); }
+.trace-head .hint { display: none; color: var(--fg-faint); opacity: 0.7; }
+.trace.collapsed .trace-head .hint { display: inline; }
 
 .trace-body { padding: 4px 0; }
 
 .step {
   position: relative;
   padding: 8px 12px 8px 34px;
-  border-bottom: 1px solid var(--line-soft);
 }
-.step:last-child { border-bottom: none; }
-.step::before {
+.trace-body .step { border-bottom: 1px solid var(--line-soft); }
+.trace-body .step:last-child { border-bottom: none; }
+.trace-body .step::before {
   content: "";
   position: absolute; left: 15px; top: 0; bottom: 0;
   width: 1px; background: var(--line);
 }
-.step:first-child::before { top: 14px; }
-.step:last-child::before { bottom: calc(100% - 14px); }
+.trace-body .step:first-child::before { top: 14px; }
+.trace-body .step:last-child::before { bottom: calc(100% - 14px); }
+
+/* Streaming card, shown outside (below) the collapsed trace. */
+.live-step {
+  margin-top: 8px;
+  padding: 10px 12px 11px 34px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg-raised);
+}
+.live-step .step-icon { top: 11px; }
 
 .step-icon {
   position: absolute; left: 9px; top: 9px;
@@ -221,6 +237,8 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 .pill.ok { color: var(--green); border-color: rgba(78, 201, 160, 0.35); }
 .pill.err { color: var(--red); border-color: rgba(242, 99, 122, 0.35); }
 .pill.run { color: var(--amber); border-color: rgba(232, 177, 88, 0.35); }
+.pill.blocked { color: var(--amber); border-color: rgba(232, 177, 88, 0.45); background: rgba(232, 177, 88, 0.1); }
+.pill.sent { color: var(--green); border-color: rgba(78, 201, 160, 0.5); background: rgba(78, 201, 160, 0.12); }
 .pill.time { color: var(--fg-faint); }
 .pill.tok { color: var(--accent); border-color: rgba(91, 157, 255, 0.3); }
 .step-head .spacer { margin-left: auto; }
@@ -233,6 +251,22 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   border-left: 2px solid var(--line); padding-left: 10px;
 }
 .thought-text:empty { display: none; }
+
+/* Final answer — a first-class message, outside the trace. */
+.answer-block {
+  margin-top: 8px;
+  padding: 12px 15px;
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--green);
+  border-radius: 4px 12px 12px 4px;
+  background: var(--bg-raised);
+}
+.answer-meta {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin-top: 11px; padding-top: 9px;
+  border-top: 1px solid var(--line-soft);
+  font-family: var(--mono);
+}
 
 .answer-text { font-size: 14px; color: var(--fg); word-break: break-word; }
 .answer-text p { margin: 0 0 10px; }
@@ -292,10 +326,8 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 @keyframes blink { 50% { opacity: 0; } }
 
 .turn-footer {
-  display: flex; gap: 8px; flex-wrap: wrap;
-  padding: 7px 12px;
-  border-top: 1px solid var(--line);
-  background: var(--bg-sunken);
+  display: flex; gap: 10px; flex-wrap: wrap;
+  margin-top: 6px; padding: 5px 4px 0;
   font-family: var(--mono); font-size: 10.5px; color: var(--fg-faint);
 }
 .turn-footer .k { color: var(--fg-dim); }
@@ -311,6 +343,30 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   border-color: rgba(232, 177, 88, 0.35);
   background: rgba(232, 177, 88, 0.08); color: var(--amber);
 }
+.banner.sent {
+  border-color: rgba(78, 201, 160, 0.35);
+  background: rgba(78, 201, 160, 0.08); color: var(--green);
+}
+
+/* clarify() pause — the agent is asking, so give it real controls. */
+.ask {
+  margin-top: 8px; padding: 12px 15px;
+  border: 1px solid rgba(232, 177, 88, 0.35);
+  border-left: 2px solid var(--amber);
+  border-radius: 4px 12px 12px 4px;
+  background: rgba(232, 177, 88, 0.06);
+}
+.ask.answered { opacity: 0.55; }
+.ask-question { font-size: 14px; color: var(--fg); }
+.ask-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 11px; }
+.ask-btn {
+  background: var(--bg-raised); color: var(--fg);
+  border: 1px solid var(--line); padding: 6px 14px;
+}
+.ask-btn:hover:not(:disabled) { border-color: var(--amber); }
+.ask-btn.primary { background: var(--amber); border-color: var(--amber); color: #241a06; font-weight: 600; }
+.ask-btn.primary:hover:not(:disabled) { background: #f0c47a; }
+.ask-hint { font-family: var(--mono); font-size: 11px; color: var(--fg-faint); }
 
 /* ---------------- composer ---------------- */
 
